@@ -1,17 +1,10 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Creating and retrieving an object" do
-  class IntegrationUser
-    include Friendly::Document
-
-    property :name, String
-    property :age,  Integer
-  end
-
   before do
-    @user       = IntegrationUser.create :name => "Stewie Griffin",
-                                         :age  => 3
-    @found_user = IntegrationUser.find(@user.id)
+    @user       = User.create :name => "Stewie Griffin",
+                              :age  => 3
+    @found_user = User.find(@user.id)
   end
 
   it "finds the user in the database" do
