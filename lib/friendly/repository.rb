@@ -9,7 +9,8 @@ module Friendly
 
     def save(doc)
       serialized_document = serializer.generate(doc.to_hash)
-      db.from(doc.table_name).insert(:attributes => serialized_document)
+      id = db.from(doc.table_name).insert(:attributes => serialized_document)
+      doc.id = id
     end
   end
 end
