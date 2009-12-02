@@ -28,6 +28,11 @@ describe "Creating and retrieving an object" do
     @found_user.created_at.should == @user.created_at
   end
 
+  it "sets the updated_at on the way out of hte database" do
+    @found_user.updated_at.should_not be_nil
+    @found_user.updated_at.should == @user.updated_at
+  end
+
   it "sets the updated_at" do
     @user.updated_at.should == @user.created_at
   end

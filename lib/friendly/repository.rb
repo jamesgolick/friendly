@@ -19,8 +19,9 @@ module Friendly
     def find(klass, id)
       db_record = dataset(klass).first(:id => id)
       attrs     = serializer.parse(db_record[:attributes])
-      klass.new attrs.merge(:id         => db_record[:id],
-                            :created_at => db_record[:created_at])
+      klass.new attrs.merge("id"         => db_record[:id],
+                            "created_at" => db_record[:created_at],
+                            "updated_at" => db_record[:updated_at])
     end
 
     protected

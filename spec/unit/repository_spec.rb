@@ -75,11 +75,12 @@ describe "Friendly::Repository" do
 
   describe "finding an object by id" do
     before do
-      @parsed_hash = {:name => "Stewie"}
+      @parsed_hash = {"name" => "Stewie"}
       @serializer.stubs(:parse).returns(@parsed_hash)
       @dataset.stubs(:first).returns(:attributes => @json, 
                                      :id         => 1, 
-                                     :created_at => @time)
+                                     :created_at => @time,
+                                     :updated_at => @time)
       @klass = stub(:table_name => "users", :new => @doc)
       @returned_doc = @repository.find(@klass, 1)
     end
@@ -93,7 +94,7 @@ describe "Friendly::Repository" do
     end
 
     it "instantiates an object of type @klass with the resulting hash" do
-      extra_attrs = {:id => 1, :created_at => @time}
+      extra_attrs = {"id" => 1, "created_at" => @time, "updated_at" => @time}
       @klass.should have_received(:new).with(@parsed_hash.merge(extra_attrs))
     end
 
