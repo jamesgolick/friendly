@@ -17,6 +17,8 @@ module Friendly
         attr_accessor name
       end
 
+      def indexes(*args);end
+
       def attributes
         @attributes ||= []
       end

@@ -22,6 +22,8 @@ class User
 
   attribute :name, String
   attribute :age,  Integer
+
+  indexes   :name
 end
 
 Friendly.config.repository = Friendly::Repository.new(db, JSON, Time)
