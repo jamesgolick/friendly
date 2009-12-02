@@ -12,6 +12,7 @@ begin
     gem.authors = ["James Golick"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "cucumber", ">= 0"
+    gem.add_development_dependency "jferris-mocha"
     gem.add_dependency "sequel", ">= 3.7.0"
     gem.add_dependency "json"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
