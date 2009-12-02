@@ -15,10 +15,20 @@ module Friendly
       end
     end
 
-    def initialize(*args); end
+    def initialize(opts = {})
+      self.attributes = opts
+    end
+
+    def attributes=(attrs)
+      attrs.each { |name, value| send("#{name}=", value) }
+    end
 
     def save
       Friendly.config.repository.save(self)
+    end
+
+    def to_hash
+      Hash[*self.class.attributes.map { |a| [a.name, send(a.name)] }.flatten]
     end
   end
 end
