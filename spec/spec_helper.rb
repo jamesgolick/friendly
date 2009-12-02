@@ -23,10 +23,7 @@ class User
   attribute :age,  Integer
 end
 
-Friendly.configure do |conf|
-  conf.database   = db
-  conf.serializer = JSON
-end
+Friendly.config.repository = Friendly::Repository.new(db, JSON)
 
 module Mocha
   module API

@@ -2,8 +2,9 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Creating and retrieving an object" do
   before do
-    @user       = User.create :name => "Stewie Griffin",
-                              :age  => 3
+    @user       = User.new :name => "Stewie Griffin",
+                           :age  => 3
+    @user.save
     @found_user = User.find(@user.id)
   end
 
