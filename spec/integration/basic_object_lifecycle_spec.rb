@@ -22,5 +22,10 @@ describe "Creating and retrieving an object" do
     @user.created_at.should_not be_nil
     @user.created_at.should be_instance_of(Time)
   end
+
+  it "sets the created_at on the way out of hte database" do
+    @found_user.created_at.should_not be_nil
+    @found_user.created_at.should == @user.created_at
+  end
 end
 
