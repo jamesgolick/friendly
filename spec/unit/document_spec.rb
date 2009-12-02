@@ -82,6 +82,12 @@ describe "Friendly::Document" do
     it "sets the attributes using the setters" do
       @object.name.should == "Bond"
     end
+
+    it "raises ArgumentError when there are duplicate keys of differing type" do
+      lambda { 
+        @object.attributes = {:name => "Bond", "name" => "Bond"}
+      }.should raise_error(ArgumentError)
+    end
   end
 
   describe "initializing a document" do
