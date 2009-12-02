@@ -21,8 +21,8 @@ module Friendly
         @attributes ||= []
       end
 
-      def find(id)
-        Friendly.config.repository.find(self, id)
+      def find(*ids)
+        Friendly.config.repository.find(self, *ids)
       end
 
       def table_name

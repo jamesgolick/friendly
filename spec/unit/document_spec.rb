@@ -111,6 +111,11 @@ describe "Friendly::Document" do
       @repository.should have_received(:find).with(@klass, 5)
     end
 
+    it "delegates multiple ids to the repository" do
+      @klass.find(5,6,7)
+      @repository.should have_received(:find).with(@klass, 5, 6, 7)
+    end
+
     it "returns whatever the repository returns" do
       @doc.should == @return_value
     end
