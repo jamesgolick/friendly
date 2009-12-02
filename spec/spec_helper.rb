@@ -14,6 +14,7 @@ db.create_table :users do
   primary_key :id
   String      :attributes, :text => true
   Time        :created_at
+  Time        :updated_at
 end
 
 class User
