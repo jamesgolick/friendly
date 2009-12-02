@@ -1,6 +1,7 @@
 require 'friendly/attribute'
 require 'friendly/config'
 require 'friendly/document'
+require 'friendly/repository'
 
 module Friendly
   class << self
