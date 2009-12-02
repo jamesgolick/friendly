@@ -74,3 +74,9 @@ describe "Updating an object" do
   end
 end
 
+describe "Finding an object by id" do
+  it "raises Friendly::RecordNotFound if it doesn't exist" do
+    lambda { User.find(12345) }.should raise_error(Friendly::RecordNotFound)
+  end
+end
+

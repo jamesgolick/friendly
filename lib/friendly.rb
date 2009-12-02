@@ -12,4 +12,6 @@ module Friendly
       @config ||= Config.new
     end
   end
+
+  class RecordNotFound < RuntimeError; end
 end
