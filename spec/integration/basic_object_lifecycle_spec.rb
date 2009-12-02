@@ -36,6 +36,14 @@ describe "Creating and retrieving an object" do
   it "sets the updated_at" do
     @user.updated_at.should == @user.created_at
   end
+
+  it "doesn't serialize id, created_at, or updated_at in the attributes column" do
+    result = Friendly.config.repository.db.from("users").first(:id => @user.id)
+    attrs  = JSON.parse(result[:attributes])
+    attrs.keys.should_not include("id")
+    attrs.keys.should_not include("created_at")
+    attrs.keys.should_not include("updated_at")
+  end
 end
 
 describe "Updating an object" do
