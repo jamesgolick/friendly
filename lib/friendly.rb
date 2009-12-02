@@ -13,5 +13,7 @@ module Friendly
     end
   end
 
-  class RecordNotFound < RuntimeError; end
+  class Error < RuntimeError; end
+  class RecordNotFound < Error; end
+  class MissingIndex < Error; end
 end
