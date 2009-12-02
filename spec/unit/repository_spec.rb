@@ -2,9 +2,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Repository" do
   before do
-    @doc        = stub(:to_hash    => {:name => "Stewie"}, 
-                       :table_name => "users",
-                       :id=        => nil)
+    @doc        = stub(:to_hash     => {:name => "Stewie"}, 
+                       :table_name  => "users",
+                       :id=         => nil,
+                       :created_at= => nil)
 
     @json       = "THE JSONS"
     @serializer = stub
@@ -13,7 +14,9 @@ describe "Friendly::Repository" do
     @dataset    = stub(:insert   => @id)
     @database   = stub
     @database.stubs(:from).with("users").returns(@dataset)
-    @repository = Friendly::Repository.new(@database, @serializer)
+    @time       = Time.new
+    @time_stub  = stub(:new => @time)
+    @repository = Friendly::Repository.new(@database, @serializer, @time_stub)
   end
 
   describe "saving an object" do
@@ -22,11 +25,16 @@ describe "Friendly::Repository" do
     end
 
     it "knows how to save objects" do
-      @dataset.should have_received(:insert).with(:attributes => "THE JSONS")
+      @dataset.should have_received(:insert).with(:attributes => "THE JSONS",
+                                                  :created_at => @time)
     end
 
     it "sets the id of the document" do
       @doc.should have_received(:id=).with(@id)
+    end
+
+    it "sets the created_at of the document" do
+      @doc.should have_received(:created_at=).with(@time)
     end
   end
 

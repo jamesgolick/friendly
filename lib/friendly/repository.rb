@@ -1,16 +1,20 @@
 module Friendly
   class Repository
-    attr_reader :db, :serializer
+    attr_reader :db, :serializer, :time
 
-    def initialize(db, serializer)
+    def initialize(db, serializer, time)
       @db         = db
       @serializer = serializer
+      @time       = time
     end
 
     def save(doc)
+      created_at          = time.new
       serialized_document = serializer.generate(doc.to_hash)
-      id = dataset(doc).insert(:attributes => serialized_document)
-      doc.id = id
+      id = dataset(doc).insert(:attributes => serialized_document,
+                               :created_at => created_at)
+      doc.id         = id
+      doc.created_at = created_at
     end
 
     def find(klass, id)

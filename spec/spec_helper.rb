@@ -23,7 +23,7 @@ class User
   attribute :age,  Integer
 end
 
-Friendly.config.repository = Friendly::Repository.new(db, JSON)
+Friendly.config.repository = Friendly::Repository.new(db, JSON, Time)
 
 module Mocha
   module API
