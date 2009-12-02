@@ -13,6 +13,10 @@ module Friendly
       def attributes
         @attributes ||= []
       end
+
+      def find(id)
+        Friendly.config.repository.find(self, id)
+      end
     end
 
     def initialize(opts = {})

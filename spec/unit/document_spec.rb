@@ -4,13 +4,12 @@ describe "Friendly::Document" do
   before do
     @klass = Class.new { include Friendly::Document }
     @klass.attribute(:name, String)
+    @repository                = stub
+    Friendly.config.repository = @repository
   end
 
   describe "saving a document" do
     before do
-      @repository                = stub
-      Friendly.config.repository = @repository
-
       @user = @klass.new(:name => "whatever")
       @repository.stubs(:save)
       @user.save
@@ -65,6 +64,22 @@ describe "Friendly::Document" do
 
     it "sets the attributes using the setters" do
       @doc.name.should == "Bond"
+    end
+  end
+
+  describe "finding a document" do
+    before do
+      @return_value = @klass.new(:name => "Stewie")
+      @repository.stubs(:find).returns(@return_value)
+      @doc = @klass.find(5)
+    end
+
+    it "delegates to the repository" do
+      @repository.should have_received(:find).with(@klass, 5)
+    end
+
+    it "returns whatever the repository returns" do
+      @doc.should == @return_value
     end
   end
 end
