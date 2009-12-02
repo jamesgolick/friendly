@@ -15,7 +15,7 @@ module Friendly
 
     def find(klass, id)
       serialized_doc = dataset(klass).first(:id => id)
-      klass.new serializer.parse(serialized_doc)
+      klass.new serializer.parse(serialized_doc[:attributes])
     end
 
     protected

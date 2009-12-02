@@ -34,7 +34,7 @@ describe "Friendly::Repository" do
     before do
       @parsed_hash = {:name => "Stewie"}
       @serializer.stubs(:parse).returns(@parsed_hash)
-      @dataset.stubs(:first).returns(@json)
+      @dataset.stubs(:first).returns(:attributes => @json)
       @klass = stub(:table_name => "users", :new => @doc)
       @returned_doc = @repository.find(@klass, 1)
     end
