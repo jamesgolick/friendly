@@ -82,4 +82,14 @@ describe "Friendly::Document" do
       @doc.should == @return_value
     end
   end
+
+  describe "a document's default table name" do
+    it "is the class name, converted with pluralize.underscore" do
+      User.table_name.should == "users"
+    end
+  end
+
+  it "delegates table_name to it's class" do
+    User.new.table_name.should == User.table_name
+  end
 end

@@ -1,3 +1,5 @@
+require 'active_support/inflector'
+
 module Friendly
   module Document
     def self.included(klass)
@@ -17,6 +19,10 @@ module Friendly
       def find(id)
         Friendly.config.repository.find(self, id)
       end
+
+      def table_name
+        name.pluralize.underscore
+      end
     end
 
     def initialize(opts = {})
@@ -33,6 +39,10 @@ module Friendly
 
     def to_hash
       Hash[*self.class.attributes.map { |a| [a.name, send(a.name)] }.flatten]
+    end
+
+    def table_name
+      self.class.table_name
     end
   end
 end
