@@ -13,11 +13,7 @@ module Friendly
     end
 
     def save(doc)
-      if doc.new_record?
-        create(doc)
-      else
-        update(doc)
-      end
+      doc.new_record? ? create(doc) : update(doc)
     end
 
     def find(klass, *ids)
