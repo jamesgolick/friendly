@@ -25,6 +25,13 @@ describe "Friendly::Document" do
     attr.type.should == Time
   end
 
+  it "always has a updated_at attribute" do
+    @klass.new.should respond_to(:updated_at)
+    @klass.new.should respond_to(:updated_at=)
+    attr = @klass.attributes.detect { |a| a.name == :updated_at }
+    attr.type.should == Time
+  end
+
   describe "saving a document" do
     before do
       @user = @klass.new(:name => "whatever")
@@ -61,7 +68,8 @@ describe "Friendly::Document" do
     it "creates a hash that contains its attributes" do
       @object.to_hash.should == {:name       => "Stewie", 
                                  :id         => nil, 
-                                 :created_at => nil}
+                                 :created_at => nil,
+                                 :updated_at => nil}
     end
   end
 

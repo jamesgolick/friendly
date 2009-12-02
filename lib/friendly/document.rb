@@ -7,6 +7,7 @@ module Friendly
         extend ClassMethods
         attribute :id,         Fixnum
         attribute :created_at, Time
+        attribute :updated_at, Time
       end
     end
 
