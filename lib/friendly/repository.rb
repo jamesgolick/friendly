@@ -20,12 +20,21 @@ module Friendly
       end
     end
 
-    def find(klass, id)
+    def find(klass, *ids)
+      ids.length > 1 ? find_many(klass, ids) : find_one(klass, ids.first)
+    end
+
+    def find_one(klass, id)
       db_record = dataset(klass).first(:id => id)
       if db_record.nil?
         raise RecordNotFound, "Couldn't find record: #{klass.name}/#{id}"
       end
       deserialize_object(klass, db_record)
+    end
+
+    def find_many(klass, ids)
+      records = dataset(klass).where(:id => ids)
+      records.map { |r| deserialize_object(klass, r) }
     end
 
     protected

@@ -120,4 +120,31 @@ describe "Friendly::Repository" do
       lambda { User.find(1) }.should raise_error(Friendly::RecordNotFound)
     end
   end
+
+  describe "finding multiple objects by id" do
+    describe "when all the objects are found" do
+      before do
+        @serializer.stubs(:parse).returns({})
+        @dataset.stubs(:where).returns([{:id => 1, :attributes => "{}"}, 
+                                        {:id => 2, :attributes => "{}"}])
+        @obj    = stub
+        @klass  = stub(:new => @obj, :table_name => "users")
+        @return = @repository.find(@klass, 1,2)
+      end
+
+      it "returns objects of klass" do
+        @klass.should have_received(:new).with(:id         => 1, 
+                                               :created_at => nil, 
+                                               :updated_at => nil)
+        @klass.should have_received(:new).with(:id         => 2,
+                                               :created_at => nil,
+                                               :updated_at => nil)
+        @return.should == [@obj, @obj]
+      end
+
+      it "deserializes the attributes" do
+        @serializer.should have_received(:parse).with("{}").twice
+      end
+    end
+  end
 end
