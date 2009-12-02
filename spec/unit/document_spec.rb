@@ -18,6 +18,13 @@ describe "Friendly::Document" do
     @klass.attributes.map { |a| a.name }.should include(:id)
   end
 
+  it "always has a created_at attribute" do
+    @klass.new.should respond_to(:created_at)
+    @klass.new.should respond_to(:created_at=)
+    attr = @klass.attributes.detect { |a| a.name == :created_at }
+    attr.type.should == Time
+  end
+
   describe "saving a document" do
     before do
       @user = @klass.new(:name => "whatever")
@@ -52,7 +59,9 @@ describe "Friendly::Document" do
     end
 
     it "creates a hash that contains its attributes" do
-      @object.to_hash.should == {:name => "Stewie", :id => nil}
+      @object.to_hash.should == {:name       => "Stewie", 
+                                 :id         => nil, 
+                                 :created_at => nil}
     end
   end
 

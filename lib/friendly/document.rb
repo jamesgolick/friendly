@@ -5,7 +5,8 @@ module Friendly
     def self.included(klass)
       klass.class_eval do
         extend ClassMethods
-        attribute :id, Fixnum
+        attribute :id,         Fixnum
+        attribute :created_at, Time
       end
     end
 
