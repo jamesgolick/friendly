@@ -119,4 +119,23 @@ describe "Friendly::Document" do
       @klass.new(:id => 1).should_not be_new_record
     end
   end
+
+  describe "object equality" do
+    it "is never equal if both objects are new_records" do
+      @klass.new(:name => "x").should_not == @klass.new(:name => "x")
+    end
+
+    it "is equal if both objects have the same id" do
+      @klass.new(:id => 1).should == @klass.new(:id => 1)
+    end
+
+    it "is equal if the objects point to the same reference" do
+      obj = @klass.new
+      obj.should == obj
+    end
+
+    it "is not equal if two objects are of differing types with the same id" do
+      @klass.new(:id => 1).should_not == User.new(:id => 1)
+    end
+  end
 end

@@ -52,5 +52,12 @@ module Friendly
     def new_record?
       id.nil?
     end
+
+    def ==(comparison_object)
+      comparison_object.equal?(self) ||
+        (comparison_object.is_a?(self.class) &&
+          !comparison_object.new_record? && 
+            comparison_object.id == id)
+    end
   end
 end
