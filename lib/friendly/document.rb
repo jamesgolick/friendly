@@ -3,7 +3,10 @@ require 'active_support/inflector'
 module Friendly
   module Document
     def self.included(klass)
-      klass.send(:extend, ClassMethods)
+      klass.class_eval do
+        extend ClassMethods
+        attribute :id, Fixnum
+      end
     end
 
     module ClassMethods

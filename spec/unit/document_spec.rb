@@ -8,6 +8,16 @@ describe "Friendly::Document" do
     Friendly.config.repository = @repository
   end
 
+  it "delegates table_name to it's class" do
+    User.new.table_name.should == User.table_name
+  end
+
+  it "always has an id attribute" do
+    @klass.new.should respond_to(:id)
+    @klass.new.should respond_to(:id=)
+    @klass.attributes.map { |a| a.name }.should include(:id)
+  end
+
   describe "saving a document" do
     before do
       @user = @klass.new(:name => "whatever")
@@ -22,7 +32,7 @@ describe "Friendly::Document" do
 
   describe "creating an attribute" do
     before do
-      @attr  = @klass.attributes.first
+      @attr  = @klass.attributes.last
     end
 
     it "creates a attribute object" do
@@ -42,7 +52,7 @@ describe "Friendly::Document" do
     end
 
     it "creates a hash that contains its attributes" do
-      @object.to_hash.should == {:name => "Stewie"}
+      @object.to_hash.should == {:name => "Stewie", :id => nil}
     end
   end
 
@@ -87,9 +97,5 @@ describe "Friendly::Document" do
     it "is the class name, converted with pluralize.underscore" do
       User.table_name.should == "users"
     end
-  end
-
-  it "delegates table_name to it's class" do
-    User.new.table_name.should == User.table_name
   end
 end
