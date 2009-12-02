@@ -2,7 +2,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Repository" do
   before do
-    @doc        = stub(:to_hash     => {:name => "Stewie"}, 
+    @doc        = stub(:to_hash     => {:name       => "Stewie",
+                                        :id         => nil,
+                                        :created_at => nil,
+                                        :updated_at => nil}, 
                        :table_name  => "users",
                        :id=         => nil,
                        :created_at= => nil,
@@ -43,6 +46,10 @@ describe "Friendly::Repository" do
 
     it "sets the updated_at of the document" do
       @doc.should have_received(:updated_at=).with(@time)
+    end
+
+    it "only serializes the attributes that aren't reserved" do
+      @serializer.should have_received(:generate).with({:name => "Stewie"})
     end
   end
 

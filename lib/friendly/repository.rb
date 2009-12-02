@@ -2,6 +2,8 @@ require 'active_support/core_ext/hash'
 
 module Friendly
   class Repository
+    RESERVED_ATTRS = [:id, :created_at, :updated_at].freeze
+
     attr_reader :db, :serializer, :time
 
     def initialize(db, serializer, time)
@@ -32,7 +34,8 @@ module Friendly
       end
 
       def serialize(doc)
-        serializer.generate(doc.to_hash)
+        hash = doc.to_hash.reject { |k, v| RESERVED_ATTRS.include?(k) }
+        serializer.generate(hash)
       end
 
       def create(doc)
