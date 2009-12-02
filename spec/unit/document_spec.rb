@@ -157,4 +157,19 @@ describe "Friendly::Document" do
       @klass.new(:id => 1).should_not == User.new(:id => 1)
     end
   end
+
+  describe "adding an index" do
+    before do
+      @klass = Class.new do
+        include Friendly::Document
+
+        indexes :name
+      end
+    end
+
+    it "adds the index to the document's indexes array" do
+      @klass.indexes.should include([:name])
+    end
+  end
 end
+

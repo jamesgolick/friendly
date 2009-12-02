@@ -17,7 +17,11 @@ module Friendly
         attr_accessor name
       end
 
-      def indexes(*args);end
+      def indexes(*args)
+        @indexes ||= []
+        @indexes << args unless args.empty?
+        @indexes
+      end
 
       def attributes
         @attributes ||= []
