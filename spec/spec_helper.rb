@@ -17,6 +17,12 @@ db.create_table :users do
   Time        :updated_at
 end
 
+db.create_table :index_users_on_name do
+  String      :name
+  Fixnum      :id
+  primary_key [:name, :id]
+end
+
 class User
   include Friendly::Document
 
