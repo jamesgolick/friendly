@@ -5,7 +5,10 @@ describe "Friendly::Repository" do
     @doc        = stub(:to_hash     => {:name => "Stewie"}, 
                        :table_name  => "users",
                        :id=         => nil,
-                       :created_at= => nil)
+                       :created_at= => nil,
+                       :updated_at= => nil,
+                       :new_record? => true,
+                       :id          => nil)
 
     @json       = "THE JSONS"
     @serializer = stub
@@ -19,14 +22,15 @@ describe "Friendly::Repository" do
     @repository = Friendly::Repository.new(@database, @serializer, @time_stub)
   end
 
-  describe "saving an object" do
+  describe "saving a new object" do
     before do
       @repository.save(@doc)
     end
 
     it "knows how to save objects" do
       @dataset.should have_received(:insert).with(:attributes => "THE JSONS",
-                                                  :created_at => @time)
+                                                  :created_at => @time,
+                                                  :updated_at => @time)
     end
 
     it "sets the id of the document" do
@@ -35,6 +39,37 @@ describe "Friendly::Repository" do
 
     it "sets the created_at of the document" do
       @doc.should have_received(:created_at=).with(@time)
+    end
+
+    it "sets the updated_at of the document" do
+      @doc.should have_received(:updated_at=).with(@time)
+    end
+  end
+
+  describe "saving an existing object" do
+    before do
+      @filter = stub(:update => nil)
+      @dataset.stubs(:where).with(:id => 42).returns(@filter)
+      @doc.stubs(:new_record?).returns(false)
+      @doc.stubs(:id).returns(42)
+      @repository.save(@doc)
+    end
+
+    it "updates the object in the database" do
+      @filter.should have_received(:update).with(:updated_at => @time,
+                                                 :attributes => "THE JSONS")
+    end
+
+    it "sets the updated_at on the doc" do
+      @doc.should have_received(:updated_at=).with(@time)
+    end
+
+    it "doesn't set the id on the row" do
+      @doc.should_not have_received(:id=)
+    end
+
+    it "doesn't set the created_at on the row" do
+      @doc.should_not have_received(:created_at=)
     end
   end
 

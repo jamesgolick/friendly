@@ -9,12 +9,11 @@ module Friendly
     end
 
     def save(doc)
-      created_at          = time.new
-      serialized_document = serializer.generate(doc.to_hash)
-      id = dataset(doc).insert(:attributes => serialized_document,
-                               :created_at => created_at)
-      doc.id         = id
-      doc.created_at = created_at
+      if doc.new_record?
+        create(doc)
+      else
+        update(doc)
+      end
     end
 
     def find(klass, id)
@@ -27,6 +26,27 @@ module Friendly
     protected
       def dataset(object)
         db.from(object.table_name)
+      end
+
+      def serialize(doc)
+        serializer.generate(doc.to_hash)
+      end
+
+      def create(doc)
+        created_at = time.new
+        id = dataset(doc).insert(:attributes => serialize(doc),
+                                 :created_at => created_at,
+                                 :updated_at => created_at)
+        doc.id         = id
+        doc.created_at = created_at
+        doc.updated_at = created_at
+      end
+
+      def update(doc)
+        updated_at = time.new
+        dataset(doc).where(:id => doc.id).update(:attributes => serialize(doc),
+                                                 :updated_at => updated_at)
+        doc.updated_at = updated_at
       end
   end
 end
