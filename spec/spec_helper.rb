@@ -19,8 +19,8 @@ end
 class User
   include Friendly::Document
 
-  property :name, String
-  property :age,  Integer
+  attribute :name, String
+  attribute :age,  Integer
 end
 
 Friendly.configure do |conf|

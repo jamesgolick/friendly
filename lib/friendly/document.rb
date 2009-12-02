@@ -5,7 +5,14 @@ module Friendly
     end
 
     module ClassMethods
-      def property(*args); end
+      def attribute(name, type)
+        attributes << Attribute.new(name, type)
+        attr_accessor name
+      end
+
+      def attributes
+        @attributes ||= []
+      end
     end
 
     def initialize(*args); end

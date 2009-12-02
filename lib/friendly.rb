@@ -1,3 +1,4 @@
+require 'friendly/attribute'
 require 'friendly/config'
 require 'friendly/document'
 
