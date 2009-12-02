@@ -48,5 +48,9 @@ module Friendly
     def table_name
       self.class.table_name
     end
+
+    def new_record?
+      id.nil?
+    end
   end
 end

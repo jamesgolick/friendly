@@ -107,4 +107,16 @@ describe "Friendly::Document" do
       User.table_name.should == "users"
     end
   end
+
+  describe "an object without an id" do
+    it "is a new_record" do
+      @klass.new.should be_new_record
+    end
+  end
+
+  describe "an object with an id" do
+    it "is not a new_record" do
+      @klass.new(:id => 1).should_not be_new_record
+    end
+  end
 end
