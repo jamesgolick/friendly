@@ -9,8 +9,18 @@ module Friendly
 
     def save(doc)
       serialized_document = serializer.generate(doc.to_hash)
-      id = db.from(doc.table_name).insert(:attributes => serialized_document)
+      id = dataset(doc).insert(:attributes => serialized_document)
       doc.id = id
     end
+
+    def find(klass, id)
+      serialized_doc = dataset(klass).first(:id => id)
+      klass.new serializer.parse(serialized_doc)
+    end
+
+    protected
+      def dataset(object)
+        db.from(object.table_name)
+      end
   end
 end
