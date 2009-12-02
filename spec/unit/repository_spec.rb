@@ -102,4 +102,15 @@ describe "Friendly::Repository" do
       @returned_doc.should == @doc
     end
   end
+
+  describe "finding a non-existant object by id" do
+    before do
+      Friendly.config.repository = @repository
+      @dataset.stubs(:first).returns(nil)
+    end
+
+    it "raises Friendly::RecordNotFound" do
+      lambda { User.find(1) }.should raise_error(Friendly::RecordNotFound)
+    end
+  end
 end

@@ -20,10 +20,10 @@ module Friendly
 
     def find(klass, id)
       db_record = dataset(klass).first(:id => id)
-      attrs     = serializer.parse(db_record[:attributes]).symbolize_keys
-      klass.new attrs.merge(:id         => db_record[:id],
-                            :created_at => db_record[:created_at],
-                            :updated_at => db_record[:updated_at])
+      if db_record.nil?
+        raise RecordNotFound, "Couldn't find record: #{klass.name}/#{id}"
+      end
+      deserialize_object(klass, db_record)
     end
 
     protected
@@ -50,6 +50,13 @@ module Friendly
         dataset(doc).where(:id => doc.id).update(:attributes => serialize(doc),
                                                  :updated_at => updated_at)
         doc.updated_at = updated_at
+      end
+
+      def deserialize_object(klass, db_record)
+        attrs     = serializer.parse(db_record[:attributes]).symbolize_keys
+        klass.new attrs.merge(:id         => db_record[:id],
+                              :created_at => db_record[:created_at],
+                              :updated_at => db_record[:updated_at])
       end
   end
 end
