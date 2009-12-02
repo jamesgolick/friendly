@@ -1,28 +1,32 @@
 require File.expand_path("../../spec_helper", __FILE__)
+require File.expand_path("../../fakes/document", __FILE__)
 
 describe "Friendly::Repository" do
   before do
-    @doc        = stub(:to_hash     => {:name       => "Stewie",
-                                        :id         => nil,
-                                        :created_at => nil,
-                                        :updated_at => nil}, 
-                       :table_name  => "users",
-                       :id=         => nil,
-                       :created_at= => nil,
-                       :updated_at= => nil,
-                       :new_record? => true,
-                       :id          => nil)
-
-    @json       = "THE JSONS"
-    @serializer = stub
+    @index_stub = stub(:table_name => "index_users_on_name", :fields => [:name])
+    @as_hash   = {:name       => "Stewie",
+                  :id         => nil,
+                  :created_at => nil,
+                  :updated_at => nil}
+    @doc = FakeDocument.new(:table_name => "users",
+                            :new_record => true,
+                            :id         => nil,
+                            :name       => "Stewie",
+                            :indexes    => [@index_stub],
+                            :to_hash    => @as_hash)
+               
+    @json          = "THE JSONS"
+    @serializer    = stub
     @serializer.stubs(:generate).with({:name => "Stewie"}).returns(@json)
-    @id         = 5
-    @dataset    = stub(:insert   => @id)
-    @database   = stub
+    @id            = 5
+    @dataset       = stub(:insert   => @id)
+    @index_dataset = stub(:insert => nil)
+    @database      = stub
     @database.stubs(:from).with("users").returns(@dataset)
-    @time       = Time.new
-    @time_stub  = stub(:new => @time)
-    @repository = Friendly::Repository.new(@database, @serializer, @time_stub)
+    @database.stubs(:from).with("index_users_on_name").returns(@index_dataset)
+    @time          = Time.new
+    @time_stub     = stub(:new => @time)
+    @repository    = Friendly::Repository.new(@database, @serializer, @time_stub)
   end
 
   describe "saving a new object" do
@@ -37,19 +41,24 @@ describe "Friendly::Repository" do
     end
 
     it "sets the id of the document" do
-      @doc.should have_received(:id=).with(@id)
+      @doc.id.should == @id
     end
 
     it "sets the created_at of the document" do
-      @doc.should have_received(:created_at=).with(@time)
+      @doc.created_at.should == @time
     end
 
     it "sets the updated_at of the document" do
-      @doc.should have_received(:updated_at=).with(@time)
+      @doc.updated_at.should == @time
     end
 
     it "only serializes the attributes that aren't reserved" do
       @serializer.should have_received(:generate).with({:name => "Stewie"})
+    end
+
+    it "updates the name index for the document" do
+      @index_dataset.should have_received(:insert).with(:name => "Stewie", 
+                                                        :id   => @id)
     end
   end
 
@@ -68,7 +77,7 @@ describe "Friendly::Repository" do
     end
 
     it "sets the updated_at on the doc" do
-      @doc.should have_received(:updated_at=).with(@time)
+      @doc.updated_at.should == @time
     end
 
     it "doesn't set the id on the row" do

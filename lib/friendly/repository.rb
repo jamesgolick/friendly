@@ -50,6 +50,7 @@ module Friendly
         doc.id         = id
         doc.created_at = created_at
         doc.updated_at = created_at
+        update_indexes(doc)
       end
 
       def update(doc)
@@ -73,6 +74,13 @@ module Friendly
         if records.length < ids.length
           missing = ids - records.map { |r| r[:id] }
           raise RecordNotFound, "Couldn't find records: #{klass.name}/#{missing}."
+        end
+      end
+
+      def update_indexes(doc)
+        doc.indexes.each do |index|
+          pairs = index.fields.map { |f| [f, doc.send(f)] }.flatten
+          dataset(index).insert(Hash[*pairs + [:id, doc.id]])
         end
       end
   end
