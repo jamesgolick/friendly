@@ -14,8 +14,9 @@ module Friendly
     end
 
     def find(klass, id)
-      serialized_doc = dataset(klass).first(:id => id)
-      klass.new serializer.parse(serialized_doc[:attributes])
+      db_record = dataset(klass).first(:id => id)
+      attrs     = serializer.parse(db_record[:attributes])
+      klass.new attrs.merge(:id => db_record[:id])
     end
 
     protected

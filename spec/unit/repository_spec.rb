@@ -34,7 +34,7 @@ describe "Friendly::Repository" do
     before do
       @parsed_hash = {:name => "Stewie"}
       @serializer.stubs(:parse).returns(@parsed_hash)
-      @dataset.stubs(:first).returns(:attributes => @json)
+      @dataset.stubs(:first).returns(:attributes => @json, :id => 1)
       @klass = stub(:table_name => "users", :new => @doc)
       @returned_doc = @repository.find(@klass, 1)
     end
@@ -48,7 +48,7 @@ describe "Friendly::Repository" do
     end
 
     it "instantiates an object of type @klass with the resulting hash" do
-      @klass.should have_received(:new).with(@parsed_hash)
+      @klass.should have_received(:new).with(@parsed_hash.merge(:id => 1))
     end
 
     it "returns the document" do
