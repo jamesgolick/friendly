@@ -1,4 +1,6 @@
 class TimeFake
+  attr_writer :time
+
   def initialize(time)
     @time = time
   end
