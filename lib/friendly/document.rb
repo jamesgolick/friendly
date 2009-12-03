@@ -57,6 +57,10 @@ module Friendly
       self.class.table_name
     end
 
+    def indexes
+      self.class.indexes
+    end
+
     def new_record?
       id.nil?
     end

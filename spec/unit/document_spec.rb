@@ -12,6 +12,10 @@ describe "Friendly::Document" do
     User.new.table_name.should == User.table_name
   end
 
+  it "delegates to the class for indexes" do
+    User.new.indexes.should == User.indexes
+  end
+
   it "always has an id attribute" do
     @klass.new.should respond_to(:id)
     @klass.new.should respond_to(:id=)
