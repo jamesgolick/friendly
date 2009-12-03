@@ -14,6 +14,10 @@ module Friendly
       dataset(persistable).where(conditions).map
     end
 
+    def first(persistable, conditions)
+      dataset(persistable).first(conditions)
+    end
+
     protected
       def dataset(persistable)
         database.from(persistable.table_name)

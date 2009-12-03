@@ -23,7 +23,7 @@ describe "Friendly::DataStore" do
     end
   end
 
-  describe "retrieving data based on where conditions" do
+  describe "retrieving all based on where conditions" do
     before do
       @users.where = {{:name => "Stewie"} => stub(:map => [{:id => 1}])}
       @return = @datastore.all(@klass, :name => "Stewie")
@@ -31,6 +31,17 @@ describe "Friendly::DataStore" do
 
     it "gets the data from the dataset for the klass and makes it an arary" do
       @return.should == [{:id => 1}]
+    end
+  end
+
+  describe "retrieving first with conditions" do
+    before do
+      @users.first = {{:id => 1} => {:id => 1}}
+      @return = @datastore.first(@klass, :id => 1)
+    end
+
+    it "gets the first object matching the conditions from the dataset" do
+      @return.should == {:id => 1}
     end
   end
 end
