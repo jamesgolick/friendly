@@ -18,6 +18,10 @@ module Friendly
       dataset(persistable).first(conditions)
     end
 
+    def update(persistable, id, attributes)
+      dataset(persistable).where(:id => id).update(attributes)
+    end
+
     protected
       def dataset(persistable)
         database.from(persistable.table_name)

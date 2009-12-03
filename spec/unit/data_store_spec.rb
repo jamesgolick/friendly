@@ -44,5 +44,18 @@ describe "Friendly::DataStore" do
       @return.should == {:id => 1}
     end
   end
+
+  describe "updating data" do
+    before do
+      @filtered    = DatasetFake.new(:update => true)
+      @users.where = {{:id => 1} => @filtered}
+      @return = @datastore.update(@klass, 1, :name => "Peter")
+    end
+
+    it "filter the dataset by id and update the filtered row" do
+      @filtered.updates.length.should == 1
+      @filtered.updates.should include(:name => "Peter")
+    end
+  end
 end
 
