@@ -19,7 +19,7 @@ module Friendly
 
       def indexes(*args)
         @indexes ||= []
-        @indexes << args unless args.empty?
+        @indexes << Index.new(self, args) unless args.empty?
         @indexes
       end
 
