@@ -1,5 +1,8 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+Dir[File.expand_path(File.dirname(__FILE__)) + "/fakes/*.rb"].each do |f|
+  require f
+end
 require 'rubygems'
 require 'friendly'
 require 'spec'
