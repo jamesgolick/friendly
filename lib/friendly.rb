@@ -4,6 +4,7 @@ require 'friendly/data_store'
 require 'friendly/document'
 require 'friendly/index'
 require 'friendly/persister'
+require 'friendly/finder'
 require 'friendly/repository'
 
 module Friendly
