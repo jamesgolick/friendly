@@ -1,6 +1,7 @@
 require 'friendly/attribute'
 require 'friendly/config'
 require 'friendly/document'
+require 'friendly/index'
 require 'friendly/repository'
 
 module Friendly
