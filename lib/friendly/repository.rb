@@ -50,7 +50,7 @@ module Friendly
         doc.id         = id
         doc.created_at = created_at
         doc.updated_at = created_at
-        update_indexes(doc)
+        populate_indexes(doc)
       end
 
       def update(doc)
@@ -58,6 +58,7 @@ module Friendly
         dataset(doc).where(:id => doc.id).update(:attributes => serialize(doc),
                                                  :updated_at => updated_at)
         doc.updated_at = updated_at
+        update_indexes(doc)
       end
 
       def deserialize_object(klass, db_record)
@@ -77,11 +78,20 @@ module Friendly
         end
       end
 
+      def populate_indexes(doc)
+        doc.indexes.each do |index|
+          dataset(index).insert(index_attrs_for(doc, index).merge(:id => doc.id))
+        end
+      end
+
       def update_indexes(doc)
         doc.indexes.each do |index|
-          pairs = index.fields.map { |f| [f, doc.send(f)] }.flatten
-          dataset(index).insert(Hash[*pairs + [:id, doc.id]])
+          dataset(index).where(:id => doc.id).update(index_attrs_for(doc, index))
         end
+      end
+
+      def index_attrs_for(doc, index)
+        Hash[*index.fields.map { |f| [f, doc.send(f)] }.flatten]
       end
   end
 end

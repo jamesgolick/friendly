@@ -64,10 +64,13 @@ describe "Friendly::Repository" do
 
   describe "saving an existing object" do
     before do
-      @filter = stub(:update => nil)
+      @filter       = stub(:update => nil)
       @dataset.stubs(:where).with(:id => 42).returns(@filter)
-      @doc.stubs(:new_record?).returns(false)
-      @doc.stubs(:id).returns(42)
+      @index_filter = stub(:update => nil)
+      @index_dataset.stubs(:where).with(:id => 42).returns(@index_filter)
+      @doc.id         = 42
+      @doc.new_record = false
+      @doc.name       = "Whatever"
       @repository.save(@doc)
     end
 
@@ -86,6 +89,10 @@ describe "Friendly::Repository" do
 
     it "doesn't set the created_at on the row" do
       @doc.should_not have_received(:created_at=)
+    end
+
+    it "updates the indexes for the doc" do
+      @index_filter.should have_received(:update).with(:name => "Whatever")
     end
   end
 
