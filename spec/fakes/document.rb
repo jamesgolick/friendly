@@ -9,5 +9,9 @@ class FakeDocument
   def new_record?
     new_record
   end
+
+  def attributes=(attrs)
+    attrs.each { |k,v| send("#{k}=", v) }
+  end
 end
 
