@@ -2,6 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Creating and retrieving an object" do
   before do
+    Friendly.config.repository = $repo
     @user       = User.new :name => "Stewie Griffin",
                            :age  => 3
     @user.save

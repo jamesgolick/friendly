@@ -2,6 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Finding multiple objects by id" do
   before do
+    Friendly.config.repository = $repo
     @user_one = User.new
     @user_two = User.new
     @user_one.save

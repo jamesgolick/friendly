@@ -35,7 +35,8 @@ class User
   indexes   :name
 end
 
-Friendly.config.repository = Friendly::Repository.new(db, JSON, Time)
+$repo = Friendly::Repository.new(db, JSON, Time)
+Friendly.config.repository = $repo
 
 module Mocha
   module API
