@@ -5,11 +5,11 @@ describe "Friendly::DataStore" do
     @users     = DatasetFake.new(:insert => 42)
     @db        = DatabaseFake.new("users" => @users)
     @datastore = Friendly::DataStore.new(@db)
+    @klass     = stub(:table_name => "users")
   end
 
   describe "inserting data" do
     before do
-      @klass = stub(:table_name => "users")
       @return = @datastore.insert(@klass, :name => "Stewie")
     end
 
@@ -20,6 +20,17 @@ describe "Friendly::DataStore" do
 
     it "returns the id from the dataset" do
       @return.should == 42
+    end
+  end
+
+  describe "retrieving data based on where conditions" do
+    before do
+      @users.where = {{:name => "Stewie"} => stub(:map => [{:id => 1}])}
+      @return = @datastore.all(@klass, :name => "Stewie")
+    end
+
+    it "gets the data from the dataset for the klass and makes it an arary" do
+      @return.should == [{:id => 1}]
     end
   end
 end
