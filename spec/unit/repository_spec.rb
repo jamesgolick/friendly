@@ -25,74 +25,17 @@ describe "Friendly::Repository" do
     @database.stubs(:from).with("users").returns(@dataset)
     @database.stubs(:from).with("index_users_on_name").returns(@index_dataset)
     @time          = Time.new
-    @time_stub     = stub(:new => @time)
-    @repository    = Friendly::Repository.new(@database, @serializer, @time_stub)
+    @persister     = stub(:save => true)
+    @repository    = Friendly::Repository.new(@database, @serializer, @persister)
   end
 
-  describe "saving a new object" do
+  context "Saving a document" do
     before do
       @repository.save(@doc)
     end
 
-    it "knows how to save objects" do
-      @dataset.should have_received(:insert).with(:attributes => "THE JSONS",
-                                                  :created_at => @time,
-                                                  :updated_at => @time)
-    end
-
-    it "sets the id of the document" do
-      @doc.id.should == @id
-    end
-
-    it "sets the created_at of the document" do
-      @doc.created_at.should == @time
-    end
-
-    it "sets the updated_at of the document" do
-      @doc.updated_at.should == @time
-    end
-
-    it "only serializes the attributes that aren't reserved" do
-      @serializer.should have_received(:generate).with({:name => "Stewie"})
-    end
-
-    it "updates the name index for the document" do
-      @index_dataset.should have_received(:insert).with(:name => "Stewie", 
-                                                        :id   => @id)
-    end
-  end
-
-  describe "saving an existing object" do
-    before do
-      @filter       = stub(:update => nil)
-      @dataset.stubs(:where).with(:id => 42).returns(@filter)
-      @index_filter = stub(:update => nil)
-      @index_dataset.stubs(:where).with(:id => 42).returns(@index_filter)
-      @doc.id         = 42
-      @doc.new_record = false
-      @doc.name       = "Whatever"
-      @repository.save(@doc)
-    end
-
-    it "updates the object in the database" do
-      @filter.should have_received(:update).with(:updated_at => @time,
-                                                 :attributes => "THE JSONS")
-    end
-
-    it "sets the updated_at on the doc" do
-      @doc.updated_at.should == @time
-    end
-
-    it "doesn't set the id on the row" do
-      @doc.should_not have_received(:id=)
-    end
-
-    it "doesn't set the created_at on the row" do
-      @doc.should_not have_received(:created_at=)
-    end
-
-    it "updates the indexes for the doc" do
-      @index_filter.should have_received(:update).with(:name => "Whatever")
+    it "delegates to the persister" do
+      @persister.should have_received(:save).with(@doc)
     end
   end
 

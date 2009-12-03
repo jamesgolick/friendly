@@ -4,16 +4,16 @@ module Friendly
   class Repository
     RESERVED_ATTRS = [:id, :created_at, :updated_at].freeze
 
-    attr_reader :db, :serializer, :time
+    attr_reader :db, :serializer, :persister
 
-    def initialize(db, serializer, time)
+    def initialize(db, serializer, persister)
       @db         = db
       @serializer = serializer
-      @time       = time
+      @persister  = persister
     end
 
     def save(doc)
-      doc.new_record? ? create(doc) : update(doc)
+      persister.save(doc)
     end
 
     def find(klass, *ids)
@@ -35,30 +35,6 @@ module Friendly
     protected
       def dataset(object)
         db.from(object.table_name)
-      end
-
-      def serialize(doc)
-        hash = doc.to_hash.reject { |k, v| RESERVED_ATTRS.include?(k) }
-        serializer.generate(hash)
-      end
-
-      def create(doc)
-        created_at = time.new
-        id = dataset(doc).insert(:attributes => serialize(doc),
-                                 :created_at => created_at,
-                                 :updated_at => created_at)
-        doc.id         = id
-        doc.created_at = created_at
-        doc.updated_at = created_at
-        populate_indexes(doc)
-      end
-
-      def update(doc)
-        updated_at = time.new
-        dataset(doc).where(:id => doc.id).update(:attributes => serialize(doc),
-                                                 :updated_at => updated_at)
-        doc.updated_at = updated_at
-        update_indexes(doc)
       end
 
       def deserialize_object(klass, db_record)
