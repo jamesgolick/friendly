@@ -54,6 +54,13 @@ module Mocha
   end
 end
 
+module Factory
+  def row(opts = {})
+    { :id => 1, :created_at => Time.new, :updated_at => Time.new }.merge(opts)
+  end
+end
+
 Spec::Runner.configure do |config|
   config.mock_with Mocha::API
+  config.include Factory
 end

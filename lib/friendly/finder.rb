@@ -1,26 +1,19 @@
 module Friendly
   class Finder
+    attr_reader :datastore, :translator
 
-    attr_reader :datastore, :serializer
-
-    def initialize(datastore, serializer)
+    def initialize(datastore, translator)
       @datastore  = datastore
-      @serializer = serializer
+      @translator = translator
     end
 
     def find(klass, id)
-      record = datastore.first(klass, :id => id)
-
-      klass.new deserialize(record[:attributes]).merge(:id => record[:id],
-                                                       :created_at => record[:created_at],
-                                                       :updated_at => record[:updated_at])
+      translator.to_object(klass, datastore.first(klass, :id => id))
     end
 
     protected
-
       def deserialize(json)
         serializer.parse(json).symbolize_keys
       end
-
   end
 end
