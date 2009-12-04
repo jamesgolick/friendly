@@ -6,6 +6,7 @@ require 'friendly/index'
 require 'friendly/persister'
 require 'friendly/finder'
 require 'friendly/repository'
+require 'friendly/translator'
 
 module Friendly
   class << self
