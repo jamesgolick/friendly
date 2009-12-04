@@ -12,15 +12,15 @@ require 'json'
 gem     'jferris-mocha'
 require 'mocha'
 
-db = Sequel.sqlite
-db.create_table :users do
+$db = Sequel.sqlite
+$db.create_table :users do
   primary_key :id
   String      :attributes, :text => true
   Time        :created_at
   Time        :updated_at
 end
 
-db.create_table :index_users_on_name do
+$db.create_table :index_users_on_name do
   String      :name
   Fixnum      :id
   primary_key [:name, :id]
@@ -35,7 +35,7 @@ class User
   indexes   :name
 end
 
-datastore  = Friendly::DataStore.new(db)
+datastore  = Friendly::DataStore.new($db)
 persister  = Friendly::Persister.new(datastore)
 translator = Friendly::Translator.new
 finder     = Friendly::Finder.new(datastore, translator)

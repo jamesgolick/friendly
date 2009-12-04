@@ -39,7 +39,7 @@ describe "Creating and retrieving an object" do
   end
 
   it "doesn't serialize id, created_at, or updated_at in the attributes column" do
-    result = Friendly.config.repository.db.from("users").first(:id => @user.id)
+    result = $db.from("users").first(:id => @user.id)
     attrs  = JSON.parse(result[:attributes])
     attrs.keys.should_not include("id")
     attrs.keys.should_not include("created_at")
