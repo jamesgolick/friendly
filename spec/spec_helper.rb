@@ -35,9 +35,11 @@ class User
   indexes   :name
 end
 
-datastore = Friendly::DataStore.new(db)
-persister = Friendly::Persister.new(datastore)
-$repo = Friendly::Repository.new(db, JSON, persister)
+datastore  = Friendly::DataStore.new(db)
+persister  = Friendly::Persister.new(datastore)
+translator = Friendly::Translator.new
+finder     = Friendly::Finder.new(datastore, translator)
+$repo      = Friendly::Repository.new(finder, persister)
 Friendly.config.repository = $repo
 
 module Mocha
