@@ -37,4 +37,12 @@ describe "Friendly::Index" do
   it "satisfies conditions even when they're specified by string keys" do
     @index.should be_satisfies({"name" => "x"})
   end
+
+  it "doesn't satisfy if it only uses keys on the right of the index" do
+    @index.should_not be_satisfies({:age => "y"})
+  end
+
+  it "satisfies if it only uses keys on the left of the index" do
+    @index.should be_satisfies({:name => "y"})
+  end
 end
