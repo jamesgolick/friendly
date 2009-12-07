@@ -1,13 +1,10 @@
 module Friendly
   class Persister
-    RESERVED_ATTRS = [:id, :created_at, :updated_at].freeze
+    attr_reader :datastore, :translator
 
-    attr_reader :datastore, :serializer, :time
-
-    def initialize(datastore, serializer = JSON, time = Time)
+    def initialize(datastore, translator = Translator.new)
       @datastore  = datastore
-      @serializer = serializer
-      @time       = time
+      @translator = translator
     end
 
     def save(document)
@@ -15,27 +12,20 @@ module Friendly
     end
 
     def create(document)
-      table_attrs = table_attrs(document)
-      id = datastore.insert(document, serialize(document).merge(table_attrs))
-      document.attributes = table_attrs.merge(:id => id)
+      record = translator.to_record(document)
+      id     = datastore.insert(document, record)
+      update_document(document, record.merge(:id => id))
     end
 
     def update(document)
-      table_attrs = table_attrs(document)
-      datastore.update(document, document.id, serialize(document).merge(table_attrs))
-      document.attributes = table_attrs
+      record = translator.to_record(document)
+      datastore.update(document, document.id, record)
+      update_document(document, record)
     end
 
     protected
-      def table_attrs(document)
-        created_at = time.new
-        {:created_at => document.created_at || created_at,
-         :updated_at => created_at}
-      end
-
-      def serialize(document)
-        attrs = document.to_hash.reject { |k,v| RESERVED_ATTRS.include?(k) }
-        {:attributes => serializer.generate(attrs)}
+      def update_document(document, record)
+        document.attributes = record.reject { |k,v| k == :attributes }
       end
   end
 end
