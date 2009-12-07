@@ -22,13 +22,10 @@ module Friendly
       end
 
       def valid_partial_match?(condition_fields)
-        fields.inject(true) do |validity, f|
-          if condition_fields.delete(f)
-            true
-          else
-            break condition_fields.empty?
-          end
+        sorted = condition_fields.sort do |a,b|
+          fields.index(a) || 0 <=> fields.index(b) || 0
         end
+        fields.zip(sorted).all? { |a,b| a == b || b.nil? }
       end
   end
 end
