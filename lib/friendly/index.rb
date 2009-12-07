@@ -22,10 +22,12 @@ module Friendly
       end
 
       def valid_partial_match?(condition_fields)
-        sorted = condition_fields.sort do |a,b|
-          fields.index(a) || 0 <=> fields.index(b) || 0
-        end
+        sorted = condition_fields.sort { |a,b| field_index(a) <=> field_index(b) }
         fields.zip(sorted).all? { |a,b| a == b || b.nil? }
+      end
+
+      def field_index(attr)
+        fields.index(attr) || 0
       end
   end
 end
