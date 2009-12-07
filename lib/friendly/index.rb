@@ -10,5 +10,9 @@ module Friendly
     def table_name
       ["index", klass.table_name, "on", fields.join("_and_")].join("_")
     end
+
+    def satisfies?(conditions)
+      (conditions.keys.map { |k| k.to_sym } - fields).empty?
+    end
   end
 end

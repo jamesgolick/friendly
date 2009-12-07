@@ -3,6 +3,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 describe "Friendly::Index" do
   before do
     @klass = stub(:table_name => "users")
+    @index = Friendly::Index.new(@klass, [:name, :age])
   end
 
   describe "with one field" do
@@ -23,5 +24,17 @@ describe "Friendly::Index" do
     it "has an appropriate table name" do
       @index.table_name.should == "index_users_on_name_and_age"
     end
+  end
+
+  it "satisfies conditions when all the fields are indexed" do
+    @index.should be_satisfies({:name => "x", :age => "y"})
+  end
+
+  it "doesn't satisfy conditions when some fields are not indexed" do
+    @index.should_not be_satisfies({:name => "x", :dob => "12/01/1980"})
+  end
+
+  it "satisfies conditions even when they're specified by string keys" do
+    @index.should be_satisfies({"name" => "x"})
   end
 end
