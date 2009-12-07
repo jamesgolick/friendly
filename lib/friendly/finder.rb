@@ -24,10 +24,6 @@ module Friendly
     end
 
     protected
-      def deserialize(json)
-        serializer.parse(json).symbolize_keys
-      end
-
       def assert_record_found(record, klass, id)
         if record.nil?
           raise RecordNotFound, "Couldn't find record #{klass.name}: #{id}."
