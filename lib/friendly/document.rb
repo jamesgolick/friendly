@@ -18,8 +18,8 @@ module Friendly
       end
 
       def indexes(*args)
-        @indexes ||= []
-        @indexes << Index.new(self, args) unless args.empty?
+        @indexes ||= IndexSet.new(self)
+        @indexes.add(args) unless args.empty?
         @indexes
       end
 

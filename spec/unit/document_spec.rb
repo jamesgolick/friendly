@@ -171,8 +171,8 @@ describe "Friendly::Document" do
       end
     end
 
-    it "adds the index to the document's indexes array" do
-      @klass.indexes.first.fields.should == [:name]
+    it "adds the index to the document's indexes set" do
+      @klass.indexes.map.first.fields.should == [:name]
     end
   end
 end
