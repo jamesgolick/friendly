@@ -13,5 +13,9 @@ module Friendly
     def table_name
       klass.name.pluralize.underscore
     end
+
+    def satisfies?(conditions)
+      conditions.keys == [:id]
+    end
   end
 end
