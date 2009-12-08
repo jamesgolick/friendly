@@ -23,7 +23,7 @@ module Friendly
 
       def valid_partial_match?(condition_fields)
         sorted = condition_fields.sort { |a,b| field_index(a) <=> field_index(b) }
-        fields.zip(sorted).all? { |a,b| a == b || b.nil? }
+        sorted.zip(fields).all? { |a,b| a == b }
       end
 
       def field_index(attr)
