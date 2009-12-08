@@ -85,7 +85,11 @@ end
 
 describe "Finding an object by id" do
   it "raises Friendly::RecordNotFound if it doesn't exist" do
-    lambda { User.find(12345) }.should raise_error(Friendly::RecordNotFound)
+    lambda { User.find!(12345) }.should raise_error(Friendly::RecordNotFound)
+  end
+
+  it "returns nil if you use the non-bang version" do
+    User.find(12345).should be_nil
   end
 end
 
