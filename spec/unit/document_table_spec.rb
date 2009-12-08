@@ -69,4 +69,29 @@ describe "Friendly::DocumentTable" do
       end
     end
   end
+
+  describe "finding the first object" do
+    describe "when the object is found" do
+      before do
+        @record   = {:id => 1}
+        @document = stub
+        @datastore.stubs(:first).with(@klass, :id => 1).returns(@record)
+        @translator.stubs(:to_object).with(@record).returns(@document)
+      end
+
+      it "queries the datastore and translates the object" do
+        @table.first(:id => 1).should == @document
+      end
+    end
+
+    describe "when the object is not found" do
+      before do
+        @datastore.stubs(:first).with(@klass, :id => 1).returns(nil)
+      end
+
+      it "returns nil" do
+        @table.first(:id => 1).should be_nil
+      end
+    end
+  end
 end
