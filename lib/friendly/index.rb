@@ -1,10 +1,11 @@
 module Friendly
   class Index
-    attr_reader :klass, :fields
+    attr_reader :klass, :fields, :datastore
 
-    def initialize(klass, fields)
-      @klass  = klass
-      @fields = fields
+    def initialize(klass, fields, datastore = nil)
+      @klass     = klass
+      @fields    = fields
+      @datastore = datastore
     end
 
     def table_name
@@ -14,6 +15,14 @@ module Friendly
     def satisfies?(conditions)
       condition_fields = conditions.keys.map { |k| k.to_sym }
       exact_match?(condition_fields) || valid_partial_match?(condition_fields)
+    end
+
+    def first(conditions)
+      datastore.first(conditions)[:id]
+    end
+
+    def all(conditions)
+      datastore.all(conditions).map { |row| row[:id] }
     end
 
     protected

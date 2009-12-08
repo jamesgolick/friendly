@@ -45,4 +45,40 @@ describe "Friendly::Index" do
       @index.table_name.should == "index_users_on_name_and_age"
     end
   end
+
+  describe "finding the first record matching a query" do
+    before do
+      @result    = row(:id => 42)
+      @datastore = stub(:first => @result)
+      @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @result    = @index.first(:name => "x")
+    end
+
+    it "queries the datastore with the attributes from the query" do
+      @datastore.should have_received(:first).once
+      @datastore.should have_received(:first).with(:name => "x")
+    end
+
+    it "returns the id returned form the datastore" do
+      @result.should == 42
+    end
+  end
+
+  describe "finding all the rows matching a query" do
+    before do
+      @results   = [row(:id => 42), row(:id => 43), row(:id => 44)]
+      @datastore = stub(:all => @results)
+      @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @result    = @index.all(:name => "x")
+    end
+
+    it "queries the datastore with the conditions" do
+      @datastore.should have_received(:all).once
+      @datastore.should have_received(:all).with(:name => "x")
+    end
+
+    it "returns an array of matching ids" do
+      @result.should == [42, 43, 44]
+    end
+  end
 end
