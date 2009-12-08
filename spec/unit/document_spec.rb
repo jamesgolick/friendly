@@ -175,5 +175,30 @@ describe "Friendly::Document" do
       @klass.indexes.map.first.fields.should == [:name]
     end
   end
+
+  describe "querying by index" do
+    before do
+      @doc           = stub
+      @repository    = stub(:find => @doc)
+      Friendly.config.repository = @repository
+      @index_set     = stub(:first => 42)
+      @klass         = Class.new { include Friendly::Document }
+      @klass.indexes = @index_set
+      @result        = @klass.first(:name => "Stewie")
+    end
+
+    it "delegates to the index_set for the query" do
+      @index_set.should have_received(:first).once
+      @index_set.should have_received(:first).with(:name => "Stewie")
+    end
+
+    it "queries the repository for the id returned by the index" do
+      @repository.should have_received(:find).with(@klass, 42)
+    end
+
+    it "returns the result from the repository" do
+      @result.should == @doc
+    end
+  end
 end
 

@@ -17,6 +17,10 @@ module Friendly
         attr_accessor name
       end
 
+      def indexes=(index_set)
+        @indexes = index_set
+      end
+
       def indexes(*args)
         @indexes ||= IndexSet.new(self)
         @indexes.add(args) unless args.empty?
@@ -29,6 +33,10 @@ module Friendly
 
       def find(*ids)
         Friendly.config.repository.find(self, *ids)
+      end
+
+      def first(conditions)
+        find(indexes.first(conditions))
       end
 
       def table_name
