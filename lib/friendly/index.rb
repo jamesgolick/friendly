@@ -18,7 +18,8 @@ module Friendly
     end
 
     def first(conditions)
-      datastore.first(self, conditions)[:id]
+      row = datastore.first(self, conditions)
+      row && row[:id]
     end
 
     def all(conditions)

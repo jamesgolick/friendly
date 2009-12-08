@@ -62,6 +62,17 @@ describe "Friendly::Index" do
     it "returns the id returned form the datastore" do
       @result.should == 42
     end
+
+    describe "when no result is found" do
+      before do
+        @datastore.stubs(:first).returns(nil)
+        @result = @index.first(:name => "x")
+      end
+
+      it "returns nil" do
+        @result.should be_nil
+      end
+    end
   end
 
   describe "finding all the rows matching a query" do
