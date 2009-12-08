@@ -1,5 +1,7 @@
+require 'friendly/table'
+
 module Friendly
-  class Index
+  class Index < Table
     attr_reader :klass, :fields, :datastore
 
     def initialize(klass, fields, datastore = Friendly.datastore)
