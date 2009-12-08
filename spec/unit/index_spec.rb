@@ -6,26 +6,6 @@ describe "Friendly::Index" do
     @index = Friendly::Index.new(@klass, [:name, :age])
   end
 
-  describe "with one field" do
-    before do
-      @index = Friendly::Index.new(@klass, [:name])
-    end
-
-    it "has an appropriate table name" do
-      @index.table_name.should == "index_users_on_name"
-    end
-  end
-
-  describe "with multiple fields" do
-    before do
-      @index = Friendly::Index.new(@klass, [:name, :age])
-    end
-
-    it "has an appropriate table name" do
-      @index.table_name.should == "index_users_on_name_and_age"
-    end
-  end
-
   it "satisfies conditions when all the fields are indexed" do
     @index.should be_satisfies({:name => "x", :age => "y"})
   end
@@ -44,5 +24,25 @@ describe "Friendly::Index" do
 
   it "satisfies if it only uses keys on the left of the index" do
     @index.should be_satisfies({:name => "y"})
+  end
+
+  describe "with one field" do
+    before do
+      @index = Friendly::Index.new(@klass, [:name])
+    end
+
+    it "has an appropriate table name" do
+      @index.table_name.should == "index_users_on_name"
+    end
+  end
+
+  describe "with multiple fields" do
+    before do
+      @index = Friendly::Index.new(@klass, [:name, :age])
+    end
+
+    it "has an appropriate table name" do
+      @index.table_name.should == "index_users_on_name_and_age"
+    end
   end
 end
