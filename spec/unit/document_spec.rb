@@ -107,21 +107,46 @@ describe "Friendly::Document" do
   describe "finding a document" do
     before do
       @return_value = @klass.new(:name => "Stewie")
-      @repository.stubs(:find).returns(@return_value)
-      @doc = @klass.find(5)
     end
 
-    it "delegates to the repository" do
-      @repository.should have_received(:find).with(@klass, 5)
+    describe "without bang" do
+      before do
+        @repository.stubs(:find).returns(@return_value)
+        @doc = @klass.find(5)
+      end
+
+      it "delegates to the repository" do
+        @repository.should have_received(:find).with(@klass, 5)
+      end
+
+      it "delegates multiple ids to the repository" do
+        @klass.find(5,6,7)
+        @repository.should have_received(:find).with(@klass, 5, 6, 7)
+      end
+
+      it "returns whatever the repository returns" do
+        @doc.should == @return_value
+      end
     end
 
-    it "delegates multiple ids to the repository" do
-      @klass.find(5,6,7)
-      @repository.should have_received(:find).with(@klass, 5, 6, 7)
-    end
+    describe "with bang" do
+      before do
+        @repository.stubs(:find!).returns(@return_value)
+        @doc = @klass.find!(5)
+      end
+      
+      it "delegates to the repository" do
+        @repository.should have_received(:find!).with(@klass, 5)
+      end
 
-    it "returns whatever the repository returns" do
-      @doc.should == @return_value
+      it "delegates multiple ids to the repository" do
+        @klass.find!(5,6,7)
+        @repository.should have_received(:find!).with(@klass, 5, 6, 7)
+      end
+
+      it "returns whatever the repository returns" do
+        @doc.should == @return_value
+      end
     end
   end
 

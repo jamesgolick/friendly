@@ -35,6 +35,10 @@ module Friendly
         Friendly.config.repository.find(self, *ids)
       end
 
+      def find!(*ids)
+        Friendly.config.repository.find!(self, *ids)
+      end
+
       def first(conditions)
         find(indexes.first(conditions))
       end
