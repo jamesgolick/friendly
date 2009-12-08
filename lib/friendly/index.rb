@@ -2,7 +2,7 @@ module Friendly
   class Index
     attr_reader :klass, :fields, :datastore
 
-    def initialize(klass, fields, datastore = nil)
+    def initialize(klass, fields, datastore = Friendly.datastore)
       @klass     = klass
       @fields    = fields
       @datastore = datastore

@@ -26,6 +26,14 @@ $db.create_table :index_users_on_name do
   primary_key [:name, :id]
 end
 
+datastore          = Friendly::DataStore.new($db)
+Friendly.datastore = datastore
+persister          = Friendly::Persister.new(datastore)
+translator         = Friendly::Translator.new
+finder             = Friendly::Finder.new(datastore, translator)
+$repo              = Friendly::Repository.new(finder, persister)
+Friendly.config.repository = $repo
+
 class User
   include Friendly::Document
 
@@ -34,13 +42,6 @@ class User
 
   indexes   :name
 end
-
-datastore  = Friendly::DataStore.new($db)
-persister  = Friendly::Persister.new(datastore)
-translator = Friendly::Translator.new
-finder     = Friendly::Finder.new(datastore, translator)
-$repo      = Friendly::Repository.new(finder, persister)
-Friendly.config.repository = $repo
 
 module Mocha
   module API

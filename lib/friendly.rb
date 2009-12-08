@@ -12,6 +12,8 @@ require 'friendly/translator'
 
 module Friendly
   class << self
+    attr_accessor :datastore
+
     def configure
     end
 
