@@ -18,11 +18,11 @@ module Friendly
     end
 
     def first(conditions)
-      datastore.first(conditions)[:id]
+      datastore.first(self, conditions)[:id]
     end
 
     def all(conditions)
-      datastore.all(conditions).map { |row| row[:id] }
+      datastore.all(self, conditions).map { |row| row[:id] }
     end
 
     protected

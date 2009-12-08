@@ -56,7 +56,7 @@ describe "Friendly::Index" do
 
     it "queries the datastore with the attributes from the query" do
       @datastore.should have_received(:first).once
-      @datastore.should have_received(:first).with(:name => "x")
+      @datastore.should have_received(:first).with(@index, :name => "x")
     end
 
     it "returns the id returned form the datastore" do
@@ -74,7 +74,7 @@ describe "Friendly::Index" do
 
     it "queries the datastore with the conditions" do
       @datastore.should have_received(:all).once
-      @datastore.should have_received(:all).with(:name => "x")
+      @datastore.should have_received(:all).with(@index, :name => "x")
     end
 
     it "returns an array of matching ids" do
