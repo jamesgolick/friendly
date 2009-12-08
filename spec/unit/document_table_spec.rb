@@ -2,7 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::DocumentTable" do
   before do
-    @datastore  = stub(:insert => 42)
+    @datastore  = stub(:insert => 42, :update => nil)
     @klass      = stub(:name => "User")
     @translator = stub
     @table      = Friendly::DocumentTable.new(@datastore, @klass, @translator)
@@ -45,6 +45,26 @@ describe "Friendly::DocumentTable" do
       end
 
       it "sets the updated_at on the document" do
+        @document.updated_at.should == @record[:updated_at]
+      end
+    end
+
+    describe "updating a record" do
+      before do
+        @document.id         = 24
+        @document.new_record = false
+        @table.update(@document)
+      end
+
+      it "saves the record from the translator" do
+        @datastore.should have_received(:update).with(@document, 24, @record)
+      end
+      
+      it "sets the created_at from the translator" do
+        @document.created_at.should == @record[:created_at]
+      end
+
+      it "sets the updated_at from the translator" do
         @document.updated_at.should == @record[:updated_at]
       end
     end

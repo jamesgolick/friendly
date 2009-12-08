@@ -25,6 +25,12 @@ module Friendly
       update_document(document, record.merge(:id => id))
     end
 
+    def update(document)
+      record = translator.to_record(document)
+      datastore.update(document, document.id, record)
+      update_document(document, record)
+    end
+
     protected
       def update_document(document, record)
         document.attributes = record.reject { |k,v| k == :attributes }
