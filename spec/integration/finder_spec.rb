@@ -17,18 +17,26 @@ describe "Finding multiple objects by id" do
   end
 
   describe "when no objects are found" do
-    it "raises RecordNotFound" do
+    it "raises RecordNotFound with the bang version" do
       lambda { 
-        User.find(99999999, 9999999, 99999) 
+        User.find!(99999999, 9999999, 99999)
       }.should raise_error(Friendly::RecordNotFound)
+    end
+
+    it "returns an empty array with the non-bang ver" do
+      User.find(9999,12345, 999).should == []
     end
   end
 
   describe "when one object is found, but others aren't" do
-    it "raises RecordNotFound" do
+    it "raises RecordNotFound using the bang version" do
       lambda {
-        User.find(@user_one.id, 10000000)
+        User.find!(@user_one.id, 10000000)
       }.should raise_error(Friendly::RecordNotFound)
+    end
+
+    it "returns the found objects with the non-bang ver" do
+      User.find(@user_one.id, 12345).should == [@user_one]
     end
   end
 end
