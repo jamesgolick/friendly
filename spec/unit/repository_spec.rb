@@ -4,7 +4,7 @@ require File.expand_path("../../fakes/document", __FILE__)
 describe "Friendly::Repository" do
   before do
     @doc           = stub
-    @finder        = stub(:find => @doc)
+    @finder        = stub(:find! => @doc, :find => @doc)
     @persister     = stub(:save => true)
     @klass         = stub
     @repository    = Friendly::Repository.new(@finder, @persister)
@@ -21,11 +21,15 @@ describe "Friendly::Repository" do
   end
 
   context "Finding documents by id" do
-    before do
-      @return_val = @repository.find(@klass, 1)
+    it "delegates to the finder with bang" do
+      @return_val = @repository.find!(@klass, 1)
+      @finder.should have_received(:find!).with(@klass, 1)
+      @finder.should have_received(:find!).once
+      @return_val.should == @doc
     end
 
-    it "delegates to the finder" do
+    it "delegates to the finder without bang" do
+      @return_val = @repository.find(@klass, 1)
       @finder.should have_received(:find).with(@klass, 1)
       @finder.should have_received(:find).once
       @return_val.should == @doc

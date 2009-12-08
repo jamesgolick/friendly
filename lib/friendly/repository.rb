@@ -17,5 +17,9 @@ module Friendly
     def find(klass, *ids)
       finder.find(klass, *ids)
     end
+
+    def find!(klass, *ids)
+      finder.find!(klass, *ids)
+    end
   end
 end
