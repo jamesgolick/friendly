@@ -2,7 +2,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::IndexSet" do
   before do
-    @set = Friendly::IndexSet.new
+    @klass       = stub
+    @index       = stub
+    @index_klass = stub(:new => @index)
+    @set         = Friendly::IndexSet.new(@klass, @index_klass)
   end
 
   describe "doing a `first`" do
@@ -72,6 +75,21 @@ describe "Friendly::IndexSet" do
           @set.all(:name => "x")
         }.should raise_error(Friendly::MissingIndex)
       end
+    end
+  end
+
+  describe "adding an index to the set" do
+    before do
+      @set.add(:name, :age)
+    end
+
+    it "creates an index" do
+      @index_klass.should have_received(:new).once
+      @index_klass.should have_received(:new).with(@klass, :name, :age)
+    end
+
+    it "adds the index to the set" do
+      @set.should include(@index)
     end
   end
 end
