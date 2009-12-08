@@ -92,4 +92,35 @@ describe "Friendly::Index" do
       @result.should == [42, 43, 44]
     end
   end
+
+  describe "updating the indexes" do
+    before do
+      @datastore = stub(:insert => nil, :update => nil)
+      @index     = Friendly::Index.new(stub, [:name], @datastore)
+      @document  = stub(:name    => "Stewie", 
+                        :indexes => [@index],
+                        :id      => 42)
+      @index_record = {:name => "Stewie", :id => 42}
+    end
+
+    describe "indexing a new document" do
+      before do
+        @index.create(@document)
+      end
+
+      it "inserts a record in to the datastore with the indexed vals and id" do
+        @datastore.should have_received(:insert).with(@index, @index_record)
+      end
+    end
+
+    describe "indexing an existing document" do
+      before do
+        @index.update(@document)
+      end
+
+      it "updates the index records in the database" do
+        @datastore.should have_received(:update).with(@index, 42, @index_record)
+      end
+    end
+  end
 end

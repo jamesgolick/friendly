@@ -26,6 +26,14 @@ module Friendly
       datastore.all(self, conditions).map { |row| row[:id] }
     end
 
+    def create(document)
+      datastore.insert(self, record(document))
+    end
+
+    def update(document)
+      datastore.update(self, document.id, record(document))
+    end
+
     protected
       def exact_match?(condition_fields)
         condition_fields.map { |f| f.to_s }.sort == fields.map { |f| f.to_s }.sort
@@ -38,6 +46,10 @@ module Friendly
 
       def field_index(attr)
         fields.index(attr) || 0
+      end
+
+      def record(document)
+        Hash[*(fields + [:id]).map { |f| [f, document.send(f)] }.flatten]
       end
   end
 end
