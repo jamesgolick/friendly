@@ -15,12 +15,14 @@ module Friendly
       record = translator.to_record(document)
       id     = datastore.insert(document, record)
       update_document(document, record.merge(:id => id))
+      document.indexes.create(document)
     end
 
     def update(document)
       record = translator.to_record(document)
       datastore.update(document, document.id, record)
       update_document(document, record)
+      document.indexes.update(document)
     end
 
     protected
