@@ -22,6 +22,14 @@ module Friendly
       self << index_klass.new(klass, *args)
     end
 
+    def create(document)
+      each { |i| i.create(document) }
+    end
+
+    def update(document)
+      each { |i| i.update(document) }
+    end
+
     def index_for(conditions)
       index = detect { |i| i.satisfies?(conditions) }
       if index.nil?

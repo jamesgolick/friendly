@@ -3,7 +3,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 describe "Friendly::IndexSet" do
   before do
     @klass       = stub
-    @index       = stub
+    @index       = stub(:create => nil, :update => nil)
     @index_klass = stub(:new => @index)
     @set         = Friendly::IndexSet.new(@klass, @index_klass)
   end
@@ -90,6 +90,38 @@ describe "Friendly::IndexSet" do
 
     it "adds the index to the set" do
       @set.should include(@index)
+    end
+  end
+
+  describe "populating indexes" do
+    before do
+      @index_two = stub(:create => nil, :update => nil)
+      @index_klass.stubs(:new).returns(@index).then.returns(@index_two)
+      @set.add(:name)
+      @set.add(:age)
+      @doc = stub
+    end
+
+    describe "creating the indexes for a document" do
+      before do
+        @set.create(@doc)
+      end
+
+      it "delegates to each of the indexes" do
+        @index.should have_received(:create).with(@doc)
+        @index_two.should have_received(:create).with(@doc)
+      end
+    end
+
+    describe "updating the indexes for a document" do
+      before do
+        @set.update(@doc)
+      end
+
+      it "delegates to each of the indexes" do
+        @index.should have_received(:update).with(@doc)
+        @index_two.should have_received(:update).with(@doc)
+      end
     end
   end
 end
