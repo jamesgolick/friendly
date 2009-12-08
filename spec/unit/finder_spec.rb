@@ -28,10 +28,14 @@ describe "Friendly::Finder" do
         @datastore.stubs(:first).returns(nil)
       end
 
-      it "raises RecordNotFound" do
+      it "raises RecordNotFound with bang" do
         lambda {
-          @finder.find(@klass, 1)
+          @finder.find!(@klass, 1)
         }.should raise_error(Friendly::RecordNotFound)
+      end
+
+      it "returns nil without bang" do
+        @finder.find(@klass, 1).should be_nil
       end
     end
   end
@@ -59,10 +63,14 @@ describe "Friendly::Finder" do
         @datastore.stubs(:all).with(@klass, :id => [1,2,3,4]).returns(@records)
       end
 
-      it "raises RecordNotFound" do
+      it "raises RecordNotFound with bang" do
         lambda {
-          @finder.find(@klass, 1,2,3,4)
+          @finder.find!(@klass, 1,2,3,4)
         }.should raise_error(Friendly::RecordNotFound)
+      end
+
+      it "returns the objects that it did find without bang" do
+        @finder.find(@klass, 1,2,3,4).should == [@doc, @doc, @doc]
       end
     end
   end
