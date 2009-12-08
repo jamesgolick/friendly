@@ -35,7 +35,7 @@ describe "Creating and retrieving an object" do
   end
 
   it "sets the updated_at" do
-    @user.updated_at.should == @user.created_at
+    @user.updated_at.to_i.should == @user.created_at.to_i
   end
 
   it "doesn't serialize id, created_at, or updated_at in the attributes column" do
