@@ -36,6 +36,10 @@ module Friendly
       record && translator.to_object(record)
     end
 
+    def all(conditions)
+      datastore.all(klass, conditions).map { |r| translator.to_object(r) }
+    end
+
     protected
       def update_document(document, record)
         document.attributes = record.reject { |k,v| k == :attributes }

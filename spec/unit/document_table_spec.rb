@@ -94,4 +94,19 @@ describe "Friendly::DocumentTable" do
       end
     end
   end
+
+  describe "finding many objects" do
+    before do
+      @records  = [row(:id => 1), row(:id => 2)]
+      @document = stub
+      @records.each do |r|
+        @translator.stubs(:to_object).with(r).returns(@document).once
+      end
+      @datastore.stubs(:all).with(@klass, :id => [1,2]).returns(@records)
+    end
+
+    it "queries the datastore and translates the returned records" do
+      @table.all(:id => [1,2]).should == [@document, @document]
+    end
+  end
 end
