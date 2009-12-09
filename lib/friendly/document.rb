@@ -12,7 +12,7 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy, :query_klass
+      attr_writer :storage_proxy, :query_klass, :table_name
 
       def attribute(name, type)
         attributes << Attribute.new(name, type)
@@ -50,7 +50,7 @@ module Friendly
       end
 
       def table_name
-        name.pluralize.underscore
+        @table_name ||= name.pluralize.underscore
       end
     end
 

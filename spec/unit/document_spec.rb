@@ -124,9 +124,14 @@ describe "Friendly::Document" do
     end
   end
 
-  describe "a document's default table name" do
-    it "is the class name, converted with pluralize.underscore" do
+  describe "table name" do
+    it "by default: is the class name, converted with pluralize.underscore" do
       User.table_name.should == "users"
+    end
+
+    it "is overridable" do
+      @klass.table_name = "ASDF"
+      @klass.table_name.should == "ASDF"
     end
   end
 
