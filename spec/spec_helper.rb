@@ -28,11 +28,6 @@ end
 
 datastore          = Friendly::DataStore.new($db)
 Friendly.datastore = datastore
-persister          = Friendly::Persister.new(datastore)
-translator         = Friendly::Translator.new
-finder             = Friendly::Finder.new(datastore, translator)
-$repo              = Friendly::Repository.new(finder, persister)
-Friendly.config.repository = $repo
 
 class User
   include Friendly::Document

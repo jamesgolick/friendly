@@ -6,7 +6,6 @@ describe "Friendly::Document" do
     @klass.attribute(:name, String)
     @storage_proxy = stub
     @klass.storage_proxy = @storage_proxy
-    Friendly.config.repository = @repository
   end
 
   it "delegates table_name to it's class" do
