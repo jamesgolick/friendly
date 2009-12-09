@@ -21,11 +21,11 @@ module Friendly
 
     def first(conditions)
       row = datastore.first(self, conditions)
-      row && row[:id]
+      row && klass.first(:id => row[:id])
     end
 
     def all(conditions)
-      datastore.all(self, conditions).map { |row| row[:id] }
+      klass.all(:id => datastore.all(self, conditions).map { |row| row[:id] })
     end
 
     def create(document)

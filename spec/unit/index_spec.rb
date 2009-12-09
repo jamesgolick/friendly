@@ -51,6 +51,8 @@ describe "Friendly::Index" do
       @result    = row(:id => 42)
       @datastore = stub(:first => @result)
       @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @doc       = stub
+      @klass.stubs(:first).with(:id => 42).returns(@doc)
       @result    = @index.first(:name => "x")
     end
 
@@ -59,8 +61,12 @@ describe "Friendly::Index" do
       @datastore.should have_received(:first).with(@index, :name => "x")
     end
 
-    it "returns the id returned form the datastore" do
-      @result.should == 42
+    it "finds the document by the id returned by the datastore" do
+      @klass.should have_received(:first).with(:id => 42)
+    end
+
+    it "returns the document returned by the klass" do
+      @result.should == @doc
     end
 
     describe "when no result is found" do
@@ -80,6 +86,8 @@ describe "Friendly::Index" do
       @results   = [row(:id => 42), row(:id => 43), row(:id => 44)]
       @datastore = stub(:all => @results)
       @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @documents = stub
+      @klass.stubs(:all).with(:id => [42, 43, 44]).returns(@documents)
       @result    = @index.all(:name => "x")
     end
 
@@ -88,8 +96,12 @@ describe "Friendly::Index" do
       @datastore.should have_received(:all).with(@index, :name => "x")
     end
 
-    it "returns an array of matching ids" do
-      @result.should == [42, 43, 44]
+    it "then queries the klass for the ids it found in the index" do
+      @klass.should have_received(:all).with(:id => [42, 43, 44])
+    end
+
+    it "returns the result from the klass.all call" do
+      @result.should == @documents
     end
   end
 
