@@ -24,7 +24,8 @@ module Friendly
     end
 
     def all(query)
-      klass.all(:id => datastore.all(self, query).map { |row| row[:id] })
+      ids = datastore.all(self, query).map { |row| row[:id] }
+      klass.all(:id => ids, :preserve_order! => !query.order.nil?)
     end
 
     def create(document)

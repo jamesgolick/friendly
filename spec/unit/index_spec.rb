@@ -93,24 +93,45 @@ describe "Friendly::Index" do
   describe "finding all the rows matching a query" do
     before do
       @results   = [row(:id => 42), row(:id => 43), row(:id => 44)]
+      @query     = query(:name => "x")
       @datastore = stub(:all => @results)
       @index     = Friendly::Index.new(@klass, [:name], @datastore)
       @documents = stub
-      @klass.stubs(:all).with(:id => [42, 43, 44]).returns(@documents)
-      @result    = @index.all(:name => "x")
+      @klass.stubs(:all).with(:id              => [42, 43, 44], 
+                              :preserve_order! => false).returns(@documents)
+      @result    = @index.all(@query)
     end
 
     it "queries the datastore with the conditions" do
       @datastore.should have_received(:all).once
-      @datastore.should have_received(:all).with(@index, :name => "x")
+      @datastore.should have_received(:all).with(@index, @query)
     end
 
     it "then queries the klass for the ids it found in the index" do
-      @klass.should have_received(:all).with(:id => [42, 43, 44])
+      @klass.should have_received(:all).with(:id              => [42, 43, 44],
+                                             :preserve_order! => false)
     end
 
     it "returns the result from the klass.all call" do
       @result.should == @documents
+    end
+  end
+
+  describe "finding all the rows matching a query in order" do
+    before do
+      @results   = [row(:id => 42), row(:id => 43), row(:id => 44)]
+      @query     = query(:name => "x", :order! => :created_at.desc)
+      @datastore = stub(:all => @results)
+      @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @documents = stub
+      @klass.stubs(:all).with(:id              => [42, 43, 44], 
+                              :preserve_order! => true).returns(@documents)
+      @result    = @index.all(@query)
+    end
+
+    it "queries the klass with preserve_order! => true" do
+      @klass.should have_received(:all).with(:id              => [42, 43, 44],
+                                             :preserve_order! => true)
     end
   end
 
