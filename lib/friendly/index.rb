@@ -36,6 +36,10 @@ module Friendly
       datastore.update(self, document.id, record(document))
     end
 
+    def destroy(document)
+      datastore.delete(self, document.id)
+    end
+
     protected
       def exact_match?(condition_fields)
         condition_fields.map { |f| f.to_s }.sort == fields.map { |f| f.to_s }.sort

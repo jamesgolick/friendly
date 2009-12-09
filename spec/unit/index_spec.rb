@@ -135,4 +135,19 @@ describe "Friendly::Index" do
       end
     end
   end
+
+  describe "destroying the index rows" do
+    before do
+      @datastore = stub(:delete => nil)
+      @index     = Friendly::Index.new(stub, [:name], @datastore)
+      @document  = stub(:name    => "Stewie", 
+                        :indexes => [@index],
+                        :id      => 42)
+      @index.destroy(@document)
+    end
+
+    it "deletes the records in the index" do
+      @datastore.should have_received(:delete).with(@index, 42)
+    end
+  end
 end
