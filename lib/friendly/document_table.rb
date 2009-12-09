@@ -33,7 +33,7 @@ module Friendly
 
     def first(conditions)
       record = datastore.first(klass, conditions)
-      record && translator.to_object(record)
+      record && translator.to_object(klass, record)
     end
 
     def all(conditions)

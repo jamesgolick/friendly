@@ -76,7 +76,7 @@ describe "Friendly::DocumentTable" do
         @record   = {:id => 1}
         @document = stub
         @datastore.stubs(:first).with(@klass, :id => 1).returns(@record)
-        @translator.stubs(:to_object).with(@record).returns(@document)
+        @translator.stubs(:to_object).with(@klass, @record).returns(@document)
       end
 
       it "queries the datastore and translates the object" do
