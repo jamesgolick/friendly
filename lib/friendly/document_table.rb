@@ -37,7 +37,7 @@ module Friendly
     end
 
     def all(conditions)
-      datastore.all(klass, conditions).map { |r| translator.to_object(r) }
+      datastore.all(klass, conditions).map { |r| translator.to_object(klass, r) }
     end
 
     protected

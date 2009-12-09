@@ -100,7 +100,7 @@ describe "Friendly::DocumentTable" do
       @records  = [row(:id => 1), row(:id => 2)]
       @document = stub
       @records.each do |r|
-        @translator.stubs(:to_object).with(r).returns(@document).once
+        @translator.stubs(:to_object).with(@klass, r).returns(@document).once
       end
       @datastore.stubs(:all).with(@klass, :id => [1,2]).returns(@records)
     end
