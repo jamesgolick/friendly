@@ -31,16 +31,12 @@ module Friendly
         @attributes ||= []
       end
 
-      def find(*ids)
-        Friendly.config.repository.find(self, *ids)
-      end
-
-      def find!(*ids)
-        Friendly.config.repository.find!(self, *ids)
-      end
-
       def first(conditions)
-        find(indexes.first(conditions))
+        storage_proxy.first(conditions)
+      end
+
+      def all(conditions)
+        storage_proxy.all(conditions)
       end
 
       def table_name

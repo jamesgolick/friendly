@@ -162,5 +162,27 @@ describe "Friendly::Document" do
       @klass.storage_proxy.should have_received(:add).with(:name)
     end
   end
+
+  describe "Document.first" do
+    before do
+      @doc = stub
+      @storage_proxy.stubs(:first).with(:id => 1).returns(@doc)
+    end
+
+    it "delegates to the storage proxy" do
+      @klass.first(:id => 1).should == @doc
+    end
+  end
+
+  describe "Document.all" do
+    before do
+      @docs = stub
+      @storage_proxy.stubs(:all).with(:name => "x").returns(@docs)
+    end
+
+    it "delegates to the storage proxy" do
+      @klass.all(:name => "x").should == @docs
+    end
+  end
 end
 
