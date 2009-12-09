@@ -4,10 +4,10 @@ require 'friendly/data_store'
 require 'friendly/document'
 require 'friendly/document_table'
 require 'friendly/index'
-require 'friendly/index_set'
 require 'friendly/persister'
 require 'friendly/finder'
 require 'friendly/repository'
+require 'friendly/storage_proxy'
 require 'friendly/translator'
 
 module Friendly

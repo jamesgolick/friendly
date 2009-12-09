@@ -1,13 +1,13 @@
-require 'set'
-
 module Friendly
-  class IndexSet < Set
-    attr_reader :klass, :index_klass
+  class StorageProxy
+    attr_reader :klass, :index_klass, :doctable_klass, :tables
 
-    def initialize(klass, index_klass = Index)
+    def initialize(klass, index_klass = Index, doctable_klass = DocumentTable)
       super()
-      @klass       = klass
-      @index_klass = index_klass
+      @klass          = klass
+      @index_klass    = index_klass
+      @doctable_klass = doctable_klass
+      @tables         = [doctable_klass.new(klass)]
     end
 
     def first(conditions)
@@ -19,19 +19,19 @@ module Friendly
     end
 
     def add(*args)
-      self << index_klass.new(klass, *args)
+      tables << index_klass.new(klass, *args)
     end
 
     def create(document)
-      each { |i| i.create(document) }
+      tables.each { |i| i.create(document) }
     end
 
     def update(document)
-      each { |i| i.update(document) }
+      tables.each { |i| i.update(document) }
     end
 
     def index_for(conditions)
-      index = detect { |i| i.satisfies?(conditions) }
+      index = tables.detect { |i| i.satisfies?(conditions) }
       if index.nil?
         raise MissingIndex, "No index found to satisfy: #{conditions.inspect}."
       end

@@ -1,23 +1,30 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe "Friendly::IndexSet" do
+describe "Friendly::StorageProxy" do
   before do
-    @klass       = stub
-    @index       = stub(:create => nil, :update => nil)
-    @index_klass = stub(:new => @index)
-    @set         = Friendly::IndexSet.new(@klass, @index_klass)
+    @klass          = stub
+    @index          = stub(:create => nil, :update => nil)
+    @index_klass    = stub(:new => @index)
+    @table          = stub(:satisfies? => false, :create => nil, :update => nil)
+    @doctable_klass = stub
+    @doctable_klass.stubs(:new).with(@klass).returns(@table)
+    @storage        = Friendly::StorageProxy.new(@klass,@index_klass,@doctable_klass)
+  end
+
+  it "instantiates and adds a document table by default" do
+    @storage.tables.should include(@table)
   end
 
   describe "doing a `first`" do
     before do
       @id     = stub
       @index  = stub(:satisfies? => true, :first => @id)
-      @set << @index
+      @storage.tables << @index
     end
 
     describe "when there's an index that matches the conditions" do
       before do
-        @result = @set.first(:name => "x")
+        @result = @storage.first(:name => "x")
       end
 
       it "delegates to the index that satisfies the conditions" do
@@ -37,7 +44,7 @@ describe "Friendly::IndexSet" do
 
       it "raises MissingIndex" do
         lambda {
-          @set.first(:name => "x")
+          @storage.first(:name => "x")
         }.should raise_error(Friendly::MissingIndex)
       end
     end
@@ -47,12 +54,12 @@ describe "Friendly::IndexSet" do
     before do
       @ids    = [stub]
       @index  = stub(:satisfies? => true, :all => @ids)
-      @set << @index
+      @storage.tables << @index
     end
 
     describe "when there's an index that matches the conditions" do
       before do
-        @result = @set.all(:name => "x")
+        @result = @storage.all(:name => "x")
       end
 
       it "delegates to the index that satisfies the conditions" do
@@ -72,7 +79,7 @@ describe "Friendly::IndexSet" do
 
       it "raises MissingIndex" do
         lambda {
-          @set.all(:name => "x")
+          @storage.all(:name => "x")
         }.should raise_error(Friendly::MissingIndex)
       end
     end
@@ -80,7 +87,7 @@ describe "Friendly::IndexSet" do
 
   describe "adding an index to the set" do
     before do
-      @set.add(:name, :age)
+      @storage.add(:name, :age)
     end
 
     it "creates an index" do
@@ -89,7 +96,7 @@ describe "Friendly::IndexSet" do
     end
 
     it "adds the index to the set" do
-      @set.should include(@index)
+      @storage.tables.should include(@index)
     end
   end
 
@@ -97,30 +104,32 @@ describe "Friendly::IndexSet" do
     before do
       @index_two = stub(:create => nil, :update => nil)
       @index_klass.stubs(:new).returns(@index).then.returns(@index_two)
-      @set.add(:name)
-      @set.add(:age)
+      @storage.add(:name)
+      @storage.add(:age)
       @doc = stub
     end
 
     describe "creating the indexes for a document" do
       before do
-        @set.create(@doc)
+        @storage.create(@doc)
       end
 
       it "delegates to each of the indexes" do
         @index.should have_received(:create).with(@doc)
         @index_two.should have_received(:create).with(@doc)
+        @table.should have_received(:create).with(@doc)
       end
     end
 
     describe "updating the indexes for a document" do
       before do
-        @set.update(@doc)
+        @storage.update(@doc)
       end
 
       it "delegates to each of the indexes" do
         @index.should have_received(:update).with(@doc)
         @index_two.should have_received(:update).with(@doc)
+        @table.should have_received(:update).with(@doc)
       end
     end
   end

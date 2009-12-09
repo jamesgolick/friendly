@@ -22,7 +22,7 @@ module Friendly
       end
 
       def indexes(*args)
-        @indexes ||= IndexSet.new(self)
+        @indexes ||= StorageProxy.new(self)
         @indexes.add(args) unless args.empty?
         @indexes
       end
