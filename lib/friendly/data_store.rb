@@ -22,6 +22,10 @@ module Friendly
       dataset(persistable).where(:id => id).update(attributes)
     end
 
+    def delete(persistable, id)
+      dataset(persistable).where(:id => id).delete
+    end
+
     protected
       def dataset(persistable)
         database.from(persistable.table_name)

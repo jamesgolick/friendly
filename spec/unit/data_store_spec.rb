@@ -57,5 +57,18 @@ describe "Friendly::DataStore" do
       @filtered.updates.should include(:name => "Peter")
     end
   end
+
+  describe "deleting data" do
+    before do
+      @filtered = stub
+      @filtered.stubs(:delete)
+      @users.where = {{:id => 1} => @filtered}
+      @datastore.delete(@klass, 1)
+    end
+
+    it "filters the dataset by id and deletes" do
+      @filtered.should have_received(:delete)
+    end
+  end
 end
 
