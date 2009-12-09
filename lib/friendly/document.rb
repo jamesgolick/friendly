@@ -39,6 +39,12 @@ module Friendly
         storage_proxy.all(conditions)
       end
 
+      def find(id)
+        doc = first(:id => id)
+        raise RecordNotFound, "Couldn't find #{name}/#{id}" if doc.nil?
+        doc
+      end
+
       def table_name
         name.pluralize.underscore
       end

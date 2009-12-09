@@ -184,5 +184,30 @@ describe "Friendly::Document" do
       @klass.all(:name => "x").should == @docs
     end
   end
+
+  describe "Document.find" do
+    describe "when an object is found" do
+      before do
+        @doc = stub
+        @storage_proxy.stubs(:first).with(:id => 1).returns(@doc)
+      end
+
+      it "queries the storage proxy" do
+        @klass.find(1).should == @doc
+      end
+    end
+
+    describe "when no object is found" do
+      before do
+        @storage_proxy.stubs(:first).returns(nil)
+      end
+
+      it "raises RecordNotFound" do
+        lambda {
+          @klass.find(1)
+        }.should raise_error(Friendly::RecordNotFound)
+      end
+    end
+  end
 end
 
