@@ -176,19 +176,27 @@ describe "Friendly::Document" do
 
   describe "Document.first" do
     before do
-      @doc = stub
-      @storage_proxy.stubs(:first).with(:id => 1).returns(@doc)
+      @doc               = stub
+      @query             = stub
+      @query_klass       = stub
+      @klass.query_klass = @query_klass
+      @query_klass.stubs(:new).with(:id => 1).returns(@query)
+      @storage_proxy.stubs(:first).with(@query).returns(@doc)
     end
 
-    it "delegates to the storage proxy" do
+    it "creates a query object and delegates to the storage proxy" do
       @klass.first(:id => 1).should == @doc
     end
   end
 
   describe "Document.all" do
     before do
-      @docs = stub
-      @storage_proxy.stubs(:all).with(:name => "x").returns(@docs)
+      @docs              = stub
+      @query             = stub
+      @query_klass       = stub
+      @klass.query_klass = @query_klass
+      @query_klass.stubs(:new).with(:name => "x").returns(@query)
+      @storage_proxy.stubs(:all).with(@query).returns(@docs)
     end
 
     it "delegates to the storage proxy" do
@@ -199,8 +207,12 @@ describe "Friendly::Document" do
   describe "Document.find" do
     describe "when an object is found" do
       before do
-        @doc = stub
-        @storage_proxy.stubs(:first).with(:id => 1).returns(@doc)
+        @doc               = stub
+        @query             = stub
+        @query_klass       = stub
+        @klass.query_klass = @query_klass
+        @query_klass.stubs(:new).with(:id => 1).returns(@query)
+        @storage_proxy.stubs(:first).with(@query).returns(@doc)
       end
 
       it "queries the storage proxy" do

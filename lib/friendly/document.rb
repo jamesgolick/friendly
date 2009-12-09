@@ -12,7 +12,7 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy
+      attr_writer :storage_proxy, :query_klass
 
       def attribute(name, type)
         attributes << Attribute.new(name, type)
@@ -23,6 +23,10 @@ module Friendly
         @storage_proxy ||= StorageProxy.new(self)
       end
 
+      def query_klass
+        @query_klass ||= Query
+      end
+
       def indexes(*args)
         storage_proxy.add(args)
       end
@@ -31,12 +35,12 @@ module Friendly
         @attributes ||= []
       end
 
-      def first(conditions)
-        storage_proxy.first(conditions)
+      def first(query)
+        storage_proxy.first(query_klass.new(query))
       end
 
-      def all(conditions)
-        storage_proxy.all(conditions)
+      def all(query)
+        storage_proxy.all(query_klass.new(query))
       end
 
       def find(id)
