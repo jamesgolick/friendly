@@ -11,7 +11,9 @@ module Friendly
     end
 
     def all(persistable, query)
-      dataset(persistable).where(query.conditions).map
+      filtered = dataset(persistable).where(query.conditions)
+      filtered = filtered.limit(query.limit) if query.limit
+      filtered.map
     end
 
     def first(persistable, query)
