@@ -2,11 +2,12 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::DocumentTable" do
   before do
-    @datastore  = stub(:insert => 42, :update => nil)
+    @datastore  = stub(:insert => 42, :update => nil, :delete => nil)
     @klass      = stub(:name => "User")
     @translator = stub
     @table      = Friendly::DocumentTable.new(@klass, @datastore, @translator)
     @subject    = @table
+    @document   = FakeDocument.new
   end
 
   it "has a table name of klass.name.tableize" do
@@ -67,6 +68,17 @@ describe "Friendly::DocumentTable" do
       it "sets the updated_at from the translator" do
         @document.updated_at.should == @record[:updated_at]
       end
+    end
+  end
+
+  describe "destroying an object" do
+    before do
+      @document.id = 42
+      @table.destroy(@document)
+    end
+
+    it "asks the datastore to delete" do
+      @datastore.should have_received(:delete).with(@document, 42)
     end
   end
 

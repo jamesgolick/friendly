@@ -31,6 +31,10 @@ module Friendly
       update_document(document, record)
     end
 
+    def destroy(document)
+      datastore.delete(document, document.id)
+    end
+
     def first(conditions)
       record = datastore.first(klass, conditions)
       record && translator.to_object(klass, record)
