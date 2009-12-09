@@ -82,6 +82,18 @@ describe "Updating an object" do
   end
 end
 
+describe "destroying a document" do
+  before do
+    @user = User.new :name => "Stewie Griffin"
+    @user.save
+    @user.destroy
+  end
+
+  it "removes it from the database" do
+    User.find(@user.id).should be_nil
+  end
+end
+
 describe "Finding an object by id" do
   it "raises Friendly::RecordNotFound if it doesn't exist" do
     lambda { User.find(12345) }.should raise_error(Friendly::RecordNotFound)
