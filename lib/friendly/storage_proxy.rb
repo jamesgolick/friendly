@@ -30,6 +30,10 @@ module Friendly
       tables.each { |i| i.update(document) }
     end
 
+    def destroy(document)
+      tables.reverse.each { |i| i.destroy(document) }
+    end
+
     def index_for(conditions)
       index = tables.detect { |i| i.satisfies?(conditions) }
       if index.nil?

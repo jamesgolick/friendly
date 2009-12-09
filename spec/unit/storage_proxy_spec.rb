@@ -3,9 +3,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 describe "Friendly::StorageProxy" do
   before do
     @klass          = stub
-    @index          = stub(:create => nil, :update => nil)
+    @index          = stub(:create => nil, :update => nil, :destroy => nil)
     @index_klass    = stub(:new => @index)
-    @table          = stub(:satisfies? => false, :create => nil, :update => nil)
+    @table          = stub(:satisfies? => false, :create => nil, 
+                           :update => nil,       :destroy => nil)
     @doctable_klass = stub
     @doctable_klass.stubs(:new).with(@klass).returns(@table)
     @storage        = Friendly::StorageProxy.new(@klass,@index_klass,@doctable_klass)
@@ -100,36 +101,48 @@ describe "Friendly::StorageProxy" do
     end
   end
 
-  describe "populating indexes" do
+  describe "saving data" do
     before do
-      @index_two = stub(:create => nil, :update => nil)
+      @index_two = stub(:create => nil, :update => nil, :destroy => nil)
       @index_klass.stubs(:new).returns(@index).then.returns(@index_two)
       @storage.add(:name)
       @storage.add(:age)
       @doc = stub
     end
 
-    describe "creating the indexes for a document" do
+    describe "on create" do
       before do
         @storage.create(@doc)
       end
 
-      it "delegates to each of the indexes" do
+      it "delegates to each of the tables" do
         @index.should have_received(:create).with(@doc)
         @index_two.should have_received(:create).with(@doc)
         @table.should have_received(:create).with(@doc)
       end
     end
 
-    describe "updating the indexes for a document" do
+    describe "on update" do
       before do
         @storage.update(@doc)
       end
 
-      it "delegates to each of the indexes" do
+      it "delegates to each of the tables" do
         @index.should have_received(:update).with(@doc)
         @index_two.should have_received(:update).with(@doc)
         @table.should have_received(:update).with(@doc)
+      end
+    end
+
+    describe "on destroy" do
+      before do
+        @storage.destroy(@doc)
+      end
+
+      it "delegates to each of the tables" do
+        @index.should have_received(:destroy).with(@doc)
+        @index_two.should have_received(:destroy).with(@doc)
+        @table.should have_received(:destroy).with(@doc)
       end
     end
   end
