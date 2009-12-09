@@ -1,6 +1,10 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::DocumentTable" do
+  def query(conditions)
+    stub(:conditions => conditions)
+  end
+
   before do
     @datastore  = stub(:insert => 42, :update => nil, :delete => nil)
     @klass      = stub(:name => "User")
@@ -14,9 +18,9 @@ describe "Friendly::DocumentTable" do
     @table.table_name.should == "users"
   end
 
-  it { should be_satisfies(:id => 1) }
-  it { should_not be_satisfies(:id => 1, :name => "x") }
-  it { should_not be_satisfies(:name => "x") }
+  it { should be_satisfies(query(:id => 1)) }
+  it { should_not be_satisfies(query(:id => 1, :name => "x")) }
+  it { should_not be_satisfies(query(:name => "x")) }
 
   describe "saving an object" do
     before do

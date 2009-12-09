@@ -15,8 +15,8 @@ module Friendly
       klass.name.pluralize.underscore
     end
 
-    def satisfies?(conditions)
-      conditions.keys == [:id]
+    def satisfies?(query)
+      query.conditions.keys == [:id]
     end
 
     def create(document)
@@ -35,13 +35,13 @@ module Friendly
       datastore.delete(document, document.id)
     end
 
-    def first(conditions)
-      record = datastore.first(klass, conditions)
+    def first(query)
+      record = datastore.first(klass, query)
       record && translator.to_object(klass, record)
     end
 
-    def all(conditions)
-      datastore.all(klass, conditions).map { |r| translator.to_object(klass, r) }
+    def all(query)
+      datastore.all(klass, query).map { |r| translator.to_object(klass, r) }
     end
 
     protected
