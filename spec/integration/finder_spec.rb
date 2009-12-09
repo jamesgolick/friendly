@@ -27,3 +27,14 @@ describe "Finding multiple objects by id" do
     end
   end
 end
+
+describe "Limiting a query" do
+  before do
+    10.times { User.new(:name => "Stewie").save }
+    @results = User.all(:name => "Stewie", :limit! => 5)
+  end
+
+  it "returns the number of results you asked for" do
+    @results.length.should == 5
+  end
+end
