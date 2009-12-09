@@ -37,13 +37,27 @@ describe "Friendly::DataStore" do
   describe "retrieving all with a limit" do
     before do
       @filtered    = stub
-      @filtered.stubs(:limit).with(10).returns(stub(:map => [{:id => 1}]))
+      @filtered.stubs(:limit).with(10, nil).returns(stub(:map => [{:id => 1}]))
       @users.where = {{:name => "Stewie"} => @filtered}
       @query       = query(:name => "Stewie", :limit! => 10)
       @return      = @datastore.all(@klass, @query)
     end
 
     it "limits the filtered dataset and returns the results" do
+      @return.should == [{:id => 1}]
+    end
+  end
+
+  describe "retrieving all with a offset" do
+    before do
+      @filtered    = stub
+      @filtered.stubs(:limit).with(nil, 10).returns(stub(:map => [{:id => 1}]))
+      @users.where = {{:name => "Stewie"} => @filtered}
+      @query       = query(:name => "Stewie", :offset! => 10)
+      @return      = @datastore.all(@klass, @query)
+    end
+
+    it "offsets the filtered dataset and returns the results" do
       @return.should == [{:id => 1}]
     end
   end

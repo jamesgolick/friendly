@@ -69,7 +69,8 @@ module Factory
     stub(:order           => conditions.delete(:order!), 
          :limit           => conditions.delete(:limit!),
          :preserve_order? => conditions.delete(:preserve_order!),
-         :conditions      => conditions)
+         :conditions      => conditions,
+         :offset          => conditions.delete(:offset!))
   end
 end
 

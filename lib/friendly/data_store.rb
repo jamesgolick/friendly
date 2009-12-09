@@ -12,7 +12,9 @@ module Friendly
 
     def all(persistable, query)
       filtered = dataset(persistable).where(query.conditions)
-      filtered = filtered.limit(query.limit) if query.limit
+      if query.limit || query.offset
+        filtered = filtered.limit(query.limit, query.offset)
+      end
       filtered = filtered.order(query.order) if query.order
       filtered.map
     end
