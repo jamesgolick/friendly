@@ -19,13 +19,13 @@ module Friendly
       exact_match?(condition_fields) || valid_partial_match?(condition_fields)
     end
 
-    def first(conditions)
-      row = datastore.first(self, conditions)
+    def first(query)
+      row = datastore.first(self, query)
       row && klass.first(:id => row[:id])
     end
 
-    def all(conditions)
-      klass.all(:id => datastore.all(self, conditions).map { |row| row[:id] })
+    def all(query)
+      klass.all(:id => datastore.all(self, query).map { |row| row[:id] })
     end
 
     def create(document)
