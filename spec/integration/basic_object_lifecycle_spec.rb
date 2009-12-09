@@ -90,7 +90,7 @@ describe "destroying a document" do
   end
 
   it "removes it from the database" do
-    User.find(@user.id).should be_nil
+    User.first(:id => @user.id).should be_nil
   end
 end
 
