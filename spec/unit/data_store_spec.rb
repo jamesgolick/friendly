@@ -26,8 +26,7 @@ describe "Friendly::DataStore" do
   describe "retrieving all based on a query" do
     before do
       @users.where = {{:name => "Stewie"} => stub(:map => [{:id => 1}])}
-      @return = @datastore.all(@klass, stub(:conditions => {:name => "Stewie"}, 
-                                            :limit      => nil))
+      @return = @datastore.all(@klass, query(:name => "Stewie"))
     end
 
     it "gets the data from the dataset for the klass and makes it an arary" do
@@ -40,7 +39,7 @@ describe "Friendly::DataStore" do
       @filtered    = stub
       @filtered.stubs(:limit).with(10).returns(stub(:map => [{:id => 1}]))
       @users.where = {{:name => "Stewie"} => @filtered}
-      @query       = stub(:conditions => {:name => "Stewie"}, :limit => 10)
+      @query       = query(:name => "Stewie", :limit! => 10)
       @return      = @datastore.all(@klass, @query)
     end
 
@@ -49,11 +48,24 @@ describe "Friendly::DataStore" do
     end
   end
 
+  describe "retrieving all with order" do
+    before do
+      @filtered    = stub
+      @filtered.stubs(:order).with(:created_at).returns(stub(:map => [{:id => 1}]))
+      @users.where = {{:name => "Stewie"} => @filtered}
+      @query       = query(:name => "Stewie", :order! => :created_at)
+      @return      = @datastore.all(@klass, @query)
+    end
+
+    it "orders the filtered dataset and returns the results" do
+      @return.should == [{:id => 1}]
+    end
+  end
+
   describe "retrieving first with conditions" do
     before do
       @users.first = {{:id => 1} => {:id => 1}}
-      @return = @datastore.first(@klass, stub(:conditions => {:id => 1}, 
-                                              :limit      => nil))
+      @return = @datastore.first(@klass, query(:id => 1))
     end
 
     it "gets the first object matching the conditions from the dataset" do

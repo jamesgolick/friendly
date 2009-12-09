@@ -33,19 +33,24 @@ end
 
 describe "Finding ordered objects" do
   before do
-    @three = User.new(:name => "James", :created_at => 4.hours.ago)
-    @two   = User.new(:name => "James", :created_at => 2.hours.ago)
-    @one   = User.new(:name => "James", :created_at => 5.minutes.ago)
+    @three = User.new(:name => "Brian", :created_at => 4.hours.ago)
+    @two   = User.new(:name => "Brian", :created_at => 2.hours.ago)
+    @one   = User.new(:name => "Brian", :created_at => 5.minutes.ago)
     [@one, @two, @three].each { |i| i.save }
   end
 
+  after do
+    [@one, @two, @three].each { |i| i.destroy }
+  end
+
   it "can return the objects in desc order" do
-    found_users = User.all(:name => "James", :order! => :created_at.desc)
+    found_users = User.all(:name => "Brian", :order! => :created_at.desc)
     found_users.should == [@one, @two, @three]
   end
 
   it "can return the objects in asc order" do
-    found_users = User.all(:name => "James", :order! => :created_at.asc)
+    found_users = User.all(:name => "Brian", :order! => :created_at.asc)
+    found_users.length.should == 3
     found_users.should == [@three, @two, @one]
   end
 end

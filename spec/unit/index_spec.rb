@@ -1,14 +1,6 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Index" do
-  def conditions(c)
-    stub(:conditions => c)
-  end
-
-  def query(conditions)
-    stub(:order => conditions.delete(:order!), :conditions => conditions)
-  end
-
   before do
     @klass = stub(:table_name => "users")
     @index = Friendly::Index.new(@klass, [:name, :age])

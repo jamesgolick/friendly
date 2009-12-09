@@ -64,6 +64,12 @@ module Factory
   def row(opts = {})
     { :id => 1, :created_at => Time.new, :updated_at => Time.new }.merge(opts)
   end
+
+  def query(conditions)
+    stub(:order      => conditions.delete(:order!), 
+         :limit      => conditions.delete(:limit!),
+         :conditions => conditions)
+  end
 end
 
 Spec::Runner.configure do |config|
