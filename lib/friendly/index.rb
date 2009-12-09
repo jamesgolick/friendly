@@ -15,8 +15,7 @@ module Friendly
     end
 
     def satisfies?(query)
-      condition_fields = query.conditions.keys.map { |k| k.to_sym }
-      exact_match?(condition_fields) || valid_partial_match?(condition_fields)
+      exact_match?(query) || valid_partial_match?(query)
     end
 
     def first(query)
@@ -41,13 +40,21 @@ module Friendly
     end
 
     protected
-      def exact_match?(condition_fields)
-        condition_fields.map { |f| f.to_s }.sort == fields.map { |f| f.to_s }.sort
+      def exact_match?(query)
+        query.conditions.keys.map { |f| f.to_s }.sort == 
+          fields.map { |f| f.to_s }.sort && 
+            valid_order?(query.order)
       end
 
-      def valid_partial_match?(condition_fields)
+      def valid_partial_match?(query)
+        condition_fields = query.conditions.keys
         sorted = condition_fields.sort { |a,b| field_index(a) <=> field_index(b) }
+        sorted << query.order.expression if query.order
         sorted.zip(fields).all? { |a,b| a == b }
+      end
+
+      def valid_order?(order)
+        order.nil? || order.expression == fields.last
       end
 
       def field_index(attr)
