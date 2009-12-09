@@ -1,10 +1,6 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::DocumentTable" do
-  def query(conditions)
-    stub(:order => conditions.delete(:order!), :conditions => conditions)
-  end
-
   before do
     @datastore  = stub(:insert => 42, :update => nil, :delete => nil)
     @klass      = stub(:name => "User")
@@ -116,14 +112,31 @@ describe "Friendly::DocumentTable" do
     before do
       @records  = [row(:id => 1), row(:id => 2)]
       @document = stub
+      @query    = query(:id => [1,2])
       @records.each do |r|
         @translator.stubs(:to_object).with(@klass, r).returns(@document).once
       end
-      @datastore.stubs(:all).with(@klass, :id => [1,2]).returns(@records)
+      @datastore.stubs(:all).with(@klass, @query).returns(@records)
     end
 
     it "queries the datastore and translates the returned records" do
-      @table.all(:id => [1,2]).should == [@document, @document]
+      @table.all(@query).should == [@document, @document]
+    end
+  end
+
+  describe "finding many objects with preserve_order" do
+    before do
+      @records = [row(:id => 1), row(:id => 2)]
+      @doc_one = stub(:id => 1)
+      @doc_two = stub(:id => 2)
+      @query   = query(:id => [2,1], :preserve_order! => true)
+      @translator.stubs(:to_object).with(@klass, @records.first).returns(@doc_one)
+      @translator.stubs(:to_object).with(@klass, @records.last).returns(@doc_two)
+      @datastore.stubs(:all).with(@klass, @query).returns(@records)
+    end
+
+    it "returns objects in the order they were queried for" do
+      @table.all(@query).should == [@doc_two, @doc_one]
     end
   end
 end

@@ -66,9 +66,10 @@ module Factory
   end
 
   def query(conditions)
-    stub(:order      => conditions.delete(:order!), 
-         :limit      => conditions.delete(:limit!),
-         :conditions => conditions)
+    stub(:order           => conditions.delete(:order!), 
+         :limit           => conditions.delete(:limit!),
+         :preserve_order? => conditions.delete(:preserve_order!),
+         :conditions      => conditions)
   end
 end
 

@@ -37,16 +37,26 @@ module Friendly
 
     def first(query)
       record = datastore.first(klass, query)
-      record && translator.to_object(klass, record)
+      record && to_object(record)
     end
 
     def all(query)
-      datastore.all(klass, query).map { |r| translator.to_object(klass, r) }
+      objects = datastore.all(klass, query).map { |r| to_object(r) }
+      if query.preserve_order?
+        order = query.conditions[:id]
+        objects.sort { |a,b| order.index(a.id) <=> order.index(b.id) }
+      else
+        objects
+      end
     end
 
     protected
       def update_document(document, record)
         document.attributes = record.reject { |k,v| k == :attributes }
+      end
+
+      def to_object(record)
+        translator.to_object(klass, record)
       end
   end
 end
