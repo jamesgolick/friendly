@@ -56,6 +56,18 @@ describe "Friendly::Document" do
     end
   end
 
+  describe "destroying a document" do
+    before do
+      @user = @klass.new
+      @storage_proxy.stubs(:destroy)
+      @user.destroy
+    end
+
+    it "delegates to the storage proxy" do
+      @storage_proxy.should have_received(:destroy).with(@user)
+    end
+  end
+
   describe "creating an attribute" do
     before do
       @attr  = @klass.attributes.last

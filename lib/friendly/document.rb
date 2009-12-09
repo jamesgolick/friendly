@@ -63,6 +63,10 @@ module Friendly
       new_record? ? storage_proxy.create(self) : storage_proxy.update(self)
     end
 
+    def destroy
+      storage_proxy.destroy(self)
+    end
+
     def to_hash
       Hash[*self.class.attributes.map { |a| [a.name, send(a.name)] }.flatten]
     end
