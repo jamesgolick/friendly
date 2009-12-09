@@ -16,7 +16,7 @@ module Friendly
     end
 
     def satisfies?(query)
-      query.conditions.keys == [:id]
+      query.conditions.keys == [:id] && !query.order
     end
 
     def create(document)

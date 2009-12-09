@@ -2,7 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::DocumentTable" do
   def query(conditions)
-    stub(:conditions => conditions)
+    stub(:order => conditions.delete(:order!), :conditions => conditions)
   end
 
   before do
@@ -21,6 +21,7 @@ describe "Friendly::DocumentTable" do
   it { should be_satisfies(query(:id => 1)) }
   it { should_not be_satisfies(query(:id => 1, :name => "x")) }
   it { should_not be_satisfies(query(:name => "x")) }
+  it { should_not be_satisfies(query(:id => 1, :order! => :created_at.desc)) }
 
   describe "saving an object" do
     before do
