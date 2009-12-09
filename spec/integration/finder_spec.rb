@@ -6,7 +6,7 @@ describe "Finding multiple objects by id" do
     @user_two = User.new
     @user_one.save
     @user_two.save
-    @users    = User.find(@user_one.id, @user_two.id)
+    @users    = User.all(:id => [@user_one.id, @user_two.id])
   end
 
   it "finds the objects in the database" do
@@ -16,26 +16,14 @@ describe "Finding multiple objects by id" do
   end
 
   describe "when no objects are found" do
-    it "raises RecordNotFound with the bang version" do
-      lambda { 
-        User.find!(99999999, 9999999, 99999)
-      }.should raise_error(Friendly::RecordNotFound)
-    end
-
-    it "returns an empty array with the non-bang ver" do
-      User.find(9999,12345, 999).should == []
+    it "returns an empty array" do
+      User.all(:id => [9999, 12345, 999]).should == []
     end
   end
 
   describe "when one object is found, but others aren't" do
-    it "raises RecordNotFound using the bang version" do
-      lambda {
-        User.find!(@user_one.id, 10000000)
-      }.should raise_error(Friendly::RecordNotFound)
-    end
-
-    it "returns the found objects with the non-bang ver" do
-      User.find(@user_one.id, 12345).should == [@user_one]
+    it "returns the found objects" do
+      User.all(:id => [@user_one.id, 12345]).should == [@user_one]
     end
   end
 end
