@@ -26,6 +26,13 @@ $db.create_table :index_users_on_name do
   primary_key [:name, :id]
 end
 
+$db.create_table :index_users_on_name_and_created_at do
+  String      :name
+  Time        :created_at
+  Fixnum      :id
+  primary_key [:name, :created_at, :id]
+end
+
 datastore          = Friendly::DataStore.new($db)
 Friendly.datastore = datastore
 
@@ -36,6 +43,7 @@ class User
   attribute :age,  Integer
 
   indexes   :name
+  indexes   :name, :created_at
 end
 
 module Mocha
