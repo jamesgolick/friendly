@@ -158,7 +158,7 @@ describe "Friendly::Document" do
     end
 
     it "delegates to the storage_proxy" do
-      @klass.storage_proxy.should have_received(:add).with(:name)
+      @klass.storage_proxy.should have_received(:add).with([:name])
     end
   end
 

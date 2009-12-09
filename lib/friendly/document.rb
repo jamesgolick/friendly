@@ -24,7 +24,7 @@ module Friendly
       end
 
       def indexes(*args)
-        storage_proxy.add(*args)
+        storage_proxy.add(args)
       end
 
       def attributes
