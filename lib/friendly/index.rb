@@ -14,8 +14,8 @@ module Friendly
       ["index", klass.table_name, "on", fields.join("_and_")].join("_")
     end
 
-    def satisfies?(conditions)
-      condition_fields = conditions.keys.map { |k| k.to_sym }
+    def satisfies?(query)
+      condition_fields = query.conditions.keys.map { |k| k.to_sym }
       exact_match?(condition_fields) || valid_partial_match?(condition_fields)
     end
 

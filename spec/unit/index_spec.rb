@@ -1,29 +1,33 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Index" do
+  def conditions(c)
+    stub(:conditions => c)
+  end
+
   before do
     @klass = stub(:table_name => "users")
     @index = Friendly::Index.new(@klass, [:name, :age])
   end
 
   it "satisfies conditions when all the fields are indexed" do
-    @index.should be_satisfies({:name => "x", :age => "y"})
+    @index.should be_satisfies(conditions({:name => "x", :age => "y"}))
   end
 
   it "doesn't satisfy conditions when some fields are not indexed" do
-    @index.should_not be_satisfies({:name => "x", :dob => "12/01/1980"})
+    @index.should_not be_satisfies(conditions({:name => "x", :dob => "12/01/1980"}))
   end
 
   it "satisfies conditions even when they're specified by string keys" do
-    @index.should be_satisfies({"name" => "x"})
+    @index.should be_satisfies(conditions({"name" => "x"}))
   end
 
   it "doesn't satisfy if it only uses keys on the right of the index" do
-    @index.should_not be_satisfies({:age => "y"})
+    @index.should_not be_satisfies(conditions({:age => "y"}))
   end
 
   it "satisfies if it only uses keys on the left of the index" do
-    @index.should be_satisfies({:name => "y"})
+    @index.should be_satisfies(conditions({:name => "y"}))
   end
 
   describe "with one field" do
