@@ -39,9 +39,14 @@ describe "Finding ordered objects" do
     [@one, @two, @three].each { |i| i.save }
   end
 
-  it "returns the objects in order" do
+  it "can return the objects in desc order" do
     found_users = User.all(:name => "James", :order! => :created_at.desc)
     found_users.should == [@one, @two, @three]
+  end
+
+  it "can return the objects in asc order" do
+    found_users = User.all(:name => "James", :order! => :created_at.asc)
+    found_users.should == [@three, @two, @one]
   end
 end
 
