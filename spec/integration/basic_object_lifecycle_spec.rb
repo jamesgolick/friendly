@@ -2,7 +2,6 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Creating and retrieving an object" do
   before do
-    Friendly.config.repository = $repo
     @user       = User.new :name => "Stewie Griffin",
                            :age  => 3
     @user.save
@@ -85,11 +84,7 @@ end
 
 describe "Finding an object by id" do
   it "raises Friendly::RecordNotFound if it doesn't exist" do
-    lambda { User.find!(12345) }.should raise_error(Friendly::RecordNotFound)
-  end
-
-  it "returns nil if you use the non-bang version" do
-    User.find(12345).should be_nil
+    lambda { User.find(12345) }.should raise_error(Friendly::RecordNotFound)
   end
 end
 
