@@ -4,16 +4,13 @@ describe "Friendly::Document" do
   before do
     @klass = Class.new { include Friendly::Document }
     @klass.attribute(:name, String)
-    @repository                = stub
+    @storage_proxy = stub
+    @klass.storage_proxy = @storage_proxy
     Friendly.config.repository = @repository
   end
 
   it "delegates table_name to it's class" do
     User.new.table_name.should == User.table_name
-  end
-
-  it "delegates to the class for indexes" do
-    User.new.indexes.should == User.indexes
   end
 
   it "always has an id attribute" do
@@ -36,15 +33,27 @@ describe "Friendly::Document" do
     attr.type.should == Time
   end
 
-  describe "saving a document" do
+  describe "saving a new document" do
     before do
       @user = @klass.new(:name => "whatever")
-      @repository.stubs(:save)
+      @storage_proxy.stubs(:create)
       @user.save
     end
 
-    it "asks the repository to save" do
-      @repository.should have_received(:save).with(@user)
+    it "asks the storage_proxy to create" do
+      @storage_proxy.should have_received(:create).with(@user)
+    end
+  end
+
+  describe "saving an existing document" do
+    before do
+      @user = @klass.new(:name => "whatever", :id => 42)
+      @storage_proxy.stubs(:update)
+      @user.save
+    end
+
+    it "asks the storage_proxy to update" do
+      @storage_proxy.should have_received(:update).with(@user)
     end
   end
 
@@ -104,52 +113,6 @@ describe "Friendly::Document" do
     end
   end
 
-  describe "finding a document" do
-    before do
-      @return_value = @klass.new(:name => "Stewie")
-    end
-
-    describe "without bang" do
-      before do
-        @repository.stubs(:find).returns(@return_value)
-        @doc = @klass.find(5)
-      end
-
-      it "delegates to the repository" do
-        @repository.should have_received(:find).with(@klass, 5)
-      end
-
-      it "delegates multiple ids to the repository" do
-        @klass.find(5,6,7)
-        @repository.should have_received(:find).with(@klass, 5, 6, 7)
-      end
-
-      it "returns whatever the repository returns" do
-        @doc.should == @return_value
-      end
-    end
-
-    describe "with bang" do
-      before do
-        @repository.stubs(:find!).returns(@return_value)
-        @doc = @klass.find!(5)
-      end
-      
-      it "delegates to the repository" do
-        @repository.should have_received(:find!).with(@klass, 5)
-      end
-
-      it "delegates multiple ids to the repository" do
-        @klass.find!(5,6,7)
-        @repository.should have_received(:find!).with(@klass, 5, 6, 7)
-      end
-
-      it "returns whatever the repository returns" do
-        @doc.should == @return_value
-      end
-    end
-  end
-
   describe "a document's default table name" do
     it "is the class name, converted with pluralize.underscore" do
       User.table_name.should == "users"
@@ -189,40 +152,14 @@ describe "Friendly::Document" do
 
   describe "adding an index" do
     before do
-      @klass = Class.new do
-        include Friendly::Document
-
-        indexes :name
-      end
+      @storage_proxy.stubs(:add)
+      @klass = Class.new { include Friendly::Document }
+      @klass.storage_proxy = @storage_proxy
+      @klass.indexes :name
     end
 
-    it "adds the index to the document's indexes set" do
-      @klass.indexes.map.first.fields.should == [:name]
-    end
-  end
-
-  describe "querying by index" do
-    before do
-      @doc           = stub
-      @repository    = stub(:find => @doc)
-      Friendly.config.repository = @repository
-      @index_set     = stub(:first => 42)
-      @klass         = Class.new { include Friendly::Document }
-      @klass.indexes = @index_set
-      @result        = @klass.first(:name => "Stewie")
-    end
-
-    it "delegates to the index_set for the query" do
-      @index_set.should have_received(:first).once
-      @index_set.should have_received(:first).with(:name => "Stewie")
-    end
-
-    it "queries the repository for the id returned by the index" do
-      @repository.should have_received(:find).with(@klass, 42)
-    end
-
-    it "returns the result from the repository" do
-      @result.should == @doc
+    it "delegates to the storage_proxy" do
+      @klass.storage_proxy.should have_received(:add).with(:name)
     end
   end
 end

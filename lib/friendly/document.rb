@@ -12,19 +12,19 @@ module Friendly
     end
 
     module ClassMethods
+      attr_writer :storage_proxy
+
       def attribute(name, type)
         attributes << Attribute.new(name, type)
         attr_accessor name
       end
 
-      def indexes=(index_set)
-        @indexes = index_set
+      def storage_proxy
+        @storage_proxy ||= StorageProxy.new(self)
       end
 
       def indexes(*args)
-        @indexes ||= StorageProxy.new(self)
-        @indexes.add(args) unless args.empty?
-        @indexes
+        storage_proxy.add(*args)
       end
 
       def attributes
@@ -58,7 +58,7 @@ module Friendly
     end
 
     def save
-      Friendly.config.repository.save(self)
+      new_record? ? storage_proxy.create(self) : storage_proxy.update(self)
     end
 
     def to_hash
@@ -69,12 +69,12 @@ module Friendly
       self.class.table_name
     end
 
-    def indexes
-      self.class.indexes
-    end
-
     def new_record?
       id.nil?
+    end
+
+    def storage_proxy
+      self.class.storage_proxy
     end
 
     def ==(comparison_object)
