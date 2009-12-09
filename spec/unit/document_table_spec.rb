@@ -3,14 +3,14 @@ require File.expand_path("../../spec_helper", __FILE__)
 describe "Friendly::DocumentTable" do
   before do
     @datastore  = stub(:insert => 42, :update => nil, :delete => nil)
-    @klass      = stub(:name => "User")
+    @klass      = stub(:table_name => "users")
     @translator = stub
     @table      = Friendly::DocumentTable.new(@klass, @datastore, @translator)
     @subject    = @table
     @document   = FakeDocument.new
   end
 
-  it "has a table name of klass.name.tableize" do
+  it "has a table name of klass.table_name" do
     @table.table_name.should == "users"
   end
 

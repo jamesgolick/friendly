@@ -1,5 +1,4 @@
 require 'friendly/table'
-require 'active_support/inflector'
 
 module Friendly
   class DocumentTable < Table
@@ -12,7 +11,7 @@ module Friendly
     end
 
     def table_name
-      klass.name.pluralize.underscore
+      klass.table_name
     end
 
     def satisfies?(query)
