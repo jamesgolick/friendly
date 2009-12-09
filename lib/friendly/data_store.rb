@@ -10,12 +10,12 @@ module Friendly
       dataset(persistable).insert(attributes)
     end
 
-    def all(persistable, conditions)
-      dataset(persistable).where(conditions).map
+    def all(persistable, query)
+      dataset(persistable).where(query.conditions).map
     end
 
-    def first(persistable, conditions)
-      dataset(persistable).first(conditions)
+    def first(persistable, query)
+      dataset(persistable).first(query.conditions)
     end
 
     def update(persistable, id, attributes)
