@@ -5,7 +5,7 @@ describe "Friendly::DocumentTable" do
     @datastore  = stub(:insert => 42, :update => nil)
     @klass      = stub(:name => "User")
     @translator = stub
-    @table      = Friendly::DocumentTable.new(@datastore, @klass, @translator)
+    @table      = Friendly::DocumentTable.new(@klass, @datastore, @translator)
     @subject    = @table
   end
 

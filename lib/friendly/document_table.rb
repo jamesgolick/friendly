@@ -5,7 +5,7 @@ module Friendly
   class DocumentTable < Table
     attr_reader :klass, :translator
 
-    def initialize(datastore, klass, translator = Translator.new)
+    def initialize(klass, datastore=Friendly.datastore, translator=Translator.new)
       super(datastore)
       @klass      = klass
       @translator = translator
