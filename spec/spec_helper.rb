@@ -12,7 +12,8 @@ require 'json'
 gem     'jferris-mocha'
 require 'mocha'
 
-$db = Sequel.sqlite
+$db = Sequel.connect "mysql://root@localhost/friendly_test"
+$db.drop_table :users
 $db.create_table :users do
   primary_key :added_id
   binary      :id,         :size => 16
@@ -21,12 +22,14 @@ $db.create_table :users do
   Time        :updated_at
 end
 
+$db.drop_table :index_users_on_name
 $db.create_table :index_users_on_name do
   String      :name
   binary      :id, :size => 16
   primary_key [:name, :id]
 end
 
+$db.drop_table :index_users_on_name_and_created_at
 $db.create_table :index_users_on_name_and_created_at do
   String      :name
   Time        :created_at
