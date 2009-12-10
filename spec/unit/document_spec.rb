@@ -16,6 +16,8 @@ describe "Friendly::Document" do
     @klass.new.should respond_to(:id)
     @klass.new.should respond_to(:id=)
     @klass.attributes.map { |a| a.name }.should include(:id)
+    attr = @klass.attributes.detect { |a| a.name == :id }
+    attr.type.should == Friendly::UUID
   end
 
   it "always has a created_at attribute" do

@@ -7,6 +7,7 @@ require 'friendly/index'
 require 'friendly/query'
 require 'friendly/storage_proxy'
 require 'friendly/translator'
+require 'friendly/uuid'
 
 module Friendly
   class << self
