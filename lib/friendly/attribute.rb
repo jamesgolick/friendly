@@ -5,6 +5,7 @@ module Friendly
     CONVERTERS = {}
     CONVERTERS[UUID]    = lambda { |s| UUID.new(s) }
     CONVERTERS[Integer] = lambda { |s| s.to_i }
+    CONVERTERS[String]  = lambda { |s| s.to_s }
 
     attr_reader :klass, :name, :type
 
@@ -16,7 +17,7 @@ module Friendly
     end
 
     def typecast(value)
-      value.is_a?(type) ? value : convert(value)
+      !type || value.is_a?(type) ? value : convert(value)
     end
 
     def convert(value)

@@ -2,9 +2,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Attribute" do
   before do
-    @klass  = Class.new
-    @name   = Friendly::Attribute.new(@klass, :name, String)
-    @id     = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
+    @klass   = Class.new
+    @name    = Friendly::Attribute.new(@klass, :name, String)
+    @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
+    @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
     @klass.stubs(:attributes).returns({:name => @name, :id => @id})
     @object = @klass.new
   end
@@ -41,5 +42,9 @@ describe "Friendly::Attribute" do
 
   it "has a default of nil if the type doesn't respond to :new" do
     Friendly::Attribute.new(@klass, :age, Integer).default.should be_nil
+  end
+
+  it "doesn't try to convert when there's no type" do
+    @no_type.typecast(true).should == true
   end
 end

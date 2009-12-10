@@ -14,7 +14,7 @@ module Friendly
     module ClassMethods
       attr_writer :storage_proxy, :query_klass, :table_name
 
-      def attribute(name, type)
+      def attribute(name, type = nil)
         attributes[name] = Attribute.new(self, name, type)
       end
 
