@@ -20,8 +20,8 @@ module Friendly
 
     def create(document)
       record = translator.to_record(document)
-      id     = datastore.insert(document, record)
-      update_document(document, record.merge(:id => id))
+      datastore.insert(document, record)
+      update_document(document, record)
     end
 
     def update(document)

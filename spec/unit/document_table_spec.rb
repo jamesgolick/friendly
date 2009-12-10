@@ -38,10 +38,6 @@ describe "Friendly::DocumentTable" do
         @datastore.should have_received(:insert).with(@document, @record)
       end
 
-      it "sets the id on the document" do
-        @document.id.should == 42
-      end
-
       it "sets the created_at on the document" do
         @document.created_at.should == @record[:created_at]
       end
