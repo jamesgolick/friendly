@@ -38,4 +38,8 @@ describe "Friendly::Attribute" do
   it "has a default value of type.new" do
     @id.default.should be_instance_of(Friendly::UUID)
   end
+
+  it "has a default of nil if the type doesn't respond to :new" do
+    Friendly::Attribute.new(@klass, :age, Integer).default.should be_nil
+  end
 end

@@ -24,7 +24,7 @@ module Friendly
     end
 
     def default
-      type.new
+      type.respond_to?(:new) ? type.new : nil
     end
 
     protected
