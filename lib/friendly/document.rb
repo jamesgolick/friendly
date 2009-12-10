@@ -15,7 +15,7 @@ module Friendly
       attr_writer :storage_proxy, :query_klass, :table_name
 
       def attribute(name, type)
-        attributes << Attribute.new(name, type)
+        #attributes << Attribute.new(name, type)
         attr_accessor name
       end
 

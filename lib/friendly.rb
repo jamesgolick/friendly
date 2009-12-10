@@ -17,4 +17,5 @@ module Friendly
   class Error < RuntimeError; end
   class RecordNotFound < Error; end
   class MissingIndex < Error; end
+  class NoConverterExists < Friendly::Error; end
 end
