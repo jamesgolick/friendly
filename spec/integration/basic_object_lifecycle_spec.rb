@@ -25,12 +25,12 @@ describe "Creating and retrieving an object" do
 
   it "sets the created_at on the way out of the database" do
     @found_user.created_at.should_not be_nil
-    @found_user.created_at.should == @user.created_at
+    @found_user.created_at.to_i.should == @user.created_at.to_i
   end
 
   it "sets the updated_at on the way out of the database" do
     @found_user.updated_at.should_not be_nil
-    @found_user.updated_at.should == @user.updated_at
+    @found_user.updated_at.to_i.should == @user.updated_at.to_i
   end
 
   it "sets the updated_at" do
