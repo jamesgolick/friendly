@@ -23,14 +23,14 @@ end
 
 $db.create_table :index_users_on_name do
   String      :name
-  Fixnum      :id
+  binary      :id, :size => 16
   primary_key [:name, :id]
 end
 
 $db.create_table :index_users_on_name_and_created_at do
   String      :name
   Time        :created_at
-  Fixnum      :id
+  binary      :id, :size => 16
   primary_key [:name, :created_at, :id]
 end
 
