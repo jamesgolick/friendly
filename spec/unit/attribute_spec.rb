@@ -30,4 +30,12 @@ describe "Friendly::Attribute" do
       attribute.typecast("ASDF")
     }.should raise_error(Friendly::NoConverterExists)
   end
+
+  it "creates a getter with a default value" do
+    @object.id.should be_instance_of(Friendly::UUID)
+  end
+
+  it "has a default value of type.new" do
+    @id.default.should be_instance_of(Friendly::UUID)
+  end
 end

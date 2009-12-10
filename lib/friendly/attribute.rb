@@ -23,15 +23,21 @@ module Friendly
       CONVERTERS[type].call(value)
     end
 
+    def default
+      type.new
+    end
+
     protected
       def build_accessors
         n = name
         klass.class_eval do
-          attr_reader n
-
           eval <<-__END__
             def #{n}=(value)
               @#{n} = self.class.attributes[:#{n}].typecast(value)
+            end
+
+            def #{n}
+              @#{n} ||= self.class.attributes[:#{n}].default
             end
           __END__
         end
