@@ -14,6 +14,13 @@ module Friendly
     attr_accessor :datastore
 
     def batch
+      begin
+        datastore.start_batch
+        yield
+        datastore.flush_batch
+      ensure
+        datastore.reset_batch
+      end
     end
   end
 
