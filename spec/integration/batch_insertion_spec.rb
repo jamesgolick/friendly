@@ -19,7 +19,10 @@ describe "Batch inserting several documents" do
         raise "AHHHH!"
       end
     rescue RuntimeError => e
+      @bubbled_up = true
     end
+
+    @bubbled_up.should be_true
 
     User.all(:name => "Meg").should be_empty
   end
