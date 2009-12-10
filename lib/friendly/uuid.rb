@@ -124,6 +124,10 @@ module Friendly
       @bytes
     end
 
+    def sql_literal(dataset)
+      dataset.literal(to_s)
+    end
+
     private
 
     def total_usecs
