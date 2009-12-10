@@ -15,8 +15,7 @@ module Friendly
       attr_writer :storage_proxy, :query_klass, :table_name
 
       def attribute(name, type)
-        #attributes << Attribute.new(name, type)
-        attr_accessor name
+        attributes[name] = Attribute.new(self, name, type)
       end
 
       def storage_proxy
@@ -32,7 +31,7 @@ module Friendly
       end
 
       def attributes
-        @attributes ||= []
+        @attributes ||= {}
       end
 
       def first(query)
@@ -72,7 +71,7 @@ module Friendly
     end
 
     def to_hash
-      Hash[*self.class.attributes.map { |a| [a.name, send(a.name)] }.flatten]
+      Hash[*self.class.attributes.keys.map { |n| [n, send(n)] }.flatten]
     end
 
     def table_name

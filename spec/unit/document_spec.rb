@@ -13,25 +13,15 @@ describe "Friendly::Document" do
   end
 
   it "always has an id attribute" do
-    @klass.new.should respond_to(:id)
-    @klass.new.should respond_to(:id=)
-    @klass.attributes.map { |a| a.name }.should include(:id)
-    attr = @klass.attributes.detect { |a| a.name == :id }
-    attr.type.should == Friendly::UUID
+    @klass.attributes[:id].type.should == Friendly::UUID
   end
 
   it "always has a created_at attribute" do
-    @klass.new.should respond_to(:created_at)
-    @klass.new.should respond_to(:created_at=)
-    attr = @klass.attributes.detect { |a| a.name == :created_at }
-    attr.type.should == Time
+    @klass.attributes[:created_at].type.should == Time
   end
 
   it "always has a updated_at attribute" do
-    @klass.new.should respond_to(:updated_at)
-    @klass.new.should respond_to(:updated_at=)
-    attr = @klass.attributes.detect { |a| a.name == :updated_at }
-    attr.type.should == Time
+    @klass.attributes[:updated_at].type.should == Time
   end
 
   describe "saving a new document" do
@@ -67,22 +57,6 @@ describe "Friendly::Document" do
 
     it "delegates to the storage proxy" do
       @storage_proxy.should have_received(:destroy).with(@user)
-    end
-  end
-
-  describe "creating an attribute" do
-    before do
-      @attr  = @klass.attributes.last
-    end
-
-    it "creates a attribute object" do
-      @attr.name.should == :name
-      @attr.type.should == String
-    end
-
-    it "creates an accessor on the klass" do
-      @klass.new.should respond_to(:name)
-      @klass.new.should respond_to(:name=)
     end
   end
 
