@@ -141,17 +141,35 @@ describe "Friendly::DataStore" do
     end
   end
 
-  describe "cancelling a batch transaction" do
+  describe "resetting a batch transaction" do
     before do
       @db.stubs(:from)
       Thread.current[:friendly_batch] = {"users" => [{:a => "b"}]}
-      @datastore.cancel_batch
+      @datastore.reset_batch
     end
     after { Thread.current[:friendly_batch] = nil }
 
     it "sets Thread.current[:friendly_batch] to nil without inserting" do
       Thread.current[:friendly_batch].should be_nil
       @db.should have_received(:from).never
+    end
+  end
+
+  describe "flushing a batch" do
+    before do
+      @records = [{:name => "Stewie"}, {:name => "Brian"}]
+      Thread.current[:friendly_batch] = {"users" => @records}
+      @users.stubs(:multi_insert)
+      @datastore.flush_batch
+    end
+    after { Thread.current[:friendly_batch] = nil }
+
+    it "performs the multi_insert on each table" do
+      @users.should have_received(:multi_insert).with(@records)
+    end
+
+    it "resets the batch" do
+      Thread.current[:friendly_batch].should be_nil
     end
   end
 end

@@ -36,8 +36,16 @@ module Friendly
       Thread.current[:friendly_batch] = Hash.new { |h, k| h[k] = [] }
     end
 
-    def cancel_batch
+    def reset_batch
       Thread.current[:friendly_batch] = nil
+    end
+
+    def flush_batch
+      batch = Thread.current[:friendly_batch]
+      batch.keys.each do |k|
+        database.from(k).multi_insert(batch[k])
+      end
+      reset_batch
     end
 
     protected
