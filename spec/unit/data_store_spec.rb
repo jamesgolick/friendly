@@ -165,7 +165,8 @@ describe "Friendly::DataStore" do
     after { Thread.current[:friendly_batch] = nil }
 
     it "performs the multi_insert on each table" do
-      @users.should have_received(:multi_insert).with(@records)
+      @users.should have_received(:multi_insert).
+          with(@records, :commit_every => 1000)
     end
 
     it "resets the batch" do

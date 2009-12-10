@@ -43,7 +43,7 @@ module Friendly
     def flush_batch
       batch = Thread.current[:friendly_batch]
       batch.keys.each do |k|
-        database.from(k).multi_insert(batch[k])
+        database.from(k).multi_insert(batch[k], :commit_every => 1000)
       end
       reset_batch
     end
