@@ -32,6 +32,10 @@ module Friendly
       dataset(persistable).where(:id => id).delete
     end
 
+    def start_batch
+      Thread.current[:friendly_batch] = Hash.new { |h, k| h[k] = [] }
+    end
+
     protected
       def dataset(persistable)
         database.from(persistable.table_name)
@@ -42,7 +46,6 @@ module Friendly
       end
 
       def batch_insert(persistable, attributes)
-        Thread.current[:friendly_batch][persistable.table_name] ||= []
         Thread.current[:friendly_batch][persistable.table_name] << attributes
       end
 

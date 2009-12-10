@@ -115,7 +115,7 @@ describe "Friendly::DataStore" do
 
   describe "when a batch transaction has been started" do
     before do
-      Thread.current[:friendly_batch] = {}
+      @datastore.start_batch
       @persistable = stub(:table_name => "some_table")
       @datastore.insert(@persistable, {:some => "attrs"})
     end
@@ -126,6 +126,18 @@ describe "Friendly::DataStore" do
       inserts = Thread.current[:friendly_batch]["some_table"]
       inserts.length.should == 1
       inserts.should include(:some => "attrs")
+    end
+  end
+
+  describe "starting a batch" do
+    before do
+      @datastore.start_batch
+    end
+
+    after { Thread.current[:friendly_batch] = nil }
+
+    it "sets Thread.current[:friendly_batch] to empty hash" do
+      Thread.current[:friendly_batch].should == {}
     end
   end
 end
