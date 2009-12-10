@@ -4,6 +4,7 @@ class FakeDocument
 
   def initialize(opts = {})
     opts.each { |k,v| send("#{k}=", v) }
+    new_record = true if new_record.nil?
   end
 
   def new_record?

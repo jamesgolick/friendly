@@ -51,7 +51,8 @@ module Friendly
 
     protected
       def update_document(document, record)
-        document.attributes = record.reject { |k,v| k == :attributes }
+        attrs = record.reject { |k,v| k == :attributes }.merge(:new_record => false)
+        document.attributes = attrs
       end
 
       def to_object(record)

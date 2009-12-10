@@ -45,6 +45,10 @@ describe "Friendly::DocumentTable" do
       it "sets the updated_at on the document" do
         @document.updated_at.should == @record[:updated_at]
       end
+
+      it "sets new_record to false" do
+        @document.should_not be_new_record
+      end
     end
 
     describe "updating a record" do
