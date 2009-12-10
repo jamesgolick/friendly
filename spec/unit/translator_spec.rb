@@ -12,7 +12,8 @@ describe "Friendly::Translator" do
     before do
       @serializer.stubs(:parse).with("THE JSON").returns(:name => "Stewie")
       @time  = Time.new
-      @row   = {:created_at => @time,
+      @row   = {:added_id   => 12345,
+                :created_at => @time,
                 :updated_at => @time,
                 :attributes => "THE JSON"}
       @klass = FakeDocument
