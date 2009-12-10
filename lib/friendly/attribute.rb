@@ -3,7 +3,8 @@ require 'friendly/uuid'
 module Friendly
   class Attribute
     CONVERTERS = {}
-    CONVERTERS[UUID] = lambda { |s| UUID.new(s) }
+    CONVERTERS[UUID]    = lambda { |s| UUID.new(s) }
+    CONVERTERS[Integer] = lambda { |s| s.to_i }
 
     attr_reader :klass, :name, :type
 
