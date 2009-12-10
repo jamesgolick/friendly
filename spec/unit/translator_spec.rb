@@ -27,6 +27,10 @@ describe "Friendly::Translator" do
     it "sets updated_at" do
       @doc.updated_at.should == @time
     end
+
+    it "sets new_record to false" do
+      @doc.new_record.should be_false
+    end
   end
 
   describe "translating from a document in to a record" do
