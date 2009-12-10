@@ -2,12 +2,12 @@
 # As such, it is distributed under the terms of the apache license.
 # See the APACHE-LICENSE file in the root of this project for more information.
 #
-class Friendly
+module Friendly
   # UUID format version 1, as specified in RFC 4122, with jitter in place of the mac address and sequence counter.
-  class UUID < Comparable
+  class UUID
 
-    class InvalidVersion < StandardError #:nodoc:
-    end
+    class InvalidVersion < StandardError; end
+    class TypeError < ::TypeError; end
 
     GREGORIAN_EPOCH_OFFSET = 0x01B2_1DD2_1381_4000 # Oct 15, 1582
 
@@ -101,6 +101,26 @@ class Friendly
       } jitter: #{
         @bytes.unpack('QQ')[1]
       }" + (long ? ", version: #{version}, variant: #{variant}, guid: #{to_guid}>" :  ">")
+    end
+
+    def <=>(other)
+      self.to_i <=> other.to_i
+    end
+
+    def hash
+      @bytes.hash
+    end
+
+    def eql?(other)
+      other.is_a?(Comparable) and @bytes == other.to_s
+    end
+
+    def ==(other)
+      self.to_i == other.to_i
+    end
+
+    def to_s
+      @bytes
     end
 
     private
