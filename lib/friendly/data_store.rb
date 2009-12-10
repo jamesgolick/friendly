@@ -36,6 +36,10 @@ module Friendly
       Thread.current[:friendly_batch] = Hash.new { |h, k| h[k] = [] }
     end
 
+    def cancel_batch
+      Thread.current[:friendly_batch] = nil
+    end
+
     protected
       def dataset(persistable)
         database.from(persistable.table_name)

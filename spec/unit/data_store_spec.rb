@@ -140,5 +140,19 @@ describe "Friendly::DataStore" do
       Thread.current[:friendly_batch].should == {}
     end
   end
+
+  describe "cancelling a batch transaction" do
+    before do
+      @db.stubs(:from)
+      Thread.current[:friendly_batch] = {"users" => [{:a => "b"}]}
+      @datastore.cancel_batch
+    end
+    after { Thread.current[:friendly_batch] = nil }
+
+    it "sets Thread.current[:friendly_batch] to nil without inserting" do
+      Thread.current[:friendly_batch].should be_nil
+      @db.should have_received(:from).never
+    end
+  end
 end
 
