@@ -15,7 +15,8 @@ module Friendly
     end
 
     def to_record(document)
-      { :created_at => document.created_at || time.new,
+      { :id         => document.id,
+        :created_at => document.created_at,
         :updated_at => time.new,
         :attributes => serialize(document) }
     end

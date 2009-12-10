@@ -12,8 +12,7 @@ describe "Friendly::Translator" do
     before do
       @serializer.stubs(:parse).with("THE JSON").returns(:name => "Stewie")
       @time  = Time.new
-      @row   = {:id         => 1,
-                :created_at => @time,
+      @row   = {:created_at => @time,
                 :updated_at => @time,
                 :attributes => "THE JSON"}
       @klass = FakeDocument
@@ -24,9 +23,7 @@ describe "Friendly::Translator" do
       @doc.name.should == "Stewie"
     end
 
-    it "adds the attributes from the table" do
-      @doc.id.should         == 1
-      @doc.created_at.should == @time
+    it "sets updated_at" do
       @doc.updated_at.should == @time
     end
   end
@@ -39,7 +36,8 @@ describe "Friendly::Translator" do
         @serializer.stubs(:generate).with(@hash).returns("SOME JSON")
         @document = stub(:to_hash     => @hash, 
                          :new_record? => true, 
-                         :created_at  => nil)
+                         :created_at  => nil,
+                         :id          => 12345)
         @record = @translator.to_record(@document)
       end
 
@@ -47,12 +45,12 @@ describe "Friendly::Translator" do
         @record[:attributes].should == "SOME JSON"
       end
 
-      it "sets a created_at" do
-        @record[:created_at].should == @time.new
-      end
-
       it "sets updated_at" do
         @record[:updated_at].should == @time.new
+      end
+
+      it "sets the id from the document" do
+        @record[:id].should == 12345
       end
     end
 
@@ -67,7 +65,8 @@ describe "Friendly::Translator" do
         @serializer.stubs(:generate).returns("SOME JSON")
         @document = stub(:to_hash     => @hash, 
                          :created_at  => @created_at,
-                         :new_record? => false)
+                         :new_record? => false,
+                         :id          => 12345)
         @record = @translator.to_record(@document)
       end
 
@@ -82,6 +81,10 @@ describe "Friendly::Translator" do
 
       it "should bump the updated_at" do
         @record[:updated_at].should == @time.new
+      end
+
+      it "takes the id from the documetn" do
+        @record[:id].should == 12345
       end
     end
   end
