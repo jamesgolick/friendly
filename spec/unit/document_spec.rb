@@ -67,9 +67,9 @@ describe "Friendly::Document" do
 
     it "creates a hash that contains its attributes" do
       @object.to_hash.should == {:name       => "Stewie", 
-                                 :id         => nil, 
-                                 :created_at => nil,
-                                 :updated_at => nil}
+                                 :id         => @object.id, 
+                                 :created_at => @object.created_at,
+                                 :updated_at => @object.updated_at}
     end
   end
 
