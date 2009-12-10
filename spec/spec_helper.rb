@@ -14,7 +14,8 @@ require 'mocha'
 
 $db = Sequel.sqlite
 $db.create_table :users do
-  primary_key :id
+  primary_key :added_id
+  binary      :id,         :size => 16
   String      :attributes, :text => true
   Time        :created_at
   Time        :updated_at
