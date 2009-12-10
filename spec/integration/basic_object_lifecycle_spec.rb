@@ -44,6 +44,10 @@ describe "Creating and retrieving an object" do
     attrs.keys.should_not include("created_at")
     attrs.keys.should_not include("updated_at")
   end
+
+  it "has an id of type Friendly::UUID" do
+    @user.id.should be_kind_of(Friendly::UUID)
+  end
 end
 
 describe "Updating an object" do
