@@ -34,4 +34,20 @@ describe "Friendly::Query" do
   it "should not be preserver order by default" do
     Friendly::Query.new({}).should_not be_preserve_order
   end
+
+  it "converts string representations of UUID to UUID" do
+    uuid       = stub
+    uuid_klass = stub
+    uuid_klass.stubs(:new).with("asdf").returns(uuid)
+    query      = Friendly::Query.new({:id => "asdf"}, uuid_klass)
+    query.conditions[:id].should == uuid
+  end
+
+  it "converts arrays of ids to UUID" do
+    uuid       = stub
+    uuid_klass = stub
+    uuid_klass.stubs(:new).with("asdf").returns(uuid)
+    query      = Friendly::Query.new({:id => ["asdf"]}, uuid_klass)
+    query.conditions[:id].should == [uuid]
+  end
 end
