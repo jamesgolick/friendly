@@ -28,9 +28,5 @@ module Friendly
           conditions[:id] = uuid_klass.new(conditions[:id])
         end
       end
-
-      def convert_to_uuid(id)
-        
-      end
   end
 end
