@@ -7,7 +7,8 @@ module Friendly
     end
 
     def insert(persistable, attributes)
-      dataset(persistable).insert(attributes)
+      batch? ? batch_insert(persistable, attributes) :
+        immediate_insert(persistable, attributes)
     end
 
     def all(persistable, query)
@@ -34,6 +35,19 @@ module Friendly
     protected
       def dataset(persistable)
         database.from(persistable.table_name)
+      end
+
+      def immediate_insert(persistable, attributes)
+        dataset(persistable).insert(attributes)
+      end
+
+      def batch_insert(persistable, attributes)
+        Thread.current[:friendly_batch][persistable.table_name] ||= []
+        Thread.current[:friendly_batch][persistable.table_name] << attributes
+      end
+
+      def batch?
+        Thread.current[:friendly_batch]
       end
   end
 end

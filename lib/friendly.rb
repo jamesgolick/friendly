@@ -12,6 +12,9 @@ require 'friendly/uuid'
 module Friendly
   class << self
     attr_accessor :datastore
+
+    def batch
+    end
   end
 
   class Error < RuntimeError; end

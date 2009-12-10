@@ -112,5 +112,21 @@ describe "Friendly::DataStore" do
       @filtered.should have_received(:delete)
     end
   end
+
+  describe "when a batch transaction has been started" do
+    before do
+      Thread.current[:friendly_batch] = {}
+      @persistable = stub(:table_name => "some_table")
+      @datastore.insert(@persistable, {:some => "attrs"})
+    end
+
+    after { Thread.current[:friendly_batch] = nil }
+
+    it "adds the attributes to the batch for that table" do
+      inserts = Thread.current[:friendly_batch]["some_table"]
+      inserts.length.should == 1
+      inserts.should include(:some => "attrs")
+    end
+  end
 end
 
