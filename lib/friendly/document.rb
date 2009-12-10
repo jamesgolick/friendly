@@ -79,7 +79,16 @@ module Friendly
     end
 
     def new_record?
-      id.nil?
+      new_record
+    end
+
+    def new_record
+      @new_record = true if @new_record.nil?
+      @new_record
+    end
+
+    def new_record=(value)
+      @new_record = value
     end
 
     def storage_proxy

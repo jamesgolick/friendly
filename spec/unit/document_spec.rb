@@ -38,7 +38,7 @@ describe "Friendly::Document" do
 
   describe "saving an existing document" do
     before do
-      @user = @klass.new(:name => "whatever", :id => 42)
+      @user = @klass.new(:name => "whatever", :id => 42, :new_record => false)
       @storage_proxy.stubs(:update)
       @user.save
     end
@@ -111,15 +111,18 @@ describe "Friendly::Document" do
     end
   end
 
-  describe "an object without an id" do
-    it "is a new_record" do
-      @klass.new.should be_new_record
+  describe "new record" do
+    before do
+      @object = @klass.new
     end
-  end
 
-  describe "an object with an id" do
-    it "is not a new_record" do
-      @klass.new(:id => 1).should_not be_new_record
+    it "is new_record by default" do
+      @object.should be_new_record
+    end
+
+    it "is not new_record when new_record is set to false" do
+      @object.new_record = false
+      @object.should_not be_new_record
     end
   end
 
@@ -129,7 +132,9 @@ describe "Friendly::Document" do
     end
 
     it "is equal if both objects have the same id" do
-      @klass.new(:id => 1).should == @klass.new(:id => 1)
+      uuid = Friendly::UUID.new
+      one  = @klass.new(:id => uuid, :new_record => false)
+      one.should == @klass.new(:id => uuid, :new_record => false)
     end
 
     it "is equal if the objects point to the same reference" do
