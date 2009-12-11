@@ -17,28 +17,8 @@ $db = Friendly.db
 Sequel::MySQL.default_engine = "InnoDB"
 
 $db.drop_table :users
-$db.create_table :users do
-  primary_key :added_id
-  binary      :id,         :size => 16
-  String      :attributes, :text => true
-  Time        :created_at
-  Time        :updated_at
-end
-
 $db.drop_table :index_users_on_name
-$db.create_table :index_users_on_name do
-  String      :name
-  binary      :id,          :size => 16
-  primary_key [:name, :id]
-end
-
 $db.drop_table :index_users_on_name_and_created_at
-$db.create_table :index_users_on_name_and_created_at do
-  String      :name
-  Time        :created_at
-  binary      :id,          :size => 16
-  primary_key [:name, :created_at, :id]
-end
 
 datastore          = Friendly::DataStore.new($db)
 Friendly.datastore = datastore
@@ -52,6 +32,8 @@ class User
   indexes   :name
   indexes   :name, :created_at
 end
+
+User.create_tables!
 
 module Mocha
   module API
