@@ -11,7 +11,12 @@ require 'friendly/uuid'
 
 module Friendly
   class << self
-    attr_accessor :datastore
+    attr_accessor :datastore, :db
+
+    def configure(config)
+      self.db        = Sequel.connect(config)
+      self.datastore = DataStore.new(db)
+    end
 
     def batch
       begin
