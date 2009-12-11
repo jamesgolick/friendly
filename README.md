@@ -44,6 +44,11 @@ Friendly always stores your documents in a table with the same schema:
   - created_at and updated_at are exactly what they sound like - automatically managed by Friendly.
   - attributes is where all the attributes of your object are stored. They get serialized to json and stored in there.
 
+We can instantiate and save our model like an ActiveRecord object.
+
+    @user = User.new :name => "James"
+    @user.save
+
 As is, our user model only supports queries by id.
 
     User.find(id)
