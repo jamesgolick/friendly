@@ -48,7 +48,7 @@ module Friendly
         doc
       end
 
-      def create(attributes)
+      def create(attributes = {})
         doc = new(attributes)
         doc.save
         doc
