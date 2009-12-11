@@ -72,6 +72,11 @@ module Friendly
       new_record? ? storage_proxy.create(self) : storage_proxy.update(self)
     end
 
+    def update_attributes(attributes)
+      self.attributes = attributes
+      save
+    end
+
     def destroy
       storage_proxy.destroy(self)
     end

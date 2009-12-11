@@ -230,5 +230,21 @@ describe "Friendly::Document" do
       @doc.should be_kind_of(@klass)
     end
   end
+
+  describe "Document#update_attributes" do
+    before do
+      @storage_proxy.stubs(:update)
+      @doc = @klass.new(:name => "James", :new_record => false)
+      @doc.update_attributes :name => "Steve"
+    end
+
+    it "sets the attributes" do
+      @doc.name.should == "Steve"
+    end
+
+    it "saves the document" do
+      @storage_proxy.should have_received(:update).with(@doc)
+    end
+  end
 end
 
