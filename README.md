@@ -17,7 +17,7 @@ But, the available document oriented solutions are still young. While many of th
 
 Fortunately, with a little extra work on the client-side, we can get the flexibility of a doc db in MySQL!
 
-h2. How it Works
+### How it Works
 
 Let's say we had a user model.
 
