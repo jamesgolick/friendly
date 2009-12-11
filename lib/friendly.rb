@@ -27,6 +27,10 @@ module Friendly
         datastore.reset_batch
       end
     end
+
+    def create_tables!
+      Document.create_tables!
+    end
   end
 
   class Error < RuntimeError; end

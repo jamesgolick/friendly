@@ -18,6 +18,10 @@ module Friendly
       def documents
         @documents ||= []
       end
+
+      def create_tables!
+        documents.each { |d| d.create_tables! }
+      end
     end
 
     module ClassMethods
