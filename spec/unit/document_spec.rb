@@ -218,5 +218,17 @@ describe "Friendly::Document" do
       end
     end
   end
+
+  describe "Document.create" do
+    before do
+      @storage_proxy.stubs(:create)
+      @doc = @klass.create(:name => "James")
+    end
+
+    it "initializes, then saves the document and returns it" do
+      @storage_proxy.should have_received(:create).with(@doc)
+      @doc.should be_kind_of(@klass)
+    end
+  end
 end
 

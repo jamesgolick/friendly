@@ -48,6 +48,12 @@ module Friendly
         doc
       end
 
+      def create(attributes)
+        doc = new(attributes)
+        doc.save
+        doc
+      end
+
       def table_name
         @table_name ||= name.pluralize.underscore
       end
