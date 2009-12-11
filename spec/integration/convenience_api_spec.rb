@@ -11,3 +11,15 @@ describe "Document.create" do
     User.find(@user.id).should_not be_nil
   end
 end
+
+describe "Document#update_attributes" do
+  before do
+    @user = User.create
+    @user.update_attributes :name => "James"
+    @user = User.find(@user.id)
+  end
+
+  it "updates the attributes in the database" do
+    @user.name.should == "James"
+  end
+end
