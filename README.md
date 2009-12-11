@@ -93,22 +93,30 @@ Friendly is available as a gem. Get it with:
 Setup
 =====
 
-First, you need to instantiate a Sequel database object. Sequel has lots of great docs, but for mysql it looks like this:
+All you have to do is supply Friendly with some information about your database:
 
-    $db = Sequel.connect "mysql://user@server/db_name"
-
-Then, setup the friendly datastore object:
-
-    Friendly.datastore = Friendly::DataStore.new($db)
+    Friendly.configure :adapter  => "mysql",
+                       :host     => "localhost",
+                       :user     => "root",
+                       :password => "swordfish",
+                       :database => "friendly_development"
 
 Now, you're ready to rock.
 
-If you're using rails, create a file called config/initializers/friendly.rb and put something like this in it:
+If you're using rails, set friendly as a gem dependency:
 
-    $db = Sequel.connect "mysql://user@server/db_name"
-    Friendly.datastore = Friendly::DataStore.new($db)
+    config.gem "friendly"
 
-Of course, you'll want to replace user@server/db_name with values that are appropriate for your system. Ultimately, you'll probably want to add a config file, so that your production environment can differ from development and so forth. I will include something like this in a future version of Friendly.
+...and drop something like this in config/friendly.yml:
+
+    development:
+      :adapter:  "mysql"
+      :host:     "localhost"
+      :user:     "root"
+      :password: "swordfish"
+      :database: "friendly_development"
+
+Of course, you'll want to swap out these values for your own, fill in additional environments, and so forth.
 
 TODO
 ====
