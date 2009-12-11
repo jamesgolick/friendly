@@ -66,10 +66,7 @@ To support richer queries, Friendly maintains its own indexes in separate tables
 Then, we'd tell friendly to maintain that index for us:
 
     class User
-      include Friendly::Document
-
-      attribute :name, String
-      attribute :age,  Integer
+      # ... snip ...
 
       indexes :name
     end
@@ -113,6 +110,7 @@ TODO
 
   - Online migrations. Add a version column to each model and a DSL to update schema from one version to another on read. This facilitates data transformations on the fly. If you want to transform the whole table at once, just iterate over all the objects, and save.
   - Table migrations. Since all the tables follow the same format, it should be pretty easy to create all the necessary tables - maybe even automatically.
+  - Associations
   - Offline indexer
   - Create tables automatically
   - Write and read through caching (memcache) layer
