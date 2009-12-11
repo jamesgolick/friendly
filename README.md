@@ -1,8 +1,11 @@
-h1. Friendly
+Friendly
+=======
 
-Short Version: This is an implementation of the ideas found in [this article](http://bret.appspot.com/entry/how-friendfeed-uses-mysql) about how FriendFeed uses MySQL. You should read that article for all the details.
+### Short Version
 
-h2. Long Version
+This is an implementation of the ideas found in [this article](http://bret.appspot.com/entry/how-friendfeed-uses-mysql) about how FriendFeed uses MySQL. You should read that article for all the details.
+
+### Long Version
 
 Turn MySQL in to a document db!
 
@@ -49,7 +52,8 @@ As is, our user model only supports queries by id.
 
 Not great. We'd probably want to be able to query by name, at the very least.
 
-h2. Indexes
+Indexes
+=======
 
 To support richer queries, Friendly maintains its own indexes in separate tables. To index our user model on name, we'd create a table like this:
 
@@ -77,13 +81,15 @@ Any time friendly saves a user object, it will update the index as well. That wa
 
 One of the big advantages to this approach is that indexes can be built offline. If you need a new index, you can write a script to generate it in the background without affecting the running application. Then, once it's ready, you can start querying it.
 
-h2. Installation
+Installation
+============
 
 Friendly is available as a gem. Get it with:
 
     sudo gem install friendly
 
-h2. Setup
+Setup
+=====
 
 First, you need to instantiate a Sequel database object. Sequel has lots of great docs, but for mysql it looks like this:
 
@@ -95,13 +101,24 @@ Then, setup the friendly datastore object:
 
 Now, you're ready to rock.
 
-h2. TODO
+If you're using rails, create a file called config/initializers/friendly.rb and put something like this in it:
 
+    $db = Sequel.connect "mysql://user@server/db_name"
+    Friendly.datastore = Friendly::DataStore.new($db)
+
+Of course, you'll want to replace user@server/db_name with values that are appropriate for your system. Ultimately, you'll probably want to add a config file, so that your production environment can differ from development and so forth. I will include something like this in a future version of Friendly.
+
+TODO
+====
+
+  - Online migrations. Add a version column to each model and a DSL to update schema from one version to another on read. This facilitates data transformations on the fly. If you want to transform the whole table at once, just iterate over all the objects, and save.
+  - Table migrations. Since all the tables follow the same format, it should be pretty easy to create all the necessary tables - maybe even automatically.
   - Offline indexer
   - Create tables automatically
   - Write and read through caching (memcache) layer
 
-h2. Credits
+Credits
+=======
 
 Friendly was developed by James Golick & Jonathan Palardy at FetLife (nsfw).
 
