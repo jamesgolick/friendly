@@ -20,6 +20,7 @@ describe "Creating the tables for a model" do
   after { Friendly.db.drop_table(:stuffs) }
 
   it "creates a table for the document" do
+    @table.keys.length.should == 5
     @table[:added_id][:db_type].should == "int(11)"
     @table[:added_id][:primary_key].should be_true
     @table[:id][:db_type].should == "binary(16)"
