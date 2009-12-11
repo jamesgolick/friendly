@@ -2,12 +2,21 @@ require 'active_support/inflector'
 
 module Friendly
   module Document
-    def self.included(klass)
-      klass.class_eval do
-        extend ClassMethods
-        attribute :id,         UUID
-        attribute :created_at, Time
-        attribute :updated_at, Time
+    class << self
+      attr_writer :documents
+
+      def included(klass)
+        documents << klass
+        klass.class_eval do
+          extend ClassMethods
+          attribute :id,         UUID
+          attribute :created_at, Time
+          attribute :updated_at, Time
+        end
+      end
+
+      def documents
+        @documents ||= []
       end
     end
 

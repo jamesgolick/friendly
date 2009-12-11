@@ -246,5 +246,12 @@ describe "Friendly::Document" do
       @storage_proxy.should have_received(:update).with(@doc)
     end
   end
+
+  describe "when document has been included" do
+    after { Friendly::Document.documents = [] }
+    it "adds the document to the collection" do
+      Friendly::Document.documents.should include(@klass)
+    end
+  end
 end
 
