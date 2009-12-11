@@ -123,7 +123,6 @@ TODO
 
   - Online migrations. Add a version column to each model and a DSL to update schema from one version to another on read. This facilitates data transformations on the fly. If you want to transform the whole table at once, just iterate over all the objects, and save.
   - Table migrations. Since all the tables follow the same format, it should be pretty easy to create all the necessary tables - maybe even automatically.
-  - More convenience API: Document.create, Document#update_attributes, etc.
   - Associations
   - Offline indexer
   - Create tables automatically
