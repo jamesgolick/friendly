@@ -39,7 +39,7 @@ module Friendly
     end
 
     def create_tables!
-      table_creator.create(tables.first)
+      tables.each { |t| table_creator.create(t) }
     end
 
     def index_for(conditions)

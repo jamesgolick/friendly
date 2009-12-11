@@ -13,11 +13,16 @@ describe "Creating the tables for a model" do
     end
 
     @klass.create_tables!
-    @schema = Friendly.db.schema(:stuffs)
-    @table  = Hash[*@schema.map { |s| [s.first, s.last] }.flatten]
+    @schema       = Friendly.db.schema(:stuffs)
+    @table        = Hash[*@schema.map { |s| [s.first, s.last] }.flatten]
+    @index_schema = Friendly.db.schema(:index_stuffs_on_name_and_created_at)
+    @index_table  = Hash[*@index_schema.map { |s| [s.first, s.last] }.flatten]
   end
 
-  after { Friendly.db.drop_table(:stuffs) }
+  after do
+    Friendly.db.drop_table(:stuffs) 
+    Friendly.db.drop_table(:index_stuffs_on_name_and_created_at) 
+  end
 
   it "creates a table for the document" do
     @table.keys.length.should == 5
@@ -27,5 +32,21 @@ describe "Creating the tables for a model" do
     @table[:attributes][:db_type].should == "text"
     @table[:created_at][:db_type].should == "datetime"
     @table[:updated_at][:db_type].should == "datetime"
+  end
+
+  it "creates a table for each index" do
+    @index_table.keys.length.should == 3
+    @index_table[:name][:db_type].should == "varchar(255)"
+    @index_table[:name][:primary_key].should be_true
+    @index_table[:created_at][:db_type].should == "datetime"
+    @index_table[:created_at][:primary_key].should be_true
+    @index_table[:id][:db_type].should == "binary(16)"
+    @index_table[:id][:primary_key].should be_true
+  end
+
+  it "doesn't raise if the tables already exist" do
+    lambda {
+      @klass.create_tables!
+    }.should_not raise_error
   end
 end
