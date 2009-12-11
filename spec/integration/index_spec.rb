@@ -7,9 +7,9 @@ require 'active_support/core_ext/numeric'
 
 describe "Finding one object with an index" do
   before do
-    @created_user = User.new(:name => "James")
+    @created_user = User.new(:name => "Cleveland")
     @created_user.save
-    @found_user   = User.first(:name => "James")
+    @found_user   = User.first(:name => "Cleveland")
   end
 
   it "finds the object" do
