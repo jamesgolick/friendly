@@ -118,11 +118,16 @@ If you're using rails, set friendly as a gem dependency:
 
 Of course, you'll want to swap out these values for your own, fill in additional environments, and so forth.
 
+Then, create some models, and run:
+
+    Friendly.create_tables!
+
+That'll create all the necessary tables as best it can. This has worked well enough for me, but it's possible that certain table configurations will fail. It won't attempt to create any tables that already exist, so it's safe to run in an initializer or something.
+
 TODO
 ====
 
   - Online migrations. Add a version column to each model and a DSL to update schema from one version to another on read. This facilitates data transformations on the fly. If you want to transform the whole table at once, just iterate over all the objects, and save.
-  - Table migrations. Since all the tables follow the same format, it should be pretty easy to create all the necessary tables - maybe even automatically.
   - Associations
   - Offline indexer
   - Create tables automatically
