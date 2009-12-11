@@ -1,12 +1,16 @@
+require 'friendly/table_creator'
+
 module Friendly
   class StorageProxy
-    attr_reader :klass, :index_klass, :doctable_klass, :tables
+    attr_reader :klass, :index_klass, :doctable_klass, :tables, :table_creator
 
-    def initialize(klass, index_klass = Index, doctable_klass = DocumentTable)
+    def initialize(klass, index_klass=Index, doctable_klass=DocumentTable,
+                    table_creator=TableCreator.new)
       super()
       @klass          = klass
       @index_klass    = index_klass
       @doctable_klass = doctable_klass
+      @table_creator  = table_creator
       @tables         = [doctable_klass.new(klass)]
     end
 
@@ -32,6 +36,10 @@ module Friendly
 
     def destroy(document)
       tables.reverse.each { |i| i.destroy(document) }
+    end
+
+    def create_tables!
+      table_creator.create(tables.first)
     end
 
     def index_for(conditions)

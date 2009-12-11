@@ -13,7 +13,7 @@ describe "Creating the tables for a model" do
     end
 
     @klass.create_tables!
-    @schema = Friendly.db.schema[:stuffs]
+    @schema = Friendly.db.schema(:stuffs)
     @table  = Hash[*@schema.map { |s| [s.first, s.last] }.flatten]
   end
 

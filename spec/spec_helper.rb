@@ -12,7 +12,8 @@ require 'json'
 gem     'jferris-mocha'
 require 'mocha'
 
-$db = Sequel.connect "mysql://root@localhost/friendly_test"
+Friendly.configure "mysql://root@localhost/friendly_test"
+$db = Friendly.db
 Sequel::MySQL.default_engine = "InnoDB"
 
 $db.drop_table :users
