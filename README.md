@@ -107,7 +107,7 @@ If you're using rails, set friendly as a gem dependency:
 
     config.gem "friendly"
 
-...and drop something like this in config/friendly.yml:
+...and drop something like this in config/friendly.yml (an example of such a config exists in examples/friendly.yml):
 
     development:
       :adapter:  "mysql"
