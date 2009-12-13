@@ -35,6 +35,17 @@ end
 
 User.create_tables!
 
+class Address
+  include Friendly::Document
+
+  attribute :user_id, Integer
+  attribute :street,  String
+
+  indexes   :user_id
+end
+
+Address.create_tables!
+
 module Mocha
   module API
     def setup_mocks_for_rspec
