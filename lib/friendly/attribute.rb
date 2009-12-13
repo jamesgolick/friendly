@@ -1,3 +1,4 @@
+require 'friendly/boolean'
 require 'friendly/uuid'
 
 module Friendly
@@ -6,6 +7,7 @@ module Friendly
     CONVERTERS[UUID]    = lambda { |s| UUID.new(s) }
     CONVERTERS[Integer] = lambda { |s| s.to_i }
     CONVERTERS[String]  = lambda { |s| s.to_s }
+    CONVERTERS[Boolean] = lambda { |s| s }
 
     attr_reader :klass, :name, :type, :default_value
 

@@ -6,6 +6,6 @@ describe "An attribute with a default value" do
   end
 
   it "has the value by default" do
-    @user.should be_happy
+    @user.happy.should be_true
   end
 end
