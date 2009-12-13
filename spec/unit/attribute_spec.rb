@@ -7,9 +7,11 @@ describe "Friendly::Attribute" do
     @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
     @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
     @default = Friendly::Attribute.new(@klass, :default, String, :default => "asdf")
+    @false   = Friendly::Attribute.new(@klass, :default, String, :default => false)
     @klass.stubs(:attributes).returns({:name    => @name, 
                                        :id      => @id, 
-                                       :default => @default})
+                                       :default => @default,
+                                       :false   => @false})
     @object = @klass.new
   end
 
@@ -54,5 +56,9 @@ describe "Friendly::Attribute" do
   it "can have a default value" do
     @default.default.should == "asdf"
     @klass.new.default.should == "asdf"
+  end
+
+  it "has a default value even if it's false" do
+    @false.default.should be_false
   end
 end

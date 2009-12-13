@@ -8,4 +8,8 @@ describe "An attribute with a default value" do
   it "has the value by default" do
     @user.happy.should be_true
   end
+
+  it "has a default vaue even when it's false" do
+    @user.sad.should be_false
+  end
 end

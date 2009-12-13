@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "friendly.gemspec",
      "lib/friendly.rb",
      "lib/friendly/attribute.rb",
+     "lib/friendly/boolean.rb",
      "lib/friendly/config.rb",
      "lib/friendly/data_store.rb",
      "lib/friendly/document.rb",
@@ -50,6 +51,7 @@ Gem::Specification.new do |s|
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
+     "spec/integration/default_value_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/table_creator_spec.rb",
@@ -81,6 +83,7 @@ Gem::Specification.new do |s|
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
+     "spec/integration/default_value_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/table_creator_spec.rb",

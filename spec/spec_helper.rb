@@ -31,6 +31,7 @@ class User
   attribute :name,  String
   attribute :age,   Integer
   attribute :happy, Friendly::Boolean, :default => true
+  attribute :sad,   Friendly::Boolean, :default => false
 
   indexes   :name
   indexes   :name, :created_at

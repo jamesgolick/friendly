@@ -29,7 +29,7 @@ module Friendly
     end
 
     def default
-      if default_value
+      if !default_value.nil?
         default_value
       elsif type.respond_to?(:new)
         type.new
