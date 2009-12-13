@@ -1,5 +1,5 @@
 module Friendly
-  class TableFactory
+  class StorageFactory
     attr_reader :doc_table_klass, :index_klass
 
     def initialize(doc_table_klass = DocumentTable, index_klass = Index)

@@ -1,10 +1,11 @@
+require 'friendly/storage_factory'
 require 'friendly/table_creator'
 
 module Friendly
   class StorageProxy
     attr_reader :klass, :table_factory, :tables, :table_creator
 
-    def initialize(klass, table_factory = TableFactory.new,
+    def initialize(klass, table_factory = StorageFactory.new,
                     table_creator=TableCreator.new)
       super()
       @klass          = klass

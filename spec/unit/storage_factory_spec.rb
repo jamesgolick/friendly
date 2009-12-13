@@ -1,12 +1,12 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe "Friendly::TableFactory" do
+describe "Friendly::StorageFactory" do
   before do
     @doc_table       = stub
     @doc_table_klass = stub(:new => @doc_table)
     @index           = stub
     @index_klass     = stub(:new => @index)
-    @factory         = Friendly::TableFactory.new(@doc_table_klass, @index_klass)
+    @factory         = Friendly::StorageFactory.new(@doc_table_klass, @index_klass)
   end
 
   describe "creating a document table" do
