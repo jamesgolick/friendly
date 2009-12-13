@@ -82,4 +82,27 @@ describe "Friendly::Memcached" do
       end
     end
   end
+
+  describe "deleting" do
+    describe "an existing key" do
+      before do
+        @cache.stubs(:delete).returns(nil)
+        @memcached.delete("some key")
+      end
+
+      it "asks the cache to delete" do
+        @cache.should have_received(:delete).with("some key")
+      end
+    end
+
+    describe "a missing key" do
+      before do
+        @cache.stubs(:delete).raises(Memcached::NotFound)
+      end
+
+      it "just returns nil" do
+        lambda { @memcached.delete("some key") }.should_not raise_error
+      end
+    end
+  end
 end

@@ -36,5 +36,10 @@ module Friendly
 
       hits
     end
+
+    def delete(key)
+      cache.delete(key)
+    rescue ::Memcached::NotFound
+    end
   end
 end
