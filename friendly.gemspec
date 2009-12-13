@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.1.3"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-12}
+  s.date = %q{2009-12-13}
   s.description = %q{}
   s.email = %q{james@giraffesoft.ca}
   s.extra_rdoc_files = [
@@ -29,12 +29,17 @@ Gem::Specification.new do |s|
      "lib/friendly.rb",
      "lib/friendly/attribute.rb",
      "lib/friendly/boolean.rb",
+     "lib/friendly/cache.rb",
+     "lib/friendly/cache/by_id.rb",
      "lib/friendly/config.rb",
      "lib/friendly/data_store.rb",
      "lib/friendly/document.rb",
      "lib/friendly/document_table.rb",
      "lib/friendly/index.rb",
+     "lib/friendly/memcached.rb",
      "lib/friendly/query.rb",
+     "lib/friendly/storage.rb",
+     "lib/friendly/storage_factory.rb",
      "lib/friendly/storage_proxy.rb",
      "lib/friendly/table.rb",
      "lib/friendly/table_creator.rb",
@@ -52,19 +57,25 @@ Gem::Specification.new do |s|
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
      "spec/integration/default_value_spec.rb",
+     "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/table_creator_spec.rb",
+     "spec/integration/write_through_cache_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/unit/attribute_spec.rb",
+     "spec/unit/cache_by_id_spec.rb",
+     "spec/unit/cache_spec.rb",
      "spec/unit/config_spec.rb",
      "spec/unit/data_store_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
+     "spec/unit/memcached_spec.rb",
      "spec/unit/query_spec.rb",
+     "spec/unit/storage_factory_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
      "spec/unit/translator_spec.rb"
   ]
@@ -84,18 +95,24 @@ Gem::Specification.new do |s|
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
      "spec/integration/default_value_spec.rb",
+     "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/table_creator_spec.rb",
+     "spec/integration/write_through_cache_spec.rb",
      "spec/spec_helper.rb",
      "spec/unit/attribute_spec.rb",
+     "spec/unit/cache_by_id_spec.rb",
+     "spec/unit/cache_spec.rb",
      "spec/unit/config_spec.rb",
      "spec/unit/data_store_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
+     "spec/unit/memcached_spec.rb",
      "spec/unit/query_spec.rb",
+     "spec/unit/storage_factory_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
      "spec/unit/translator_spec.rb"
   ]
