@@ -3,15 +3,15 @@ require 'friendly/table_creator'
 
 module Friendly
   class StorageProxy
-    attr_reader :klass, :table_factory, :tables, :table_creator
+    attr_reader :klass, :storage_factory, :tables, :table_creator
 
-    def initialize(klass, table_factory = StorageFactory.new,
+    def initialize(klass, storage_factory = StorageFactory.new,
                     table_creator=TableCreator.new)
       super()
-      @klass          = klass
-      @table_factory  = table_factory
-      @table_creator  = table_creator
-      @tables         = [table_factory.document_table(klass)]
+      @klass           = klass
+      @storage_factory = storage_factory
+      @table_creator   = table_creator
+      @tables          = [storage_factory.document_table(klass)]
     end
 
     def first(conditions)
@@ -23,7 +23,7 @@ module Friendly
     end
 
     def add(*args)
-      tables << table_factory.index(klass, *args)
+      tables << storage_factory.index(klass, *args)
     end
 
     def create(document)
