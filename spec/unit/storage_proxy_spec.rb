@@ -6,9 +6,9 @@ describe "Friendly::StorageProxy" do
     @index          = stub(:create => nil, :update => nil, :destroy => nil)
     @table          = stub(:satisfies? => false, :create => nil, 
                            :update => nil,       :destroy => nil)
-    @table_factory  = stub(:index => @index)
-    @table_factory.stubs(:document_table).with(@klass).returns(@table)
-    @storage        = Friendly::StorageProxy.new(@klass, @table_factory)
+    @storage_factory  = stub(:index => @index)
+    @storage_factory.stubs(:document_table).with(@klass).returns(@table)
+    @storage        = Friendly::StorageProxy.new(@klass, @storage_factory)
   end
 
   it "instantiates and adds a document table by default" do
@@ -91,8 +91,8 @@ describe "Friendly::StorageProxy" do
     end
 
     it "creates an index" do
-      @table_factory.should have_received(:index).once
-      @table_factory.should have_received(:index).with(@klass, :name, :age)
+      @storage_factory.should have_received(:index).once
+      @storage_factory.should have_received(:index).with(@klass, :name, :age)
     end
 
     it "adds the index to the set" do
@@ -103,7 +103,7 @@ describe "Friendly::StorageProxy" do
   describe "saving data" do
     before do
       @index_two = stub(:create => nil, :update => nil, :destroy => nil)
-      @table_factory.stubs(:index).returns(@index).then.returns(@index_two)
+      @storage_factory.stubs(:index).returns(@index).then.returns(@index_two)
       @storage.add(:name)
       @storage.add(:age)
       @doc = stub
@@ -143,6 +143,22 @@ describe "Friendly::StorageProxy" do
         @index_two.should have_received(:destroy).with(@doc)
         @table.should have_received(:destroy).with(@doc)
       end
+    end
+  end
+
+  describe "adding a cache object" do
+    before do
+      @cache = stub
+      @storage_factory.stubs(:cache).returns(@cache)
+      @storage.cache([:id])
+    end
+
+    it "gets one from the storage_proxy" do
+      @storage_factory.should have_received(:cache).with(@klass, [:id])
+    end
+
+    it "adds it to its set of caches" do
+      @storage.caches.should include(@cache)
     end
   end
 end
