@@ -50,4 +50,26 @@ describe "Friendly::Cache::ByID" do
       @block_called.should be_true
     end
   end
+
+  describe "finding many objects in the cache" do
+    before do
+      @uuid         = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
+      @doc          = stub
+      @key          = "Product/xxxx-xxx-xxx-xxxx"
+      @cache.stubs(:multiget).with([@key, @key]).
+        returns({@uuid.to_guid => @doc}).yields(@uuid.to_guid)
+      @block_called = []
+      @returned = @id_cache.all(query(:id => [@uuid, @uuid])) do |id|
+        @block_called << id
+      end
+    end
+
+    it "returns the values from the hash" do
+      @returned.should == [@doc]
+    end
+
+    it "passes the block along to the cache" do
+      @block_called.should == [@uuid.to_guid]
+    end
+  end
 end

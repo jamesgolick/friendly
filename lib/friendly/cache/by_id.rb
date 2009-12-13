@@ -11,6 +11,11 @@ module Friendly
         cache.get(cache_key(query.conditions[:id]), &block)
       end
 
+      def all(query, &block)
+        keys = query.conditions[:id].map { |k| cache_key(k) }
+        cache.multiget(keys, &block).values
+      end
+
       protected
         def cache_key(id)
           [klass.name, id.to_guid].join("/")
