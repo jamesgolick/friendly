@@ -5,7 +5,13 @@ describe "Friendly::Cache::ByID" do
     @cache    = stub(:set => nil)
     @klass    = stub(:name => "Product")
     @id_cache = Friendly::Cache::ByID.new(@klass, [:id], @cache)
+    @subject  = @id_cache
   end
+
+  it { should be_satisfies(query(:id => "asdf")) }
+  it { should be_satisfies(query(:id => ["asdf"])) }
+  it { should_not be_satisfies(query(:id => ["asdf"], :name => "asdf")) }
+  it { should_not be_satisfies(query(:name => "asdf")) }
 
   describe "when an object is created" do
     before do

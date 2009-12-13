@@ -20,6 +20,10 @@ module Friendly
         cache.multiget(keys, &block).values
       end
 
+      def satisfies?(query)
+        query.conditions.keys == [:id]
+      end
+
       protected
         def cache_key(id)
           [klass.name, id.to_guid].join("/")
