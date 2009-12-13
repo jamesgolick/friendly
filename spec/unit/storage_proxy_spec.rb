@@ -104,8 +104,11 @@ describe "Friendly::StorageProxy" do
     before do
       @index_two = stub(:create => nil, :update => nil, :destroy => nil)
       @storage_factory.stubs(:index).returns(@index).then.returns(@index_two)
+      @cache     = stub(:create => nil, :update => nil, :destroy => nil)
+      @storage_factory.stubs(:cache).returns(@cache)
       @storage.add(:name)
       @storage.add(:age)
+      @storage.cache([:id])
       @doc = stub
     end
 
@@ -114,10 +117,11 @@ describe "Friendly::StorageProxy" do
         @storage.create(@doc)
       end
 
-      it "delegates to each of the tables" do
+      it "delegates to all of the storage including caches" do
         @index.should have_received(:create).with(@doc)
         @index_two.should have_received(:create).with(@doc)
         @table.should have_received(:create).with(@doc)
+        @cache.should have_received(:create).with(@doc)
       end
     end
 
@@ -126,10 +130,11 @@ describe "Friendly::StorageProxy" do
         @storage.update(@doc)
       end
 
-      it "delegates to each of the tables" do
+      it "delegates to all of the storage including caches" do
         @index.should have_received(:update).with(@doc)
         @index_two.should have_received(:update).with(@doc)
         @table.should have_received(:update).with(@doc)
+        @cache.should have_received(:update).with(@doc)
       end
     end
 
@@ -138,10 +143,11 @@ describe "Friendly::StorageProxy" do
         @storage.destroy(@doc)
       end
 
-      it "delegates to each of the tables" do
+      it "delegates to all of the storage including caches" do
         @index.should have_received(:destroy).with(@doc)
         @index_two.should have_received(:destroy).with(@doc)
         @table.should have_received(:destroy).with(@doc)
+        @cache.should have_received(:destroy).with(@doc)
       end
     end
   end

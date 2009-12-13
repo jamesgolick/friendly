@@ -32,15 +32,15 @@ module Friendly
     end
 
     def create(document)
-      tables.each { |i| i.create(document) }
+      each_store { |s| s.create(document) }
     end
 
     def update(document)
-      tables.each { |i| i.update(document) }
+      each_store { |s| s.update(document) }
     end
 
     def destroy(document)
-      tables.reverse.each { |i| i.destroy(document) }
+      stores.reverse.each { |i| i.destroy(document) }
     end
 
     def create_tables!
@@ -54,5 +54,14 @@ module Friendly
       end
       index
     end
+
+    protected
+      def each_store
+        stores.each { |s| yield(s) }
+      end
+
+      def stores
+        tables + caches
+      end
   end
 end
