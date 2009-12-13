@@ -6,7 +6,10 @@ describe "Friendly::StorageFactory" do
     @doc_table_klass = stub(:new => @doc_table)
     @index           = stub
     @index_klass     = stub(:new => @index)
-    @factory         = Friendly::StorageFactory.new(@doc_table_klass, @index_klass)
+    @cache_by_id     = stub
+    @cache_klass     = stub(:cache_for => @cache_by_id)
+    @factory         = Friendly::StorageFactory.new(@doc_table_klass, @index_klass, 
+                                                      @cache_klass)
   end
 
   describe "creating a document table" do
@@ -36,6 +39,21 @@ describe "Friendly::StorageFactory" do
 
     it "passes along the arguments to the constructor" do
       @index_klass.should have_received(:new).with(@klass)
+    end
+  end
+
+  describe "creating an id cache table" do
+    before do
+      @klass    = stub
+      @returned = @factory.cache(@klass, [:id])
+    end
+
+    it "delegates to Cache.for" do
+      @returned.should == @cache_by_id
+    end
+
+    it "supplies arguments to Cache" do
+      @cache_klass.should have_received(:cache_for).with(@klass, [:id])
     end
   end
 end

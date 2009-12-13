@@ -1,18 +1,24 @@
 module Friendly
   class StorageFactory
-    attr_reader :doc_table_klass, :index_klass
+    attr_reader :table_klass, :index_klass, :cache_klass
 
-    def initialize(doc_table_klass = DocumentTable, index_klass = Index)
-      @doc_table_klass = doc_table_klass
-      @index_klass     = index_klass
+    def initialize(table_klass = DocumentTable, index_klass = Index,
+                   cache_klass = Cache)
+      @table_klass = table_klass
+      @index_klass = index_klass
+      @cache_klass = cache_klass
     end
 
     def document_table(*args)
-      doc_table_klass.new(*args)
+      table_klass.new(*args)
     end
 
     def index(*args)
       index_klass.new(*args)
+    end
+
+    def cache(*args)
+      cache_klass.cache_for(*args)
     end
   end
 end
