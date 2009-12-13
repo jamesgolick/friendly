@@ -5,25 +5,26 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-10}
+  s.date = %q{2009-12-12}
   s.description = %q{}
   s.email = %q{james@giraffesoft.ca}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README.rdoc"
+     "README.md"
   ]
   s.files = [
     ".document",
      ".gitignore",
      "APACHE-LICENSE",
      "LICENSE",
-     "README.rdoc",
+     "README.md",
      "Rakefile",
      "VERSION",
+     "examples/friendly.yml",
      "friendly.gemspec",
      "lib/friendly.rb",
      "lib/friendly/attribute.rb",
@@ -35,9 +36,11 @@ Gem::Specification.new do |s|
      "lib/friendly/query.rb",
      "lib/friendly/storage_proxy.rb",
      "lib/friendly/table.rb",
+     "lib/friendly/table_creator.rb",
      "lib/friendly/time.rb",
      "lib/friendly/translator.rb",
      "lib/friendly/uuid.rb",
+     "rails/init.rb",
      "spec/fakes/data_store_fake.rb",
      "spec/fakes/database_fake.rb",
      "spec/fakes/dataset_fake.rb",
@@ -46,8 +49,10 @@ Gem::Specification.new do |s|
      "spec/fakes/time_fake.rb",
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
+     "spec/integration/convenience_api_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/table_creator_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/unit/attribute_spec.rb",
@@ -55,6 +60,7 @@ Gem::Specification.new do |s|
      "spec/unit/data_store_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
+     "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/query_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
@@ -74,14 +80,17 @@ Gem::Specification.new do |s|
      "spec/fakes/time_fake.rb",
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
+     "spec/integration/convenience_api_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/table_creator_spec.rb",
      "spec/spec_helper.rb",
      "spec/unit/attribute_spec.rb",
      "spec/unit/config_spec.rb",
      "spec/unit/data_store_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
+     "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/query_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
