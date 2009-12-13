@@ -16,7 +16,9 @@ module Friendly
     end
 
     def first(conditions)
-      index_for(conditions).first(conditions)
+      from_cache(conditions) do
+        index_for(conditions).first(conditions)
+      end
     end
 
     def all(conditions)
@@ -62,6 +64,19 @@ module Friendly
 
       def stores
         tables + caches
+      end
+
+      def from_cache(query)
+        cache = cache_for(query)
+        if cache
+          cache.first(query) { yield }
+        else
+          yield
+        end
+      end
+
+      def cache_for(query)
+        caches.detect { |c| c.satisfies?(query) }
       end
   end
 end

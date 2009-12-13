@@ -167,4 +167,23 @@ describe "Friendly::StorageProxy" do
       @storage.caches.should include(@cache)
     end
   end
+
+  describe "finding with a matching cache" do
+    before do
+      @cache = stub(:satisfies? => true, :first => nil)
+      @storage_factory.stubs(:cache).returns(@cache)
+      @storage.cache([:id])
+    end
+
+    describe "when there's a hit" do
+      before do
+        @doc = stub
+        @cache.stubs(:first).returns(@doc)
+      end
+
+      it "returns the result from the cache" do
+        @storage.first(:id => "x").should == @doc
+      end
+    end
+  end
 end
