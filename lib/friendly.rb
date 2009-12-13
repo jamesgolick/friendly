@@ -10,6 +10,7 @@ require 'friendly/index'
 require 'friendly/memcached'
 require 'friendly/query'
 require 'friendly/storage_proxy'
+require 'friendly/table_factory'
 require 'friendly/translator'
 require 'friendly/uuid'
 
