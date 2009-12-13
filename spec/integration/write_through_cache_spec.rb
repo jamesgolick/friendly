@@ -29,6 +29,8 @@ describe "Writing through to cache on destroy" do
   end
   
   it "removes the object from cache" do
-    $cache.get("User/#{@user.id.to_guid}").should be_nil
+    lambda {
+      $cache.get("User/#{@user.id.to_guid}") 
+    }.should raise_error(Memcached::NotFound)
   end
 end
