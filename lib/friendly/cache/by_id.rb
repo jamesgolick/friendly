@@ -7,8 +7,8 @@ module Friendly
       alias_method :create, :store
       alias_method :update, :store
 
-      def first(query)
-        cache.get(cache_key(query.conditions[:id]))
+      def first(query, &block)
+        cache.get(cache_key(query.conditions[:id]), &block)
       end
 
       protected

@@ -32,16 +32,22 @@ describe "Friendly::Cache::ByID" do
   end
 
   describe "finding a single object in cache" do
-    describe "when the key is found" do
-      before do
-        @uuid = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
-        @doc  = stub
-        @cache.stubs(:get).with("Product/xxxx-xxx-xxx-xxxx").returns(@doc)
+    before do
+      @uuid         = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
+      @doc          = stub
+      @cache.stubs(:get).with("Product/xxxx-xxx-xxx-xxxx").returns(@doc).yields
+      @block_called = true
+      @returned = @id_cache.first(query(:id => @uuid)) do
+        @block_called = true
       end
+    end
 
-      it "returns the document" do
-        @id_cache.first(query(:id => @uuid)).should == @doc
-      end
+    it "returns the document" do
+      @returned.should == @doc
+    end
+
+    it "passes along the block to the memcached object" do
+      @block_called.should be_true
     end
   end
 end
