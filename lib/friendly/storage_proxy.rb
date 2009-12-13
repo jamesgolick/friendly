@@ -16,13 +16,20 @@ module Friendly
     end
 
     def first(conditions)
-      from_cache(conditions) do
+      first_from_cache(conditions) do
         index_for(conditions).first(conditions)
       end
     end
 
-    def all(conditions)
-      index_for(conditions).all(conditions)
+    def all(query)
+      cache = cache_for(query)
+      if cache
+        cache.all(query) do |missing_key|
+          index_for(query).first(Query.new(:id => missing_key.split("/").last))
+        end
+      else
+        index_for(query).all(query)
+      end
     end
 
     def add(*args)
@@ -66,7 +73,7 @@ module Friendly
         tables + caches
       end
 
-      def from_cache(query)
+      def first_from_cache(query)
         cache = cache_for(query)
         if cache
           cache.first(query) { yield }
