@@ -1,69 +1,72 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe "Finding an object by id via the cache" do
-  before do
-    @user = User.create :name => "Cleveland"
-  end
-
-  describe "if the user is in cache" do
-    before do
-      $cache.set("User/#{@user.id.to_guid}", "the user")
-    end
-
-    it "returns the object from cache if its there" do
-      User.first(:id => @user.id).should == "the user"
-    end
-  end
-
-  describe "if the user isn't there" do
-    before do
-      $cache.delete("User/#{@user.id.to_guid}")
-      @found = User.first(:id => @user.id)
-    end
-
-    it "finds the object in the database" do
-      @found.should == @user
-    end
-
-    it "stores the object in cache (read through)" do
-      $cache.get("User/#{@user.id.to_guid}").should == @user
-    end
-  end
-end
-
-describe "Finding several objects via id in the cache" do
+describe "Finding objects in the cache" do
   def cache_key(user)
-    ["User", user.id.to_guid].join("/")
+    ["Address", user.id.to_guid].join("/")
   end
 
-  before do
-    @users = (0..3).map { User.create :name => "Cleveland" }
-  end
-
-  describe "when all objects are found" do
+  describe "by id" do
     before do
-      @users.each { |u| $cache.set("User/#{u.id.to_guid}", "the user") }
+      @address = Address.create :street => "Spooner"
     end
 
-    it "returns all the objects from cache" do
-      User.all(:id => @users.map { |u| u.id }).should == ["the user"] * 4
+    describe "if the user is in cache" do
+      before do
+        $cache.set(cache_key(@address), "the address")
+      end
+
+      it "returns the object from cache if its there" do
+        Address.first(:id => @address.id).should == "the address"
+      end
+    end
+
+    describe "if the user isn't there" do
+      before do
+        $cache.delete(cache_key(@address))
+        @found = Address.first(:id => @address.id)
+      end
+
+      it "finds the object in the database" do
+        @found.should == @address
+      end
+
+      it "stores the object in cache (read through)" do
+        $cache.get(cache_key(@address)).should == @address
+      end
     end
   end
 
-  describe "when some objects are missing" do
+  describe "several objects via id" do
     before do
-      $cache.delete(cache_key(@users.first))
-      @found = User.all(:id => @users.map { |u| u.id })
+      @addresses = (0..3).map { Address.create :street => "Spooner" }
     end
 
-    it "finds the object and returns it" do
-      @found.sort { |a,b| a.id <=> b.id }.should == @users.sort { |a,b| a.id <=> b.id }
+    describe "when all objects are found" do
+      before do
+        @addresses.each { |a| $cache.set(cache_key(a), "the address") }
+      end
+
+      it "returns all the objects from cache" do
+        Address.all(:id => @addresses.map { |u| u.id }).should == ["the address"] * 4
+      end
     end
 
-    it "writes the object through to the cache" do
-      lambda {
-        $cache.get(cache_key(@users.first))
-      }.should_not raise_error
+    describe "when some objects are missing" do
+      before do
+        $cache.delete(cache_key(@addresses.first))
+        @found = Address.all(:id => @addresses.map { |u| u.id })
+      end
+
+      it "finds the object and returns it" do
+        expected = @addresses.sort { |a,b| a.id <=> b.id }
+        @found.sort { |a,b| a.id <=> b.id }.should == expected
+      end
+
+      it "writes the object through to the cache" do
+        lambda {
+          $cache.get(cache_key(@addresses.first))
+        }.should_not raise_error
+      end
     end
   end
 end

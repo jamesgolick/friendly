@@ -39,8 +39,6 @@ class User
 
   indexes   :name
   indexes   :name, :created_at
-
-  caches_by :id
 end
 
 User.create_tables!
@@ -48,10 +46,11 @@ User.create_tables!
 class Address
   include Friendly::Document
 
-  attribute :user_id, Integer
+  attribute :user_id, Integer, :default => 0
   attribute :street,  String
 
   indexes   :user_id
+  caches_by :id
 end
 
 Address.create_tables!
