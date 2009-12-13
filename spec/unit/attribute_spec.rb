@@ -6,7 +6,10 @@ describe "Friendly::Attribute" do
     @name    = Friendly::Attribute.new(@klass, :name, String)
     @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
     @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
-    @klass.stubs(:attributes).returns({:name => @name, :id => @id})
+    @default = Friendly::Attribute.new(@klass, :default, String, :default => "asdf")
+    @klass.stubs(:attributes).returns({:name    => @name, 
+                                       :id      => @id, 
+                                       :default => @default})
     @object = @klass.new
   end
 
@@ -46,5 +49,10 @@ describe "Friendly::Attribute" do
 
   it "doesn't try to convert when there's no type" do
     @no_type.typecast(true).should == true
+  end
+
+  it "can have a default value" do
+    @default.default.should == "asdf"
+    @klass.new.default.should == "asdf"
   end
 end

@@ -7,12 +7,13 @@ module Friendly
     CONVERTERS[Integer] = lambda { |s| s.to_i }
     CONVERTERS[String]  = lambda { |s| s.to_s }
 
-    attr_reader :klass, :name, :type
+    attr_reader :klass, :name, :type, :default_value
 
-    def initialize(klass, name, type)
-      @klass = klass
-      @name  = name
-      @type  = type
+    def initialize(klass, name, type, options = {})
+      @klass         = klass
+      @name          = name
+      @type          = type
+      @default_value = options[:default]
       build_accessors
     end
 
@@ -26,7 +27,13 @@ module Friendly
     end
 
     def default
-      type.respond_to?(:new) ? type.new : nil
+      if default_value
+        default_value
+      elsif type.respond_to?(:new)
+        type.new
+      else
+        nil
+      end
     end
 
     protected

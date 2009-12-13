@@ -31,8 +31,8 @@ module Friendly
         storage_proxy.create_tables!
       end
 
-      def attribute(name, type = nil)
-        attributes[name] = Attribute.new(self, name, type)
+      def attribute(name, type = nil, options = {})
+        attributes[name] = Attribute.new(self, name, type, options)
       end
 
       def storage_proxy
