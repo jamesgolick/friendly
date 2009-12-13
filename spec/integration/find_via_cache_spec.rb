@@ -46,17 +46,18 @@ describe "Finding several objects via id in the cache" do
     end
 
     it "returns all the objects from cache" do
-      User.all(:id => @users.map { |u| u.id }).should == ["the user"] * 3
+      User.all(:id => @users.map { |u| u.id }).should == ["the user"] * 4
     end
   end
 
   describe "when some objects are missing" do
     before do
       $cache.delete(cache_key(@users.first))
+      @found = User.all(:id => @users.map { |u| u.id })
     end
 
     it "finds the object and returns it" do
-      User.all(:id => @users.map { |u| u.id }).should == @users
+      @found.sort { |a,b| a.id <=> b.id }.should == @users.sort { |a,b| a.id <=> b.id }
     end
 
     it "writes the object through to the cache" do
