@@ -11,6 +11,7 @@ require 'sequel'
 require 'json'
 gem     'jferris-mocha'
 require 'mocha'
+require 'memcached'
 
 Friendly.configure "mysql://root@localhost/friendly_test"
 $db = Friendly.db
@@ -24,6 +25,9 @@ end
 
 datastore          = Friendly::DataStore.new($db)
 Friendly.datastore = datastore
+
+$cache = Memcached.new
+Friendly.cache     = Friendly::Memcached.new($cache)
 
 class User
   include Friendly::Document
