@@ -8,6 +8,10 @@ module Friendly
       raise NotImplementedError, "#{self.class.name}#update is not implemented."
     end
 
+    def destroy(document)
+      raise NotImplementedError, "#{self.class.name}#destroy is not implemented."
+    end
+
     def first(conditions)
       raise NotImplementedError, "#{self.class.name}#first is not implemented."
     end
