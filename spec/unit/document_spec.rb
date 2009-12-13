@@ -160,6 +160,17 @@ describe "Friendly::Document" do
     end
   end
 
+  describe "adding a cache" do
+    before do
+      @storage_proxy.stubs(:cache)
+      @klass.caches_by(:name, :created_at)
+    end
+
+    it "delegates to the storage_proxy" do
+      @storage_proxy.should have_received(:cache).with([:name, :created_at])
+    end
+  end
+
   describe "Document.first" do
     before do
       @doc               = stub

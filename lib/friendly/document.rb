@@ -47,7 +47,8 @@ module Friendly
         storage_proxy.add(args)
       end
 
-      def caches_by(*args)
+      def caches_by(*fields)
+        storage_proxy.cache(fields)
       end
 
       def attributes
