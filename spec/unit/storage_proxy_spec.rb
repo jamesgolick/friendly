@@ -4,12 +4,11 @@ describe "Friendly::StorageProxy" do
   before do
     @klass          = stub
     @index          = stub(:create => nil, :update => nil, :destroy => nil)
-    @index_klass    = stub(:new => @index)
     @table          = stub(:satisfies? => false, :create => nil, 
                            :update => nil,       :destroy => nil)
-    @doctable_klass = stub
-    @doctable_klass.stubs(:new).with(@klass).returns(@table)
-    @storage        = Friendly::StorageProxy.new(@klass,@index_klass,@doctable_klass)
+    @table_factory  = stub(:index => @index)
+    @table_factory.stubs(:document_table).with(@klass).returns(@table)
+    @storage        = Friendly::StorageProxy.new(@klass, @table_factory)
   end
 
   it "instantiates and adds a document table by default" do
@@ -92,8 +91,8 @@ describe "Friendly::StorageProxy" do
     end
 
     it "creates an index" do
-      @index_klass.should have_received(:new).once
-      @index_klass.should have_received(:new).with(@klass, :name, :age)
+      @table_factory.should have_received(:index).once
+      @table_factory.should have_received(:index).with(@klass, :name, :age)
     end
 
     it "adds the index to the set" do
@@ -104,7 +103,7 @@ describe "Friendly::StorageProxy" do
   describe "saving data" do
     before do
       @index_two = stub(:create => nil, :update => nil, :destroy => nil)
-      @index_klass.stubs(:new).returns(@index).then.returns(@index_two)
+      @table_factory.stubs(:index).returns(@index).then.returns(@index_two)
       @storage.add(:name)
       @storage.add(:age)
       @doc = stub
