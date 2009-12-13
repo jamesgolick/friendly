@@ -1,4 +1,5 @@
 require 'friendly/attribute'
+require 'friendly/boolean'
 require 'friendly/config'
 require 'friendly/data_store'
 require 'friendly/document'

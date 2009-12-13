@@ -16,9 +16,11 @@ Friendly.configure "mysql://root@localhost/friendly_test"
 $db = Friendly.db
 Sequel::MySQL.default_engine = "InnoDB"
 
-$db.drop_table :users
-$db.drop_table :index_users_on_name
-$db.drop_table :index_users_on_name_and_created_at
+$db.drop_table :users if $db.table_exists?("users")
+$db.drop_table :index_users_on_name if $db.table_exists?("index_users_on_name")
+if $db.table_exists?("index_users_on_name_and_created_at")
+  $db.drop_table :index_users_on_name_and_created_at
+end
 
 datastore          = Friendly::DataStore.new($db)
 Friendly.datastore = datastore
@@ -26,8 +28,9 @@ Friendly.datastore = datastore
 class User
   include Friendly::Document
 
-  attribute :name, String
-  attribute :age,  Integer
+  attribute :name,  String
+  attribute :age,   Integer
+  attribute :happy, Friendly::Boolean, :default => true
 
   indexes   :name
   indexes   :name, :created_at
