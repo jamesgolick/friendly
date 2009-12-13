@@ -47,6 +47,9 @@ module Friendly
         storage_proxy.add(args)
       end
 
+      def caches_by(*args)
+      end
+
       def attributes
         @attributes ||= {}
       end

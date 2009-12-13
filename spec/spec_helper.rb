@@ -35,6 +35,8 @@ class User
 
   indexes   :name
   indexes   :name, :created_at
+
+  caches_by :id
 end
 
 User.create_tables!
