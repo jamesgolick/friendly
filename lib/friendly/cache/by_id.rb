@@ -7,6 +7,10 @@ module Friendly
       alias_method :create, :store
       alias_method :update, :store
 
+      def destroy(document)
+        cache.delete(cache_key(document.id))
+      end
+
       def first(query, &block)
         cache.get(cache_key(query.conditions[:id]), &block)
       end

@@ -31,6 +31,19 @@ describe "Friendly::Cache::ByID" do
     end
   end
 
+  describe "when an object is destroyed" do
+    before do
+      @cache.stubs(:delete)
+      @uuid = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
+      @doc  = stub(:id => @uuid)
+      @id_cache.destroy(@doc)
+    end
+
+    it "deletes the object from cache" do
+      @cache.should have_received(:delete).with("Product/#{@uuid.to_guid}")
+    end
+  end
+
   describe "finding a single object in cache" do
     before do
       @uuid         = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
