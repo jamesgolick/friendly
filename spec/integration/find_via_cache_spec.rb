@@ -25,8 +25,44 @@ describe "Finding an object by id via the cache" do
       @found.should == @user
     end
 
-    it "sets the object in cache (read through)" do
+    it "stores the object in cache (read through)" do
       $cache.get("User/#{@user.id.to_guid}").should == @user
+    end
+  end
+end
+
+describe "Finding several objects via id in the cache" do
+  def cache_key(user)
+    ["User", user.id.to_guid].join("/")
+  end
+
+  before do
+    @users = (0..3).map { User.create :name => "Cleveland" }
+  end
+
+  describe "when all objects are found" do
+    before do
+      @users.each { |u| $cache.set("User/#{u.id.to_guid}", "the user") }
+    end
+
+    it "returns all the objects from cache" do
+      User.all(:id => @users.map { |u| u.id }).should == ["the user"] * 3
+    end
+  end
+
+  describe "when some objects are missing" do
+    before do
+      $cache.delete(cache_key(@users.first))
+    end
+
+    it "finds the object and returns it" do
+      User.all(:id => @users.map { |u| u.id }).should == @users
+    end
+
+    it "writes the object through to the cache" do
+      lambda {
+        $cache.get(cache_key(@users.first))
+      }.should_not raise_error
     end
   end
 end
