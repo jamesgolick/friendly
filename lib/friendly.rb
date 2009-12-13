@@ -16,7 +16,7 @@ require 'friendly/uuid'
 
 module Friendly
   class << self
-    attr_accessor :datastore, :db
+    attr_accessor :datastore, :db, :cache
 
     def configure(config)
       self.db        = Sequel.connect(config)
@@ -42,4 +42,5 @@ module Friendly
   class RecordNotFound < Error; end
   class MissingIndex < Error; end
   class NoConverterExists < Friendly::Error; end
+  class NotSupported < Friendly::Error; end
 end
