@@ -75,4 +75,15 @@ describe "Finding objects in the cache" do
       Address.all(:id => [])
     end
   end
+
+  describe "finding several objects in order via cache" do
+    before do
+      @addresses = (0...5).map { Address.create :street => "Spooner" }
+    end
+
+    it "returns them in order" do
+      fnd = Address.all(:id => @addresses.map { |a| a.id }, :preserve_order! => true)
+      fnd.should == @addresses
+    end
+  end
 end
