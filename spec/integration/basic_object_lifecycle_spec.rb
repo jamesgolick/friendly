@@ -104,3 +104,11 @@ describe "Finding an object by id" do
   end
 end
 
+describe "An object that has a foreign key" do
+  it "is saveable in the database" do
+    lambda {
+        Address.create :user_id => Friendly::UUID.new
+    }.should_not raise_error
+  end
+end
+

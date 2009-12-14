@@ -46,7 +46,7 @@ User.create_tables!
 class Address
   include Friendly::Document
 
-  attribute :user_id, Integer, :default => 0
+  attribute :user_id, Friendly::UUID
   attribute :street,  String
 
   indexes   :user_id

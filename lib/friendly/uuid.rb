@@ -82,6 +82,10 @@ module Friendly
       "%08x-%04x-%04x-%02x%02x-%s" % elements
     end
 
+    def to_json(*args)
+      to_guid.to_json(*args)
+    end
+
     def seconds
       total_usecs / 1_000_000
     end
