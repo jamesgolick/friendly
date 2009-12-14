@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-13}
+  s.date = %q{2009-12-14}
   s.description = %q{}
   s.email = %q{james@giraffesoft.ca}
   s.extra_rdoc_files = [
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
+     "spec/integration/count_spec.rb",
      "spec/integration/default_value_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
@@ -94,6 +95,7 @@ Gem::Specification.new do |s|
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
+     "spec/integration/count_spec.rb",
      "spec/integration/default_value_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
