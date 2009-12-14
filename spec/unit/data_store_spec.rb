@@ -173,5 +173,16 @@ describe "Friendly::DataStore" do
       Thread.current[:friendly_batch].should be_nil
     end
   end
+
+  describe "counting" do
+    before do
+      @filtered = stub(:count => 10)
+      @users.stubs(:where).with(:name => "James").returns(@filtered)
+    end
+
+    it "fitlers and counts in the db" do
+      @datastore.count(@klass, query(:name => "James")).should == 10
+    end
+  end
 end
 

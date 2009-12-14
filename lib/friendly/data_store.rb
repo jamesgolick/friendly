@@ -32,6 +32,10 @@ module Friendly
       dataset(persistable).where(:id => id).delete
     end
 
+    def count(persistable, query)
+      dataset(persistable).where(query.conditions).count
+    end
+
     def start_batch
       Thread.current[:friendly_batch] = Hash.new { |h, k| h[k] = [] }
     end
