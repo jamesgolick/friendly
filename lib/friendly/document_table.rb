@@ -40,13 +40,7 @@ module Friendly
     end
 
     def all(query)
-      objects = datastore.all(klass, query).map { |r| to_object(r) }
-      if query.preserve_order?
-        order = query.conditions[:id]
-        objects.sort { |a,b| order.index(a.id) <=> order.index(b.id) }
-      else
-        objects
-      end
+      datastore.all(klass, query).map { |r| to_object(r) }
     end
 
     protected

@@ -123,20 +123,4 @@ describe "Friendly::DocumentTable" do
       @table.all(@query).should == [@document, @document]
     end
   end
-
-  describe "finding many objects with preserve_order" do
-    before do
-      @records = [row(:id => 1), row(:id => 2)]
-      @doc_one = stub(:id => 1)
-      @doc_two = stub(:id => 2)
-      @query   = query(:id => [2,1], :preserve_order! => true)
-      @translator.stubs(:to_object).with(@klass, @records.first).returns(@doc_one)
-      @translator.stubs(:to_object).with(@klass, @records.last).returns(@doc_two)
-      @datastore.stubs(:all).with(@klass, @query).returns(@records)
-    end
-
-    it "returns objects in the order they were queried for" do
-      @table.all(@query).should == [@doc_two, @doc_one]
-    end
-  end
 end
