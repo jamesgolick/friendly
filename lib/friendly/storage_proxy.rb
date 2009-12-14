@@ -35,8 +35,8 @@ module Friendly
       tables << storage_factory.index(klass, *args)
     end
 
-    def cache(fields)
-      caches << storage_factory.cache(klass, fields)
+    def cache(fields, options = {})
+      caches << storage_factory.cache(klass, fields, options)
     end
 
     def create(document)

@@ -167,7 +167,7 @@ describe "Friendly::Document" do
     end
 
     it "delegates to the storage_proxy" do
-      @storage_proxy.should have_received(:cache).with([:name, :created_at])
+      @storage_proxy.should have_received(:cache).with([:name, :created_at], {})
     end
   end
 

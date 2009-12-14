@@ -48,7 +48,8 @@ module Friendly
       end
 
       def caches_by(*fields)
-        storage_proxy.cache(fields)
+        options = fields.last.is_a?(Hash) ? fields.pop : {}
+        storage_proxy.cache(fields, options)
       end
 
       def attributes

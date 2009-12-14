@@ -2,7 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Finding objects in the cache" do
   def cache_key(user)
-    ["Address", user.id.to_guid].join("/")
+    ["Address", 0, user.id.to_guid].join("/")
   end
 
   describe "by id" do

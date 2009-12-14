@@ -173,7 +173,7 @@ describe "Friendly::StorageProxy" do
     end
 
     it "gets one from the storage_proxy" do
-      @storage_factory.should have_received(:cache).with(@klass, [:id])
+      @storage_factory.should have_received(:cache).with(@klass, [:id], {})
     end
 
     it "adds it to its set of caches" do
