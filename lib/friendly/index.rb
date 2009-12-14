@@ -28,6 +28,10 @@ module Friendly
       klass.all(:id => ids, :preserve_order! => !query.order.nil?)
     end
 
+    def count(query)
+      datastore.count(klass, query.conditions)
+    end
+
     def create(document)
       datastore.insert(self, record(document))
     end
