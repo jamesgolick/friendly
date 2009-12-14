@@ -69,4 +69,10 @@ describe "Finding objects in the cache" do
       end
     end
   end
+
+  describe "calling all when the array of ids is empty" do
+    it "returns nothing" do
+      Address.all(:id => [])
+    end
+  end
 end
