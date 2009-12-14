@@ -12,12 +12,13 @@ module Friendly
       end
     end
 
-    attr_reader :klass, :fields, :cache
+    attr_reader :klass, :fields, :cache, :version
 
-    def initialize(klass, fields, cache = Friendly.cache)
-      @klass  = klass
-      @fields = fields
-      @cache  = cache
+    def initialize(klass, fields, options = {}, cache = Friendly.cache)
+      @klass   = klass
+      @fields  = fields
+      @cache   = cache
+      @version = options[:version] || 0
     end
   end
 end

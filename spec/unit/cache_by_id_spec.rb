@@ -4,7 +4,7 @@ describe "Friendly::Cache::ByID" do
   before do
     @cache    = stub(:set => nil)
     @klass    = stub(:name => "Product")
-    @id_cache = Friendly::Cache::ByID.new(@klass, [:id], @cache)
+    @id_cache = Friendly::Cache::ByID.new(@klass, [:id], {}, @cache)
     @subject  = @id_cache
   end
 
@@ -12,6 +12,14 @@ describe "Friendly::Cache::ByID" do
   it { should be_satisfies(query(:id => ["asdf"])) }
   it { should_not be_satisfies(query(:id => ["asdf"], :name => "asdf")) }
   it { should_not be_satisfies(query(:name => "asdf")) }
+
+  it "has a default version of 0" do
+    @id_cache.version.should == 0
+  end
+
+  it "is possible to override version" do
+    Friendly::Cache::ByID.new(@klass, [:id], {:version => 1}).version.should == 1
+  end
 
   describe "when an object is created" do
     before do
@@ -21,7 +29,7 @@ describe "Friendly::Cache::ByID" do
     end
 
     it "sets the cache value in the db" do
-      @cache.should have_received(:set).with("Product/#{@uuid.to_guid}", @doc)
+      @cache.should have_received(:set).with("Product/0/#{@uuid.to_guid}", @doc)
     end
   end
 
@@ -33,7 +41,7 @@ describe "Friendly::Cache::ByID" do
     end
 
     it "sets the cache value in the db" do
-      @cache.should have_received(:set).with("Product/#{@uuid.to_guid}", @doc)
+      @cache.should have_received(:set).with("Product/0/#{@uuid.to_guid}", @doc)
     end
   end
 
@@ -46,7 +54,7 @@ describe "Friendly::Cache::ByID" do
     end
 
     it "deletes the object from cache" do
-      @cache.should have_received(:delete).with("Product/#{@uuid.to_guid}")
+      @cache.should have_received(:delete).with("Product/0/#{@uuid.to_guid}")
     end
   end
 
@@ -54,7 +62,7 @@ describe "Friendly::Cache::ByID" do
     before do
       @uuid         = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
       @doc          = stub
-      @cache.stubs(:get).with("Product/xxxx-xxx-xxx-xxxx").returns(@doc).yields
+      @cache.stubs(:get).with("Product/0/xxxx-xxx-xxx-xxxx").returns(@doc).yields
       @block_called = true
       @returned = @id_cache.first(query(:id => @uuid)) do
         @block_called = true
@@ -74,7 +82,7 @@ describe "Friendly::Cache::ByID" do
     before do
       @uuid         = stub(:to_guid => "xxxx-xxx-xxx-xxxx")
       @doc          = stub
-      @key          = "Product/xxxx-xxx-xxx-xxxx"
+      @key          = "Product/0/xxxx-xxx-xxx-xxxx"
       @cache.stubs(:multiget).with([@key, @key]).
         returns({@uuid.to_guid => @doc}).yields(@uuid.to_guid)
       @block_called = []

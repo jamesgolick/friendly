@@ -26,7 +26,7 @@ module Friendly
 
       protected
         def cache_key(id)
-          [klass.name, id.to_guid].join("/")
+          [klass.name, version, id.to_guid].join("/")
         end
     end
   end
