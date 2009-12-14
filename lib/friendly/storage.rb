@@ -20,6 +20,10 @@ module Friendly
       raise NotImplementedError, "#{self.class.name}#all is not implemented."
     end
 
+    def count(query)
+      raise NotImplementedError, "#{self.class.name}#count is not implemented."
+    end
+
     def satisfies?(conditions)
       raise NotImplementedError, "#{self.class.name}#satisfies? is not implemented."
     end
