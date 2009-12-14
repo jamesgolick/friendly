@@ -50,6 +50,7 @@ class Address
   attribute :street,  String
 
   indexes   :user_id
+  indexes   :street
   caches_by :id
 end
 

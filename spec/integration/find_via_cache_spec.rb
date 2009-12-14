@@ -86,4 +86,16 @@ describe "Finding objects in the cache" do
       fnd.should == @addresses
     end
   end
+
+  describe "when there's an object in the index that doesn't really exist" do
+    before do
+      table = $db.from("index_addresses_on_street")
+      table.where(:street => "Quahog").delete
+      table.insert(:street => "Quahog", :id => "12345")
+    end
+
+    it "just returns [] silently on #all" do
+      Address.all(:street => "Quahog").should == []
+    end
+  end
 end

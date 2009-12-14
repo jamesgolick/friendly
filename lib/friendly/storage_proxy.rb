@@ -22,7 +22,7 @@ module Friendly
     end
 
     def all(query)
-      objects = perform_all(query)
+      objects = perform_all(query).compact
       if query.preserve_order?
         order = query.conditions[:id]
         objects.sort { |a,b| order.index(a.id) <=> order.index(b.id) }
