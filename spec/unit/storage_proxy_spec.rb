@@ -59,12 +59,13 @@ describe "Friendly::StorageProxy" do
 
     describe "when there's an index that matches the conditions" do
       before do
-        @result = @storage.all(:name => "x")
+        @query  = query(:name => "x")
+        @result = @storage.all(@query)
       end
 
       it "delegates to the index that satisfies the conditions" do
         @index.should have_received(:all).once
-        @index.should have_received(:all).with(:name => "x")
+        @index.should have_received(:all).with(@query)
       end
 
       it "returns the results" do
@@ -81,6 +82,18 @@ describe "Friendly::StorageProxy" do
         lambda {
           @storage.all(:name => "x")
         }.should raise_error(Friendly::MissingIndex)
+      end
+    end
+
+    describe "when :preserve_order is true" do
+      before do
+        @docs  = [stub(:id => 4), stub(:id => 3), stub(:id => 2)]
+        @index.stubs(:all).returns(@docs)
+        @result = @storage.all(query(:id => [2,3,4], :preserve_order! => true))
+      end
+
+      it "sorts the results based on the order they're supplied in the query" do
+        @result.should == @docs.reverse
       end
     end
   end

@@ -22,13 +22,12 @@ module Friendly
     end
 
     def all(query)
-      cache = cache_for(query)
-      if cache
-        cache.all(query) do |missing_key|
-          index_for(query).first(Query.new(:id => missing_key.split("/").last))
-        end
+      objects = perform_all(query)
+      if query.preserve_order?
+        order = query.conditions[:id]
+        objects.sort { |a,b| order.index(a.id) <=> order.index(b.id) }
       else
-        index_for(query).all(query)
+        objects
       end
     end
 
@@ -84,6 +83,17 @@ module Friendly
 
       def cache_for(query)
         caches.detect { |c| c.satisfies?(query) }
+      end
+
+      def perform_all(query)
+        cache = cache_for(query)
+        if cache
+          cache.all(query) do |missing_key|
+            index_for(query).first(Query.new(:id => missing_key.split("/").last))
+          end
+        else
+          index_for(query).all(query)
+        end
       end
   end
 end
