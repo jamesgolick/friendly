@@ -81,6 +81,12 @@ describe "Friendly::Memcached" do
         @cache.should have_received(:set).with("c", "c/fromblock")
       end
     end
+
+    describe "when the list of keys is empty" do
+      it "returns {}" do
+        @memcached.multiget([]).should == {}
+      end
+    end
   end
 
   describe "deleting" do

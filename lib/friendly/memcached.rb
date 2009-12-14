@@ -23,6 +23,8 @@ module Friendly
     end
 
     def multiget(keys)
+      return {} if keys.empty?
+
       hits         = @cache.get(keys)
       missing_keys = keys - hits.keys
 
