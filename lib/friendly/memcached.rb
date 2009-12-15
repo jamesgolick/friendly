@@ -16,9 +16,7 @@ module Friendly
       @cache.get(key)
     rescue ::Memcached::NotFound
       if block_given?
-        value = yield
-        @cache.set(key, value)
-        value
+        miss(key, yield)
       end
     end
 
@@ -30,9 +28,7 @@ module Friendly
 
       if !missing_keys.empty? && block_given?
         missing_keys.each do |missing_key|
-          value = yield(missing_key)
-          cache.set(missing_key, value)
-          hits.merge!(missing_key => value)
+          hits.merge!(missing_key => miss(missing_key, yield(missing_key)))
         end
       end
 
@@ -43,5 +39,11 @@ module Friendly
       cache.delete(key)
     rescue ::Memcached::NotFound
     end
+
+    protected
+      def miss(key, value)
+        @cache.set(key, value)
+        value
+      end
   end
 end
