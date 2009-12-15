@@ -4,7 +4,6 @@ Dir[File.expand_path(File.dirname(__FILE__)) + "/fakes/*.rb"].each do |f|
   require f
 end
 require 'rubygems'
-require 'friendly'
 require 'spec'
 require 'spec/autorun'
 require 'sequel'
@@ -12,6 +11,7 @@ require 'json'
 gem     'jferris-mocha'
 require 'mocha'
 require 'memcached'
+require 'friendly'
 
 Friendly.configure "mysql://root@localhost/friendly_test"
 $db = Friendly.db
