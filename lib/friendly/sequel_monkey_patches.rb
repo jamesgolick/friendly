@@ -1,3 +1,5 @@
+require 'sequel'
+
 # Out of the box, Sequel uses IS TRUE/FALSE for boolean parameters
 # This prevents MySQL from using indexes.
 #
