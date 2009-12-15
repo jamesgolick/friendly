@@ -121,7 +121,7 @@ module Friendly
     end
 
     def ==(other)
-      self.to_i == other.to_i
+      self.to_s == other.to_s
     end
 
     def to_s
