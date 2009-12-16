@@ -14,6 +14,8 @@ require 'friendly/storage_proxy'
 require 'friendly/translator'
 require 'friendly/uuid'
 
+require 'will_paginate/collection'
+
 module Friendly
   class << self
     attr_accessor :datastore, :db, :cache
