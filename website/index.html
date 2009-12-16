@@ -35,7 +35,7 @@
 	    <dd>Building an index can take hours with a lot of data. Stay agile without taking your app offline.</dd>
 	    
 	    <dt>Write-through and read-through caching baked right in.</dt>
-	    <dd>Hit rates of 99.8% are a one-liner with Friendly.</dd>
+	    <dd><a href="http://radar.oreilly.com/2009/10/watching-websites.html">Fast websites make more money.</a> The 99.8% cache hit rate we see in production is a one-liner with Friendly.</dd>
 	    
 	    <dt>Compatible with will_paginate.</dt>
 	    <dd>No need to change your view code.</dd>
@@ -60,11 +60,11 @@
 
       <h3>Setup gem dependency in Rails</h3>
       <h4>Rails</h4>
-      <p class="bottom">goes in environment.rb file</p>
+      <p class="bottom">In environment.rb:</p>
       <pre class="brush: ruby;">config.gem "friendly"</pre>
 
     
-      <p class="bottom">create config/friendly.yml</p>
+      <p class="bottom">Create a config/friendly.yml:</p>
       <pre class="brush: ruby;">
 	development:
 	  :adapter:  "mysql"
@@ -74,7 +74,7 @@
 	  :database: "friendly_development"
       </pre>
 	   
-      <h4>Everywhere else</h4>
+      <h4>Not Rails</h4>
       <pre class="brush: ruby;">
 	Friendly.configure :adapter  => "mysql",
 				       :host     => "localhost",
@@ -96,7 +96,7 @@
 
 
       <h3>Create Tables</h3>
-      <p class="bottom">from irb//console</p>
+      <p class="bottom">From irb or script/console:</p>
       <pre class="brush: ruby;">Friendly.create_tables!</pre>
 
     
@@ -136,7 +136,7 @@
 
 
       <h3>Cache</h3>
-      <p class="bottom">Install memcached gem:</p>
+      <p class="bottom">Install the memcached gem:</p>
       <pre class="brush: ruby;">sudo gem install memcached</pre>
 
       <p class="bottom">Configure Friendly to cache:</p>
