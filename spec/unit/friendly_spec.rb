@@ -5,7 +5,7 @@ describe "Friendly" do
     before do
       @datastore = stub
       Friendly::DataStore.stubs(:new).returns(@datastore)
-      @db = stub
+      @db = stub(:meta_def => nil)
       Sequel.stubs(:connect).returns(@db)
       Friendly.configure(:host => "localhost")
     end
