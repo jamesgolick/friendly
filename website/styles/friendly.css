@@ -1,0 +1,56 @@
+body {
+	font-size: 1em;
+}
+
+h1 {
+	margin: 25px 0 0 0;
+	font-weight: normal;
+}
+	h1 span {
+		font-size: 0.5em;
+	}
+	
+h2 {
+	font-weight: bold;
+	margin: 0 0 -7px 0;
+}	
+	
+.quiet {
+	color: #777;
+}	
+
+dl {}
+	dl dt {}
+	dl dd {
+		margin: 0 0 10px 0;
+	}
+
+
+#header-install {
+  text-align: right;
+}
+
+#titles {
+  text-align: justify;
+  margin-top: 1.2em;
+}
+
+#bullet-points {
+  padding-left: 3em;
+  padding-top: 1em;
+  font-size: 1.25em;
+}
+
+#links { 
+  font-size: 1.5em; 
+}
+#links ul {
+  padding-left: 0px;
+  list-style-type: none;
+  padding-bottom: 1em;
+}
+#links ul li {
+  float:left;
+  margin-right: 1em;
+}
+
