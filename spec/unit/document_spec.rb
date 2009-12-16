@@ -230,6 +230,20 @@ describe "Friendly::Document" do
     end
   end
 
+  describe "Document.all" do
+    before do
+      @query             = stub
+      @query_klass       = stub
+      @klass.query_klass = @query_klass
+      @query_klass.stubs(:new).with(:name => "x").returns(@query)
+      @storage_proxy.stubs(:count).with(@query).returns(25)
+    end
+
+    it "delegates to the storage proxy" do
+      @klass.count(:name => "x").should == 25
+    end
+  end
+
   describe "Document.create" do
     before do
       @storage_proxy.stubs(:create)

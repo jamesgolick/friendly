@@ -70,6 +70,10 @@ module Friendly
         doc
       end
 
+      def count(conditions)
+        storage_proxy.count(query_klass.new(conditions))
+      end
+
       def create(attributes = {})
         doc = new(attributes)
         doc.save
