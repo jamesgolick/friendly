@@ -50,4 +50,40 @@ describe "Friendly::Query" do
     query      = Friendly::Query.new({:id => ["asdf"]}, uuid_klass)
     query.conditions[:id].should == [uuid]
   end
+
+  describe "a pagination query" do
+    describe "page nil" do
+      before do
+        @query = Friendly::Query.new(:page!     => nil,
+                                     :per_page! => 5)
+      end
+
+      it "is page 1" do
+        @query.page.should == 1
+      end
+
+      it "has an offset of 0" do
+        @query.offset.should == 0
+      end
+
+      it "has a limit of :per_page" do
+        @query.limit.should == 5
+      end
+    end
+
+    describe "page 2" do
+      before do
+        @query = Friendly::Query.new(:page!     => 2,
+                                     :per_page! => 5)
+      end
+
+      it "has an offset of :per_page * page-1" do
+        @query.offset.should == 5
+      end
+
+      it "has a limit of :per_page" do
+        @query.limit.should == 5
+      end
+    end
+  end
 end
