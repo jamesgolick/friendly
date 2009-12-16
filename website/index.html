@@ -29,22 +29,16 @@
     <hr/>
 	  <dl>
 	    <dt>Store schemaless data in MySQL.</dt>
-	    <dd>So you can add and remove fields without running a migration.</dd>
+	    <dd>Evolve your data model without feeling the pain of migrations.</dd>
 	    
 	    <dt>Build indexes offline</dt>
-	    <dd>Building an index can take hours with a lot of data.</dd>
+	    <dd>Building an index can take hours with a lot of data. Stay agile without taking your app offline.</dd>
 	    
-	    <dt>Add and remove fields on big datasets without long running migrations.</dt>
-	    <dd></dd>
+	    <dt>Write-through and read-through caching baked right in.</dt>
+	    <dd>Hit rates of 99.8% are a one-liner with Friendly.</dd>
 	    
-	    <dt>Write-through and read-through caching baked right in <strong>(it's fast)</strong>.</dt>
-	    <dd></dd>
-	    
-	    <dt></dt>
-	    <dd></dd>
-	    
-	    <dt></dt>
-	    <dd></dd>
+	    <dt>Compatible with will_paginate.</dt>
+	    <dd>No need to change your view code.</dd>
 	  </dl>
       <hr />
       <div class="span-24" id="links">
@@ -58,114 +52,111 @@
       	</div>
       </div>
       <hr />
-      <!--
-      	<h2>Start playing with Friendly in under 5 minutes</h2>
-      	<h3>Install friendly</h3>
-      	<pre class="brush: bash;">sudo gem install friendly</pre>
-  
-        <h3>Setup gem dependency in Rails</h3>
-        <h4>Rails</h4>
-        <p class="bottom">goes in environment.rb file</p>
-        <pre class="brush: ruby;">config.gem "friendly"</pre>
+      <h2>Friendly in 5 minutes</h2>
+      <h3>Install friendly</h3>
+      <div class="nolinenumbers">
+	<pre class="brush: bash;">sudo gem install friendly</pre>
+      </div>
 
-      
-        <p class="bottom">create config/friendly.yml</p>
-        <pre class="brush: ruby;">
-        development:
-          :adapter:  "mysql"
-          :host:     "localhost"
-          :user:     "root"
-          :password: "swordfish"
-          :database: "friendly_development"
-        </pre>
-             
-        <h4>Everywhere else</h4>
-        <pre class="brush: ruby;">
-          Friendly.configure
-            :adapter  => "mysql",
-            :host     => "localhost",
-            :user     => "root",
-            :password => "swordfish",
-            :database => "playing_with_friendly"
-        </pre>
+      <h3>Setup gem dependency in Rails</h3>
+      <h4>Rails</h4>
+      <p class="bottom">goes in environment.rb file</p>
+      <pre class="brush: ruby;">config.gem "friendly"</pre>
 
-        <h3>Create a Model</h3>
-        <pre class="brush: ruby;">
-          class BlogPost
-            include Friendly::Document
-            
-            attribute :author, String
-            attribute :title,  String
-            attribute :body,   String
-          end
-        </pre>
+    
+      <p class="bottom">create config/friendly.yml</p>
+      <pre class="brush: ruby;">
+	development:
+	  :adapter:  "mysql"
+	  :host:     "localhost"
+	  :user:     "root"
+	  :password: "swordfish"
+	  :database: "friendly_development"
+      </pre>
+	   
+      <h4>Everywhere else</h4>
+      <pre class="brush: ruby;">
+	Friendly.configure :adapter  => "mysql",
+				       :host     => "localhost",
+				       :user     => "root",
+				       :password => "swordfish",
+				       :database => "playing_with_friendly"
+      </pre>
 
-
-        <h3>Create Tables</h3>
-        <p class="bottom">from irb//console</p>
-        <pre class="brush: ruby;">Friendly.create_tables!</pre>
-
-      
-        <h3>Index</h3>
-        <p class="bottom">Just add the indexes you want to your model.</p>
-        <pre class="brush: ruby; highlight: [8,9];">
-        class BlogPost
-          include Friendly::Document
-          
-          attribute :author, String
-          attribute :title,  String
-          attribute :body,   String
-          
-          indexes :author
-          indexes :created_at
-        end      
-        </pre>
-
-        <p class="bottom">Just run create_tables and the indexes will be created for you.</p>
-        <pre class="brush: ruby;">Friendly.create_tables!</pre>
-
-        <h3>Create Objects</h3>
-        <p class="bottom">You would create objects the exact same way as you would in Rails using ActiveRecord:</p>
-        <pre class="brush: ruby;">
-          BlogPost.create
-            :author => "James Golick",
-            :title  => "Friendly has familiar syntax.",
-            :body   => "So, there's very little learning curve."
-       </pre>
+      <h3>Create a Model</h3>
+      <pre class="brush: ruby;">
+	class BlogPost
+	  include Friendly::Document
+	  
+	  attribute :author, String
+	  attribute :title,  String
+	  attribute :body,   String
+	end
+      </pre>
 
 
-        <h3>Query</h3>
-        <p class="bottom">All posts by James Golick:</p>
-        <pre class="brush: ruby;">BlogPost.all(:author => "James Golick")</pre>
+      <h3>Create Tables</h3>
+      <p class="bottom">from irb//console</p>
+      <pre class="brush: ruby;">Friendly.create_tables!</pre>
 
-        <p class="bottom">Most recent posts:</p>
-        <pre class="brush: ruby;">BlogPost.all(:order! => :created_at.desc)</pre>
+    
+      <h3>Index</h3>
+      <p class="bottom">Just add the indexes you want to your model.</p>
+      <pre class="brush: ruby; highlight: [8,9];">
+	class BlogPost
+	  include Friendly::Document
+	  
+	  attribute :author, String
+	  attribute :title,  String
+	  attribute :body,   String
+	  
+	  indexes :author
+	  indexes :created_at
+	end      
+      </pre>
+
+      <p class="bottom">Run create_tables again and the index tables will be created for you.</p>
+      <pre class="brush: ruby;">Friendly.create_tables!</pre>
+
+      <h3>Create Objects</h3>
+      <p class="bottom">With familiar ActiveRecord syntax:</p>
+      <pre class="brush: ruby;">
+	BlogPost.create :author => "James Golick",
+				    :title  => "Friendly has familiar syntax.",
+				    :body   => "So, there's very little learning curve."
+     </pre>
 
 
-        <h3>Cache</h3>
-        <p class="bottom">Install memcached gem:</p>
-        <pre class="brush: ruby;">sudo gem install memcached</pre>
+      <h3>Query</h3>
+      <p class="bottom">All posts by James Golick:</p>
+      <pre class="brush: ruby;">BlogPost.all(:author => "James Golick")</pre>
 
-        <p class="bottom">Configure Friendly to cache:</p>
-        <pre class="brush: ruby;">Friendly.cache = Friendly::Memcached.new(Memcached.new)</pre>
+      <p class="bottom">Most recent posts:</p>
+      <pre class="brush: ruby;">BlogPost.all(:order! => :created_at.desc)</pre>
 
-        <p class="bottom">Configure your model to cache:</p>
-        <pre class="brush: ruby; highlight: [11];">
-          class BlogPost
-            include Friendly::Document
-            
-            attribute :author, String
-            attribute :title,  String
-            attribute :body,   String
-            
-            indexes :author
-            indexes :created_at
-            
-            caches_by :id
-          end
-        </pre>
-        -->
-      
+
+      <h3>Cache</h3>
+      <p class="bottom">Install memcached gem:</p>
+      <pre class="brush: ruby;">sudo gem install memcached</pre>
+
+      <p class="bottom">Configure Friendly to cache:</p>
+      <pre class="brush: ruby;">Friendly.cache = Friendly::Memcached.new(Memcached.new)</pre>
+
+      <p class="bottom">Configure your model to cache:</p>
+      <pre class="brush: ruby; highlight: [11];">
+	class BlogPost
+	  include Friendly::Document
+	  
+	  attribute :author, String
+	  attribute :title,  String
+	  attribute :body,   String
+	  
+	  indexes :author
+	  indexes :created_at
+	  
+	  caches_by :id
+	end
+      </pre>
     </div>
   </body>
 </html>

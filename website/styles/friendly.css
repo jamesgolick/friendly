@@ -54,3 +54,6 @@ dl {}
   margin-right: 1em;
 }
 
+.nolinenumbers { margin-left: 40px; }
+.nolinenumbers td.number { display:none; }
+
