@@ -184,12 +184,13 @@ describe "Friendly::Index" do
   describe "counting rows matching a query" do
     before do
       @datastore = stub
-      @datastore.stubs(:count).with(@klass, :name => "Stewie").returns(10)
+      @query     = query(:name => "Stewie")
       @index     = Friendly::Index.new(@klass, [:name], @datastore)
+      @datastore.stubs(:count).with(@index, @query).returns(10)
     end
 
     it "delegates to the datastore" do
-      @index.count(query(:name => "Stewie")).should == 10
+      @index.count(@query).should == 10
     end
   end
 end

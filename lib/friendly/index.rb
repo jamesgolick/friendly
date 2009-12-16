@@ -29,7 +29,7 @@ module Friendly
     end
 
     def count(query)
-      datastore.count(klass, query.conditions)
+      datastore.count(self, query)
     end
 
     def create(document)
