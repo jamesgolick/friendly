@@ -3,7 +3,10 @@ require File.expand_path("../../spec_helper", __FILE__)
 describe "Friendly::StorageProxy" do
   before do
     @klass          = stub
-    @index          = stub(:create => nil, :update => nil, :destroy => nil)
+    @index          = stub(:create     => nil, 
+                           :update     => nil, 
+                           :destroy    => nil,
+                           :satsifies? => nil)
     @table          = stub(:satisfies? => false, :create => nil, 
                            :update => nil,       :destroy => nil)
     @storage_factory  = stub(:index => @index)
@@ -197,6 +200,19 @@ describe "Friendly::StorageProxy" do
       it "returns the result from the cache" do
         @storage.first(:id => "x").should == @doc
       end
+    end
+  end
+
+  describe "counting objects" do
+    before do
+      @index = stub(:count => 10)
+      @index.stubs(:satisfies?).with(:x => 1).returns(true)
+      @storage_factory.stubs(:index).returns(@index)
+      @storage.add(:a)
+    end
+
+    it "delegates to a satisfying index" do
+      @storage.count(:x => 1).should == 10
     end
   end
 end

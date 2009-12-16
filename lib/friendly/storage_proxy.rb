@@ -31,6 +31,10 @@ module Friendly
       end
     end
 
+    def count(query)
+      index_for(query).count(query)
+    end
+
     def add(*args)
       tables << storage_factory.index(klass, *args)
     end
