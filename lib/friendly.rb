@@ -9,6 +9,7 @@ require 'friendly/document_table'
 require 'friendly/index'
 require 'friendly/memcached'
 require 'friendly/query'
+require 'friendly/sequel_monkey_patches'
 require 'friendly/storage_factory'
 require 'friendly/storage_proxy'
 require 'friendly/translator'
@@ -22,7 +23,6 @@ module Friendly
 
     def configure(config)
       self.db        = Sequel.connect(config)
-      self.db.meta_def(:supports_is_true){false}
       self.datastore = DataStore.new(db)
     end
 
