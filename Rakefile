@@ -59,3 +59,9 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+desc "Sync website."
+task :website do
+  `rsync -avz website/* friendlyorm.com:/var/www/friendlyorm.com`
+end
+
