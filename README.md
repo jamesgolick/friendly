@@ -159,7 +159,7 @@ TODO
   - Online migrations. Add a version column to each model and a DSL to update schema from one version to another on read. This facilitates data transformations on the fly. If you want to transform the whole table at once, just iterate over all the objects, and save.
   - Associations
   - Offline indexer
-  - Write and read through caching (memcache) layer
+  - Caching of arbitrary indexes
 
 Credits
 =======
