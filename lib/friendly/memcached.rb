@@ -1,5 +1,3 @@
-require 'memcached'
-
 module Friendly
   class Memcached
     attr_reader :cache
