@@ -160,6 +160,7 @@ TODO
   - Associations
   - Offline indexer
   - Caching of arbitrary indexes
+  - A lot more documentation
 
 Credits
 =======
