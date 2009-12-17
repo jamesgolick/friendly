@@ -278,5 +278,34 @@ describe "Friendly::Document" do
       Friendly::Document.documents.should include(@klass)
     end
   end
+
+  describe "Document.paginate" do
+    before do
+      @conditions             = {:name => "Stewie", :page! => 1, :per_page! => 20}
+      @query                  = stub(:page => 1, :per_page => 20)
+      @docs                   = stub
+      @query_klass            = stub
+      @klass.query_klass      = @query_klass
+      @count                  = 10
+      @collection_klass       = stub
+      @collection             = stub
+      @klass.collection_klass = @collection_klass
+      @collection.stubs(:replace).returns(@collection)
+      @collection_klass.stubs(:new).with(1, 20, @count).returns(@collection)
+      @query_klass.stubs(:new).returns(@query)
+      @storage_proxy.stubs(:count).with(@query).returns(@count)
+      @storage_proxy.stubs(:all).with(@query).returns(@docs)
+
+      @pagination = @klass.paginate(@conditions)
+    end
+
+    it "creates an instance of the collection klass and returns it" do
+      @pagination.should == @collection
+    end
+
+    it "fills the collection with objects from the datastore" do
+      @collection.should have_received(:replace).with(@docs)
+    end
+  end
 end
 

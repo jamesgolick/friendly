@@ -25,7 +25,7 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy, :query_klass, :table_name
+      attr_writer :storage_proxy, :query_klass, :table_name, :collection_klass
 
       def create_tables!
         storage_proxy.create_tables!
@@ -43,6 +43,10 @@ module Friendly
         @query_klass ||= Query
       end
 
+      def collection_klass
+        @collection_klass ||= WillPaginate::Collection
+      end
+
       def indexes(*args)
         storage_proxy.add(args)
       end
@@ -57,11 +61,11 @@ module Friendly
       end
 
       def first(query)
-        storage_proxy.first(query_klass.new(query))
+        storage_proxy.first(query(query))
       end
 
       def all(query)
-        storage_proxy.all(query_klass.new(query))
+        storage_proxy.all(query(query))
       end
 
       def find(id)
@@ -71,7 +75,14 @@ module Friendly
       end
 
       def count(conditions)
-        storage_proxy.count(query_klass.new(conditions))
+        storage_proxy.count(query(conditions))
+      end
+
+      def paginate(conditions)
+        query      = query(conditions)
+        count      = count(query)
+        collection = collection_klass.new(query.page, query.per_page, count)
+        collection.replace(all(query))
       end
 
       def create(attributes = {})
@@ -83,6 +94,11 @@ module Friendly
       def table_name
         @table_name ||= name.pluralize.underscore
       end
+
+      protected
+        def query(conditions)
+          conditions.is_a?(Query) ? conditions : query_klass.new(conditions)
+        end
     end
 
     def initialize(opts = {})
