@@ -66,6 +66,7 @@ To support richer queries, Friendly maintains its own indexes in separate tables
       name varchar(256) NOT NULL,
       id binary(16) NOT NULL,
       PRIMARY KEY (undelivered,actor_id,created_at,id)
+      UNIQUE KEY unique_index_on_id (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
 Then, we'd tell friendly to maintain that index for us:
@@ -82,6 +83,34 @@ Any time friendly saves a user object, it will update the index as well. That wa
     User.all(:name => ["James", "John", "Jonathan"])
 
 One of the big advantages to this approach is that indexes can be built offline. If you need a new index, you can write a script to generate it in the background without affecting the running application. Then, once it's ready, you can start querying it.
+
+Caching
+=======
+
+Friendly has built-in support for write-through caching.
+
+First, install the memcached gem:
+
+    sudo gem install memcached
+
+Then, configure your cache:
+
+    $cache         = Memcached.new # you'll probably want to pass some params here.
+    Friendly.cache = Friendly::Memcached.new($cache)
+
+Finally, declare the cache in your model:
+
+    class User
+      # ... snip ...
+
+      caches_by :id
+    end
+
+This tells Friendly to automatically write through to cache on save, and read through to the cache if it needs to hit the database on a query.
+
+Currently, only caching by id is supported, but caching of arbitrary indexes is planned. 
+
+__We're seeing a 99.8% cache hit rate in production with this code.__
 
 Installation
 ============
