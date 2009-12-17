@@ -1,7 +1,9 @@
 require File.expand_path("../../spec_helper", __FILE__)
+require 'active_support/core_ext'
 
 describe "Paginating" do
   before do
+    User.all(:name => "Fred").each { |u| u.destroy }
     @users = (0...15).map do |i|
       User.create(:name       => "Fred", 
                   :created_at => i.hours.ago)
