@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.2.7"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-15}
+  s.date = %q{2009-12-16}
   s.description = %q{}
   s.email = %q{james@giraffesoft.ca}
   s.extra_rdoc_files = [
@@ -39,7 +39,6 @@ Gem::Specification.new do |s|
      "lib/friendly/memcached.rb",
      "lib/friendly/newrelic.rb",
      "lib/friendly/query.rb",
-     "lib/friendly/sequel_monkey_patches.rb",
      "lib/friendly/storage.rb",
      "lib/friendly/storage_factory.rb",
      "lib/friendly/storage_proxy.rb",
@@ -63,6 +62,7 @@ Gem::Specification.new do |s|
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/pagination_spec.rb",
      "spec/integration/table_creator_spec.rb",
      "spec/integration/write_through_cache_spec.rb",
      "spec/spec.opts",
@@ -80,7 +80,51 @@ Gem::Specification.new do |s|
      "spec/unit/query_spec.rb",
      "spec/unit/storage_factory_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
-     "spec/unit/translator_spec.rb"
+     "spec/unit/translator_spec.rb",
+     "website/index.html",
+     "website/scripts/clipboard.swf",
+     "website/scripts/shBrushAS3.js",
+     "website/scripts/shBrushBash.js",
+     "website/scripts/shBrushCSharp.js",
+     "website/scripts/shBrushColdFusion.js",
+     "website/scripts/shBrushCpp.js",
+     "website/scripts/shBrushCss.js",
+     "website/scripts/shBrushDelphi.js",
+     "website/scripts/shBrushDiff.js",
+     "website/scripts/shBrushErlang.js",
+     "website/scripts/shBrushGroovy.js",
+     "website/scripts/shBrushJScript.js",
+     "website/scripts/shBrushJava.js",
+     "website/scripts/shBrushJavaFX.js",
+     "website/scripts/shBrushPerl.js",
+     "website/scripts/shBrushPhp.js",
+     "website/scripts/shBrushPlain.js",
+     "website/scripts/shBrushPowerShell.js",
+     "website/scripts/shBrushPython.js",
+     "website/scripts/shBrushRuby.js",
+     "website/scripts/shBrushScala.js",
+     "website/scripts/shBrushSql.js",
+     "website/scripts/shBrushVb.js",
+     "website/scripts/shBrushXml.js",
+     "website/scripts/shCore.js",
+     "website/scripts/shLegacy.js",
+     "website/styles/friendly.css",
+     "website/styles/help.png",
+     "website/styles/ie.css",
+     "website/styles/magnifier.png",
+     "website/styles/page_white_code.png",
+     "website/styles/page_white_copy.png",
+     "website/styles/print.css",
+     "website/styles/printer.png",
+     "website/styles/screen.css",
+     "website/styles/shCore.css",
+     "website/styles/shThemeDefault.css",
+     "website/styles/shThemeDjango.css",
+     "website/styles/shThemeEclipse.css",
+     "website/styles/shThemeEmacs.css",
+     "website/styles/shThemeFadeToGrey.css",
+     "website/styles/shThemeMidnight.css",
+     "website/styles/shThemeRDark.css"
   ]
   s.homepage = %q{http://github.com/giraffesoft/friendly}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -102,6 +146,7 @@ Gem::Specification.new do |s|
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/pagination_spec.rb",
      "spec/integration/table_creator_spec.rb",
      "spec/integration/write_through_cache_spec.rb",
      "spec/spec_helper.rb",
@@ -132,6 +177,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<sequel>, [">= 3.7.0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
+      s.add_runtime_dependency(%q<will_paginate>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<cucumber>, [">= 0"])
@@ -139,6 +185,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<sequel>, [">= 3.7.0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
+      s.add_dependency(%q<will_paginate>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
@@ -147,6 +194,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<sequel>, [">= 3.7.0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<activesupport>, [">= 0"])
+    s.add_dependency(%q<will_paginate>, [">= 0"])
   end
 end
 
