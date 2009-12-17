@@ -35,6 +35,7 @@ module Friendly
             method(table.klass.attributes[f].type.name.to_sym).call(f)
           end
           primary_key table.fields.flatten + [:id]
+          unique :id
         end
       end
   end
