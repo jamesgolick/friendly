@@ -7,7 +7,7 @@ module Friendly
     def initialize(parameters, uuid_klass = UUID)
       @uuid_klass = uuid_klass
       @conditions = parameters.reject { |k,v| k.to_s =~ /!$/ }
-      @page       = parameters[:page!] || 1
+      @page       = (parameters[:page!] || 1).to_i
       
       [:per_page!, :limit!, :offset!, :order!, :preserve_order!].each do |p|
         instance_variable_set("@#{p.to_s.gsub(/!/, '')}", parameters[p])

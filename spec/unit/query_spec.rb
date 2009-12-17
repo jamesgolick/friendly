@@ -85,5 +85,20 @@ describe "Friendly::Query" do
         @query.limit.should == 5
       end
     end
+
+    describe "when page is a string" do
+      before do
+        @query = Friendly::Query.new(:page!     => "2",
+                                     :per_page! => 5)
+      end
+
+      it "has an offset of :per_page * page-1" do
+        @query.offset.should == 5
+      end
+
+      it "has a limit of :per_page" do
+        @query.limit.should == 5
+      end
+    end
   end
 end

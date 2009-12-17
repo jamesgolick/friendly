@@ -43,4 +43,21 @@ describe "Paginating" do
       @found.should be_instance_of(WillPaginate::Collection)
     end
   end
+
+  describe "when :page is a string" do
+    before do
+      @found = User.paginate(:name      => "Fred", 
+                             :order!    => :created_at.desc,
+                             :page!     => "2",
+                             :per_page! => 5)
+    end
+
+    it "returns the :per_page results starting at offset :per_page * page" do
+      @found.should == @users.slice(5,5)
+    end
+
+    it "returns an instance of WillPaginate::Collection" do
+      @found.should be_instance_of(WillPaginate::Collection)
+    end
+  end
 end
