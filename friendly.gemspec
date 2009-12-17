@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/friendly/memcached.rb",
      "lib/friendly/newrelic.rb",
      "lib/friendly/query.rb",
+     "lib/friendly/sequel_monkey_patches.rb",
      "lib/friendly/storage.rb",
      "lib/friendly/storage_factory.rb",
      "lib/friendly/storage_proxy.rb",
