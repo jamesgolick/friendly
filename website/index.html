@@ -19,140 +19,185 @@
   	</script>
 
     <link rel="stylesheet" href="styles/friendly.css" type="text/css" media="screen, projection" />
-
+    <title>NoSQL with MySQL in Ruby - Friendly</title> 
   </head>
   <body>
-   <div class="container">
-      
-       
-    <h1>Friendly &nbsp;<span>NoSQL with MySQL</span></h1>
-    <hr/>
-	  <dl class="span-18">
-	    <dt>Store schemaless data in MySQL.</dt>
-	    <dd>Evolve your data model without feeling the pain of migrations.</dd>
-	    
-	    <dt>Build indexes offline</dt>
-	    <dd>Building an index can take hours with a lot of data. Stay agile without taking your app offline.</dd>
-	    
-	    <dt>Write-through and read-through caching baked right in.</dt>
-	    <dd><a href="http://radar.oreilly.com/2009/10/watching-websites.html">Fast websites make more money.</a> The 99.8% cache hit rate we see in production is a one-liner with Friendly.</dd>
-	  </dl>
-      <hr />
-      <div class="span-24" id="links">
-      	<div class="span-22 last">
-      	  <ul>
-      	    <li><a href="http://github.com/giraffesoft/friendly">Github Repo</a></li>
-      	    <li><a href="http://rdoc.info/giraffesoft/friendly">Documentation</a></li>
-      	    <li><a href="http://jamesgolick.com/etc">Release Announcement</a></li>
-	    <li>#friendly on Freenode</li>
-      	  </ul>
-      	</div>
+    <div id="information">
+      <div class="container">
+        <h1>Friendly &nbsp;<span>NoSQL with MySQL in Ruby</span></h1>
+
+        <div id="about" class="clearfix">
+          <div class="span-17 append-1">
+        	  <dl>
+        	    <dt>Store schemaless data in MySQL.</dt>
+        	    <dd>Evolve your data model without feeling the pain of migrations.</dd>
+  
+        	    <dt>Build indexes offline</dt>
+        	    <dd>Building an index can take hours with a lot of data. Stay agile without taking your app offline.</dd>
+  
+        	    <dt>Write-through and read-through caching baked right in.</dt>
+        	    <dd><a href="http://radar.oreilly.com/2009/10/watching-websites.html">Fast websites make more money.</a> The 99.8% cache hit rate we see in production is a one-liner with Friendly.</dd>
+        	  </dl>
+        	  <p>Created by: <a href="http://jamesgolick.com">James Golick</a> and <a href="http://twitter.com/jpalardy">Jonathan Palardy</a> for <a href="http://fetlife.com">FetLife</a> #NSFW.</p>
+          </div>
+          <div class="span-6 last">
+            <div class="box">
+          	  <ul class="box">
+          	    <li><span class="label small quiet">repo:</span> <a href="http://github.com/giraffesoft/friendly">Github</a></li>
+          	    <li><span class="label small quiet">docs:</span> <a href="http://rdoc.info/giraffesoft/friendly">RDoc.info</a></li>
+          	    <li><span class="label small quiet">blog:</span> <a href="http://jamesgolick.com/etc">Announcement</a></li>
+                <li><span class="label small quiet">irc:</span> #friendly <span class="small quiet">(freenode)</li>
+          	  </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <hr />
-      <h2>Friendly in 5 minutes</h2>
-      <h3>1. Install friendly</h3>
-      <div class="nolinenumbers">
-	<pre class="brush: bash;">sudo gem install friendly</pre>
+    </div>
+    <div id="quickinstall">
+      <div class="container">
+
+        <h2 class="bottom">Get Friendly in 5 minutes</h2>
+        <h3 class="bottom">Install friendly</h3>
+        <p class="quiet bottom">Install the gem.</p>
+	      <pre class="brush: bash;">sudo gem install friendly</pre>
+        <br/>
+          
+        <h3 class="bottom">Setup gem dependency in Rails</h3>
+        <p class="bottom quiet">If you're on rails, add this in environment.rb:</p>
+        <pre class="brush: ruby;">config.gem "friendly"</pre>
+        
+        <p class="quiet bottom">and create a config/friendly.yml:</p>
+        <pre class="brush: ruby;">
+  	development:
+  	  :adapter:  "mysql"
+  	  :host:     "localhost"
+  	  :user:     "root"
+  	  :password: "swordfish"
+  	  :database: "friendly_development"
+        </pre>
+	      
+        <p class="quiet">not using Rails:</p>
+        <pre class="brush: ruby;">
+  	Friendly.configure :adapter  => "mysql",
+  				       :host     => "localhost",
+  				       :user     => "root",
+  				       :password => "swordfish",
+  				       :database => "playing_with_friendly"
+        </pre>
+
+        <br/>
+        <h3 class="bottom">Create a Model</h3>
+        <p class="bottom quiet">Fire up your vim:</p>
+        <pre class="brush: ruby;">
+  	class BlogPost
+  	  include Friendly::Document
+	  
+  	  attribute :author, String
+  	  attribute :title,  String
+  	  attribute :body,   String
+  	end
+        </pre>
+        <br/>
+
+        <h3 class="bottom">Create the Table</h3>
+        <p class="quiet bottom">From irb or script/console:</p>
+        <pre class="brush: ruby;">Friendly.create_tables!</pre>
+        <br/>
+    
+        <h3 class="bottom">Index</h3>
+        <p class="bottom quiet">Just add the indexes you want to your model.</p>
+        <pre class="brush: ruby; highlight: [8,9];">
+  	class BlogPost
+  	  include Friendly::Document
+	  
+  	  attribute :author, String
+  	  attribute :title,  String
+  	  attribute :body,   String
+	  
+  	  indexes :author
+  	  indexes :created_at
+  	end      
+        </pre>
+
+        <p class="bottom quiet">Run create_tables again and the index tables will be created for you.</p>
+        <pre class="brush: ruby;">Friendly.create_tables!</pre>
+        <br/>
+
+        <h3 class="bottom">Create Objects</h3>
+        <p class="bottom quiet">With familiar ActiveRecord syntax:</p>
+        <pre class="brush: ruby;">
+  	BlogPost.create :author => "James Golick",
+  				    :title  => "Friendly has familiar syntax.",
+  				    :body   => "So, there's very little learning curve."
+       </pre>
+       <br/>
+
+
+        <h3 class="bottom">Query</h3>
+        <p class="bottom quiet">All posts by James Golick:</p>
+        <pre class="brush: ruby;">BlogPost.all(:author => "James Golick")</pre>
+
+        <p class="bottom quiet">Most recent posts:</p>
+        <pre class="brush: ruby;">BlogPost.all(:order! => :created_at.desc)</pre>
+        <br/>
+
+        <h3 class="bottom">Cache</h3>
+        <p class="bottom quiet">Install the memcached gem:</p>
+        <pre class="brush: ruby;">sudo gem install memcached</pre>
+
+        <p class="bottom quiet">Configure Friendly to cache:</p>
+        <pre class="brush: ruby;">Friendly.cache = Friendly::Memcached.new(Memcached.new)</pre>
+
+        <p class="bottom quiet">Configure your model to cache:</p>
+        <pre class="brush: ruby; highlight: [11];">
+  	class BlogPost
+  	  include Friendly::Document
+	  
+  	  attribute :author, String
+  	  attribute :title,  String
+  	  attribute :body,   String
+	  
+  	  indexes :author
+  	  indexes :created_at
+	  
+  	  caches_by :id
+  	end
+        </pre>
+        <p class="friendlier">And now your app is that much <u>friendlier</u>!</p>
       </div>
-
-      <h3>Setup gem dependency in Rails</h3>
-      <p class="bottom">If you're on rails, add this in environment.rb:</p>
-      <pre class="brush: ruby;">config.gem "friendly"</pre>
-
-    
-      <p class="bottom">and create a config/friendly.yml:</p>
-      <pre class="brush: ruby;">
-	development:
-	  :adapter:  "mysql"
-	  :host:     "localhost"
-	  :user:     "root"
-	  :password: "swordfish"
-	  :database: "friendly_development"
-      </pre>
-	   
-      <h4>Not Rails</h4>
-      <pre class="brush: ruby;">
-	Friendly.configure :adapter  => "mysql",
-				       :host     => "localhost",
-				       :user     => "root",
-				       :password => "swordfish",
-				       :database => "playing_with_friendly"
-      </pre>
-
-      <h3>Create a Model</h3>
-      <pre class="brush: ruby;">
-	class BlogPost
-	  include Friendly::Document
-	  
-	  attribute :author, String
-	  attribute :title,  String
-	  attribute :body,   String
-	end
-      </pre>
-
-
-      <h3>Create Tables</h3>
-      <p class="bottom">From irb or script/console:</p>
-      <pre class="brush: ruby;">Friendly.create_tables!</pre>
-
-    
-      <h3>Index</h3>
-      <p class="bottom">Just add the indexes you want to your model.</p>
-      <pre class="brush: ruby; highlight: [8,9];">
-	class BlogPost
-	  include Friendly::Document
-	  
-	  attribute :author, String
-	  attribute :title,  String
-	  attribute :body,   String
-	  
-	  indexes :author
-	  indexes :created_at
-	end      
-      </pre>
-
-      <p class="bottom">Run create_tables again and the index tables will be created for you.</p>
-      <pre class="brush: ruby;">Friendly.create_tables!</pre>
-
-      <h3>Create Objects</h3>
-      <p class="bottom">With familiar ActiveRecord syntax:</p>
-      <pre class="brush: ruby;">
-	BlogPost.create :author => "James Golick",
-				    :title  => "Friendly has familiar syntax.",
-				    :body   => "So, there's very little learning curve."
-     </pre>
-
-
-      <h3>Query</h3>
-      <p class="bottom">All posts by James Golick:</p>
-      <pre class="brush: ruby;">BlogPost.all(:author => "James Golick")</pre>
-
-      <p class="bottom">Most recent posts:</p>
-      <pre class="brush: ruby;">BlogPost.all(:order! => :created_at.desc)</pre>
-
-
-      <h3>Cache</h3>
-      <p class="bottom">Install the memcached gem:</p>
-      <pre class="brush: ruby;">sudo gem install memcached</pre>
-
-      <p class="bottom">Configure Friendly to cache:</p>
-      <pre class="brush: ruby;">Friendly.cache = Friendly::Memcached.new(Memcached.new)</pre>
-
-      <p class="bottom">Configure your model to cache:</p>
-      <pre class="brush: ruby; highlight: [11];">
-	class BlogPost
-	  include Friendly::Document
-	  
-	  attribute :author, String
-	  attribute :title,  String
-	  attribute :body,   String
-	  
-	  indexes :author
-	  indexes :created_at
-	  
-	  caches_by :id
-	end
-      </pre>
+    </div>
+    <div id="footer" class="small">
+      <div class="container">
+        <div class="span-6">
+          <h4>Important links</h4>
+          <ul>
+            <li><a href="#">GitHub Repository</a></li>
+            <li><a href="#">Mailing List</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Inspiration</a></li>
+          </ul>
+        </div>
+        <div class="span-6">
+          <h4>Created by</h4>
+          <ul>
+            <li><a href="#">James Golick</a></li>
+            <li><a href="#">Jonathan Palardy</a></li>
+          </ul>
+        </div>
+        <div class="span-6">
+          <h4>Inspired by</h4>
+          <ul>
+            <li><a href="#">Jesus Christ our Saviour</a></li>
+            <!-- Special thanks to Jesus Christ our Lord Saviour -->
+          </ul>
+        </div>
+        <div class="span-6 last">
+          <h4>Used on</h4>
+          <ul>
+            <li><a href="http://fetlife.com">FetLife</a> <span class="small">#NSFW</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </body>
 </html>
