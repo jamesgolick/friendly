@@ -27,7 +27,7 @@
        
     <h1>Friendly &nbsp;<span>NoSQL with MySQL</span></h1>
     <hr/>
-	  <dl>
+	  <dl class="span-18">
 	    <dt>Store schemaless data in MySQL.</dt>
 	    <dd>Evolve your data model without feeling the pain of migrations.</dd>
 	    
@@ -36,35 +36,31 @@
 	    
 	    <dt>Write-through and read-through caching baked right in.</dt>
 	    <dd><a href="http://radar.oreilly.com/2009/10/watching-websites.html">Fast websites make more money.</a> The 99.8% cache hit rate we see in production is a one-liner with Friendly.</dd>
-	    
-	    <dt>Compatible with will_paginate.</dt>
-	    <dd>No need to change your view code.</dd>
 	  </dl>
       <hr />
       <div class="span-24" id="links">
-      	<div class="span-2 loud">Links:</div>
       	<div class="span-22 last">
       	  <ul>
-      	    <li><a href="http://github.com/giraffesoft/friendly">Github</a></li>
-      	    <li><a href="http://rdoc.info/giraffesoft/friendly">RDoc.info</a></li>
+      	    <li><a href="http://github.com/giraffesoft/friendly">Github Repo</a></li>
+      	    <li><a href="http://rdoc.info/giraffesoft/friendly">Documentation</a></li>
       	    <li><a href="http://jamesgolick.com/etc">Release Announcement</a></li>
+	    <li>#friendly on Freenode</li>
       	  </ul>
       	</div>
       </div>
       <hr />
       <h2>Friendly in 5 minutes</h2>
-      <h3>Install friendly</h3>
+      <h3>1. Install friendly</h3>
       <div class="nolinenumbers">
 	<pre class="brush: bash;">sudo gem install friendly</pre>
       </div>
 
       <h3>Setup gem dependency in Rails</h3>
-      <h4>Rails</h4>
-      <p class="bottom">In environment.rb:</p>
+      <p class="bottom">If you're on rails, add this in environment.rb:</p>
       <pre class="brush: ruby;">config.gem "friendly"</pre>
 
     
-      <p class="bottom">Create a config/friendly.yml:</p>
+      <p class="bottom">and create a config/friendly.yml:</p>
       <pre class="brush: ruby;">
 	development:
 	  :adapter:  "mysql"
