@@ -65,7 +65,7 @@ To support richer queries, Friendly maintains its own indexes in separate tables
     CREATE TABLE index_users_on_name (
       name varchar(256) NOT NULL,
       id binary(16) NOT NULL,
-      PRIMARY KEY (undelivered,actor_id,created_at,id)
+      PRIMARY KEY (name, id)
       UNIQUE KEY unique_index_on_id (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
