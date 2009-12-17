@@ -168,3 +168,5 @@ Friendly was developed by James Golick & Jonathan Palardy at FetLife (nsfw).
 
 Copyright (c) 2009 James Golick. See LICENSE for details.
 
+Except for friendly/uuid.rb which is copyright Evan Weaver and Apache Licensed. See APACHE-LICENSE for details.
+
