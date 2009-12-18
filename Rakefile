@@ -5,10 +5,10 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "friendly"
-    gem.summary = %Q{}
+    gem.summary = %Q{NoSQL with MySQL in Ruby}
     gem.description = %Q{}
-    gem.email = "james@giraffesoft.ca"
-    gem.homepage = "http://github.com/giraffesoft/friendly"
+    gem.email = "jamesgolick@gmail.com"
+    gem.homepage = "http://friendlyorm.com"
     gem.authors = ["James Golick"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "cucumber", ">= 0"
