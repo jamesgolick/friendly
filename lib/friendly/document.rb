@@ -95,6 +95,9 @@ module Friendly
         @table_name ||= name.pluralize.underscore
       end
 
+      def named_scope(*args)
+      end
+
       protected
         def query(conditions)
           conditions.is_a?(Query) ? conditions : query_klass.new(conditions)

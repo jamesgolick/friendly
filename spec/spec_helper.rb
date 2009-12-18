@@ -43,6 +43,8 @@ class User
   indexes   :friend
   indexes   :name
   indexes   :name, :created_at
+
+  named_scope :named_quagmire, :name => "Quagmire"
 end
 
 User.create_tables!
