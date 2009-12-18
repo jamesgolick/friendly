@@ -5,13 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.3.4"
+  s.version = "0.3.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
   s.date = %q{2009-12-17}
   s.description = %q{}
-  s.email = %q{james@giraffesoft.ca}
+  s.email = %q{jamesgolick@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.md"
@@ -127,11 +127,11 @@ Gem::Specification.new do |s|
      "website/styles/shThemeMidnight.css",
      "website/styles/shThemeRDark.css"
   ]
-  s.homepage = %q{http://github.com/giraffesoft/friendly}
+  s.homepage = %q{http://friendlyorm.com}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{}
+  s.summary = %q{NoSQL with MySQL in Ruby}
   s.test_files = [
     "spec/fakes/data_store_fake.rb",
      "spec/fakes/database_fake.rb",
