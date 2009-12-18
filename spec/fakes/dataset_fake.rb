@@ -8,7 +8,7 @@ class DatasetFake
   end
 
   def where(conditions)
-    @where[conditions]
+    @where.detect { |k,v| k == conditions }.last
   end
 
   def insert(attributes)
@@ -22,7 +22,7 @@ class DatasetFake
   end
 
   def first(conditions)
-    @first[conditions]
+    @first.detect { |k,v| k == conditions }.last
   end
 end
 
