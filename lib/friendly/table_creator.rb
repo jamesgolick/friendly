@@ -1,9 +1,10 @@
 module Friendly
   class TableCreator
-    attr_reader :db
+    attr_reader :db, :attr_klass
 
-    def initialize(db = Friendly.db)
-      @db = db
+    def initialize(db = Friendly.db, attr_klass = Friendly::Attribute)
+      @db         = db
+      @attr_klass = attr_klass
     end
 
     def create(table)
@@ -29,11 +30,13 @@ module Friendly
       end
 
       def create_index_table(table)
+        attr = attr_klass # close around this please
+
         db.create_table(table.table_name) do
           binary :id, :size => 16
           table.fields.flatten.each do |f|    
             klass = table.klass.attributes[f].type
-            type  = Friendly::Attribute.custom_type?(klass) ? Friendly::Attribute.sql_type(klass) : klass
+            type  = attr.custom_type?(klass) ? attr.sql_type(klass) : klass
             column(f, type)
           end
           primary_key table.fields.flatten + [:id]
