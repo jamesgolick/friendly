@@ -22,6 +22,10 @@ module Friendly
       def converters
         @converters ||= {}
       end
+
+      def custom_type?(klass)
+        !sql_type(klass).nil?
+      end
     end
 
     converters[Integer] = lambda { |s| s.to_i }

@@ -77,6 +77,10 @@ describe "Friendly::Attribute" do
     it "registers the conversion method" do
       Friendly::Attribute.new(@klass, :something, @klass).convert("1").should == 1
     end
+
+    it "is custom_type?(@klass)" do
+      Friendly::Attribute.should be_custom_type(@klass)
+    end
   end
 
   describe "deregistering a type" do
@@ -92,6 +96,10 @@ describe "Friendly::Attribute" do
 
     it "removes the sql_type" do
       Friendly::Attribute.sql_types.should_not be_has_key(@klass)
+    end
+
+    it "is not custom_type?(@klass)" do
+      Friendly::Attribute.should_not be_custom_type(@klass)
     end
   end
 end

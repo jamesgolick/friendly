@@ -32,12 +32,9 @@ module Friendly
         db.create_table(table.table_name) do
           binary :id, :size => 16
           table.fields.flatten.each do |f|    
-            # Support for custom types        
-            if literal = Friendly::Attribute.sql_type(table.klass.attributes[f].type)
-              column(f, literal)
-            else
-              method(table.klass.attributes[f].type.name.to_sym).call(f)
-            end        
+            klass = table.klass.attributes[f].type
+            type  = Friendly::Attribute.custom_type?(klass) ? Friendly::Attribute.sql_type(klass) : klass
+            column(f, type)
           end
           primary_key table.fields.flatten + [:id]
           unique :id
