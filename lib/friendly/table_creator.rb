@@ -32,6 +32,7 @@ module Friendly
         db.create_table(table.table_name) do
           binary      :id,         :size => 16
           table.fields.flatten.each do |f|
+            puts table.klass.attributes[f].type.name.to_sym
             method(table.klass.attributes[f].type.name.to_sym).call(f)
           end
           primary_key table.fields.flatten + [:id]

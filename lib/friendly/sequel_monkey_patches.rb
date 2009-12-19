@@ -37,15 +37,18 @@ end
 
 module Sequel
   class Database
-    def type_literal_generic_uuid(column)
+    def type_literal_generic_friendlyuuid(column)
       "binary(16)"
     end
 
-    def type_literal_generic_boolean(column)
+    def type_literal_generic_friendlyboolean(column)
       :boolean
     end
   end
 end
 
-Sequel::Schema::Generator.add_type_method(Friendly::UUID)
-Sequel::Schema::Generator.add_type_method(Friendly::Boolean)
+
+Sequel::Schema::Generator.add_type_method(FriendlyBoolean)
+Sequel::Schema::Generator.add_type_method(FriendlyUUID)
+
+

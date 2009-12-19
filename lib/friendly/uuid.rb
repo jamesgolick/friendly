@@ -141,3 +141,4 @@ module Friendly
   end
 end
 
+class FriendlyUUID < Friendly::UUID; end

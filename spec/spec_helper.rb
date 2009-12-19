@@ -33,11 +33,14 @@ Friendly.cache     = Friendly::Memcached.new($cache)
 class User
   include Friendly::Document
 
-  attribute :name,  String
-  attribute :age,   Integer
-  attribute :happy, Friendly::Boolean, :default => true
-  attribute :sad,   Friendly::Boolean, :default => false
+  attribute :name,       String
+  attribute :age,        Integer
+  attribute :happy,      FriendlyBoolean, :default => true
+  attribute :sad,        FriendlyBoolean, :default => false
+  attribute :friend,     FriendlyUUID
 
+  indexes   :happy
+  indexes   :friend
   indexes   :name
   indexes   :name, :created_at
 end
@@ -47,7 +50,7 @@ User.create_tables!
 class Address
   include Friendly::Document
 
-  attribute :user_id, Friendly::UUID
+  attribute :user_id, FriendlyUUID
   attribute :street,  String
 
   indexes   :user_id
