@@ -7,13 +7,14 @@ require 'rubygems'
 require 'spec'
 require 'spec/autorun'
 require 'sequel'
-require 'json'
+require 'json/pure'
 gem     'jferris-mocha'
 require 'mocha'
 require 'memcached'
 require 'friendly'
 
-Friendly.configure "mysql://root@localhost/friendly_test"
+config = YAML.load(File.read(File.dirname(__FILE__) + "/config.yml"))['test']
+Friendly.configure config
 $db = Friendly.db
 Sequel::MySQL.default_engine = "InnoDB"
 
