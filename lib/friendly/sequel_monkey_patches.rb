@@ -1,6 +1,4 @@
 require 'sequel'
-require 'friendly/uuid'
-require 'friendly/boolean'
 
 # Out of the box, Sequel uses IS TRUE/FALSE for boolean parameters
 # This prevents MySQL from using indexes.
@@ -34,21 +32,3 @@ module Sequel
     end
   end
 end
-
-module Sequel
-  class Database
-    def type_literal_generic_friendlyuuid(column)
-      "binary(16)"
-    end
-
-    def type_literal_generic_friendlyboolean(column)
-      :boolean
-    end
-  end
-end
-
-
-Sequel::Schema::Generator.add_type_method(FriendlyBoolean)
-Sequel::Schema::Generator.add_type_method(FriendlyUUID)
-
-

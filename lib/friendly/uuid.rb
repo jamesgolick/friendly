@@ -1,4 +1,6 @@
 require 'friendly/time'
+require 'friendly/attribute'
+
 # This class was extracted from the cassandra gem by Evan Weaver
 # As such, it is distributed under the terms of the apache license.
 # See the APACHE-LICENSE file in the root of this project for more information.
@@ -141,4 +143,5 @@ module Friendly
   end
 end
 
-class FriendlyUUID < Friendly::UUID; end
+Friendly::Attribute.register_type(
+  Friendly::UUID, 'binary(16)', lambda { |s| Friendly::UUID.new(s) })

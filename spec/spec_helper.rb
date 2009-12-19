@@ -35,9 +35,9 @@ class User
 
   attribute :name,       String
   attribute :age,        Integer
-  attribute :happy,      FriendlyBoolean, :default => true
-  attribute :sad,        FriendlyBoolean, :default => false
-  attribute :friend,     FriendlyUUID
+  attribute :happy,      Friendly::Boolean, :default => true
+  attribute :sad,        Friendly::Boolean, :default => false
+  attribute :friend,     Friendly::UUID
 
   indexes   :happy
   indexes   :friend
@@ -50,7 +50,7 @@ User.create_tables!
 class Address
   include Friendly::Document
 
-  attribute :user_id, FriendlyUUID
+  attribute :user_id, Friendly::UUID
   attribute :street,  String
 
   indexes   :user_id

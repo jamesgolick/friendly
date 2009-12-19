@@ -30,10 +30,14 @@ module Friendly
 
       def create_index_table(table)
         db.create_table(table.table_name) do
-          binary      :id,         :size => 16
-          table.fields.flatten.each do |f|
-            puts table.klass.attributes[f].type.name.to_sym
-            method(table.klass.attributes[f].type.name.to_sym).call(f)
+          binary :id, :size => 16
+          table.fields.flatten.each do |f|    
+            # Support for custom types        
+            if literal = Friendly::Attribute.literal(table.klass.attributes[f].type)
+              column(f, literal)
+            else
+              method(table.klass.attributes[f].type.name.to_sym).call(f)
+            end        
           end
           primary_key table.fields.flatten + [:id]
           unique :id

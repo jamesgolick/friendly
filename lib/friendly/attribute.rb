@@ -1,16 +1,10 @@
-require 'friendly/boolean'
-require 'friendly/uuid'
-
 module Friendly
   class Attribute
+    LITERALS = {}
     CONVERTERS = {}
-    CONVERTERS[UUID]    = lambda { |s| UUID.new(s) }
-    CONVERTERS[FriendlyUUID]    = lambda { |s| UUID.new(s) }
     CONVERTERS[Integer] = lambda { |s| s.to_i }
     CONVERTERS[String]  = lambda { |s| s.to_s }
-    CONVERTERS[Boolean] = lambda { |s| s }
-    CONVERTERS[FriendlyBoolean] = lambda { |s| s }
-
+    
     attr_reader :klass, :name, :type, :default_value
 
     def initialize(klass, name, type, options = {})
@@ -39,7 +33,16 @@ module Friendly
         nil
       end
     end
-
+    
+    def self.register_type(type, literal, proc)
+      LITERALS[type.name] = literal
+      CONVERTERS[type] = proc
+    end
+      
+    def self.literal(type)
+      LITERALS[type.name]
+    end
+      
     protected
       def build_accessors
         n = name
