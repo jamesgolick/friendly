@@ -1,9 +1,31 @@
 module Friendly
   class Attribute
-    LITERALS = {}
-    CONVERTERS = {}
-    CONVERTERS[Integer] = lambda { |s| s.to_i }
-    CONVERTERS[String]  = lambda { |s| s.to_s }
+    class << self
+      def register_type(type, sql_type, &block)
+        sql_types[type.name] = sql_type
+        converters[type]     = block
+      end
+
+      def deregister_type(type)
+        sql_types.delete(type.name)
+        converters.delete(type)
+      end
+        
+      def sql_type(type)
+        sql_types[type.name]
+      end
+
+      def sql_types
+        @sql_types ||= {}
+      end
+
+      def converters
+        @converters ||= {}
+      end
+    end
+
+    converters[Integer] = lambda { |s| s.to_i }
+    converters[String]  = lambda { |s| s.to_s }
     
     attr_reader :klass, :name, :type, :default_value
 
@@ -21,7 +43,7 @@ module Friendly
 
     def convert(value)
       assert_converter_exists(value)
-      CONVERTERS[type].call(value)
+      converters[type].call(value)
     end
 
     def default
@@ -32,15 +54,6 @@ module Friendly
       else
         nil
       end
-    end
-    
-    def self.register_type(type, literal, proc)
-      LITERALS[type.name] = literal
-      CONVERTERS[type] = proc
-    end
-      
-    def self.literal(type)
-      LITERALS[type.name]
     end
       
     protected
@@ -60,11 +73,15 @@ module Friendly
       end
 
       def assert_converter_exists(value)
-        unless CONVERTERS.has_key?(type)
+        unless converters.has_key?(type)
           msg = "Can't convert #{value} to #{type}. 
                  Add a custom converter to Friendly::Attribute::CONVERTERS."
           raise NoConverterExists, msg
         end
+      end
+
+      def converters
+        self.class.converters
       end
   end
 end

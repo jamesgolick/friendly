@@ -61,4 +61,37 @@ describe "Friendly::Attribute" do
   it "has a default value even if it's false" do
     @false.default.should be_false
   end
+
+  describe "registering a type" do
+    before do
+      @klass = Class.new
+      Friendly::Attribute.register_type(@klass, "binary(16)") { |t| t.to_i }
+    end
+
+    after { Friendly::Attribute.deregister_type(@klass) }
+
+    it "tells Attribute about the sql_type" do
+      Friendly::Attribute.sql_type(@klass).should == "binary(16)"
+    end
+
+    it "registers the conversion method" do
+      Friendly::Attribute.new(@klass, :something, @klass).convert("1").should == 1
+    end
+  end
+
+  describe "deregistering a type" do
+    before do
+      @klass = Class.new
+      Friendly::Attribute.register_type(@klass, "whatever") {}
+      Friendly::Attribute.deregister_type(@klass)
+    end
+
+    it "removes the converter method" do
+      Friendly::Attribute.converters.should_not be_has_key(@klass)
+    end
+
+    it "removes the sql_type" do
+      Friendly::Attribute.sql_types.should_not be_has_key(@klass)
+    end
+  end
 end

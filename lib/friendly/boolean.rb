@@ -7,4 +7,4 @@ module Friendly
   end
 end
 
-Friendly::Attribute.register_type(Friendly::Boolean, 'boolean', lambda { |s| s })
+Friendly::Attribute.register_type(Friendly::Boolean, 'boolean') { |s| s }
