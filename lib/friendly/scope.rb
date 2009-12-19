@@ -10,5 +10,9 @@ module Friendly
     def all(extra_parameters = {})
       klass.all(parameters.merge(extra_parameters))
     end
+
+    def first(extra_parameters = {})
+      klass.first(parameters.merge(extra_parameters))
+    end
   end
 end
