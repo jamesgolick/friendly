@@ -21,3 +21,4 @@ pkg
 ## PROJECT::SPECIFIC
 test.rb
 test_active_record.rb
+spec/config.yml

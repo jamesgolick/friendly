@@ -1,7 +1,0 @@
-test:
-  :adapter:  "mysql"
-  :host:     "localhost"
-  :user:     "root"
-  :password: ""
-  :database: "friendly_test"
-
