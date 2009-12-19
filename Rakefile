@@ -13,6 +13,7 @@ begin
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "cucumber", ">= 0"
     gem.add_development_dependency "jferris-mocha"
+    gem.add_development_dependency "memcached"
     gem.add_dependency "sequel", ">= 3.7.0"
     gem.add_dependency "json"
     gem.add_dependency "activesupport"
