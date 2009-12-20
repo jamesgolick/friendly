@@ -136,7 +136,7 @@ module Friendly
       #     scope = Post.scope(:order! => :created_at)
       #     scope.all # => [#<Post>, #<Post>]
       #
-      # @param [Hash] the query parameters to create the scope with.
+      # @param [Hash] parameters the query parameters to create the scope with.
       #
       def scope(parameters)
         scope_proxy.ad_hoc(parameters)
