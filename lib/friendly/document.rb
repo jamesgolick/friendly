@@ -25,7 +25,9 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy, :query_klass, :table_name, :collection_klass
+      attr_writer :storage_proxy, :query_klass, 
+                  :table_name,    :collection_klass,
+                  :named_scope_set
 
       def create_tables!
         storage_proxy.create_tables!
@@ -93,6 +95,38 @@ module Friendly
 
       def table_name
         @table_name ||= name.pluralize.underscore
+      end
+
+      def named_scope_set
+        @named_scope_set ||= NamedScopeSet.new(self)
+      end
+
+      # Add a named scope to this Document.
+      #
+      # e.g.
+      #     
+      #     class Post
+      #       indexes     :created_at
+      #       named_scope :recent, :order! => :created_at.desc
+      #     end
+      #
+      # Then, you can access the recent posts with:
+      #
+      #     Post.recent.all
+      # ...or...
+      #     Post.recent.first
+      #
+      # Both #all and #first also take additional parameters:
+      #
+      #     Post.recent.all(:author_id => @author.id)
+      #
+      # Scopes are presently not chainable, though that is coming soon.
+      #
+      # @param [Symbol] name the name of the scope.
+      # @param [Hash] parameters the query that this named scope will perform.
+      #
+      def named_scope(name, parameters)
+        named_scope_set.add(name, parameters)
       end
 
       protected
