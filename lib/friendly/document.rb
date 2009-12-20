@@ -129,6 +129,15 @@ module Friendly
         scope_proxy.add_named(name, parameters)
       end
 
+      # Create an ad hoc scope on this Document.
+      #
+      # e.g.
+      #     
+      #     scope = Post.scope(:order! => :created_at)
+      #     scope.all # => [#<Post>, #<Post>]
+      #
+      # @param [Hash] the query parameters to create the scope with.
+      #
       def scope(parameters)
         scope_proxy.ad_hoc(parameters)
       end
