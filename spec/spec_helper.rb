@@ -45,6 +45,8 @@ class User
   indexes   :name, :created_at
 
   named_scope :named_quagmire, :name => "Quagmire"
+
+  has_many    :addresses
 end
 
 User.create_tables!

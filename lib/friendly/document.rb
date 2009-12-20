@@ -142,6 +142,9 @@ module Friendly
         scope_proxy.ad_hoc(parameters)
       end
 
+      def has_many(*args)
+      end
+
       protected
         def query(conditions)
           conditions.is_a?(Query) ? conditions : query_klass.new(conditions)
