@@ -307,5 +307,18 @@ describe "Friendly::Document" do
       @collection.should have_received(:replace).with(@docs)
     end
   end
+
+  describe "creating a named_scope" do
+    before do
+      @named_scope_set       = stub(:add => nil)
+      @klass.named_scope_set = @named_scope_set
+      @klass.named_scope(:by_name, :order => :name)
+    end
+
+    it "asks the named_scope_set to add it" do
+      @klass.named_scope_set.should have_received(:add).
+                                      with(:by_name, :order => :name)
+    end
+  end
 end
 

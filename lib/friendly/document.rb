@@ -25,7 +25,9 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy, :query_klass, :table_name, :collection_klass
+      attr_writer :storage_proxy, :query_klass, 
+                  :table_name,    :collection_klass,
+                  :named_scope_set
 
       def create_tables!
         storage_proxy.create_tables!
@@ -95,7 +97,12 @@ module Friendly
         @table_name ||= name.pluralize.underscore
       end
 
+      def named_scope_set
+        @named_scope_set ||= NamedScopeSet.new(self)
+      end
+
       def named_scope(*args)
+        named_scope_set.add(*args)
       end
 
       protected
