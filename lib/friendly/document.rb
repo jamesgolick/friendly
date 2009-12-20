@@ -101,8 +101,8 @@ module Friendly
         @named_scope_set ||= NamedScopeSet.new(self)
       end
 
-      def named_scope(*args)
-        named_scope_set.add(*args)
+      def named_scope(name, parameters)
+        named_scope_set.add(name, parameters)
       end
 
       protected
