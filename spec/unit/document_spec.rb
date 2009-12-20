@@ -310,13 +310,14 @@ describe "Friendly::Document" do
 
   describe "creating a named_scope" do
     before do
-      @scope_proxy           = stub(:add => nil)
+      @scope_proxy           = stub(:add_named => nil)
       @klass.scope_proxy     = @scope_proxy
       @klass.named_scope(:by_name, :order => :name)
     end
 
     it "asks the named_scope_set to add it" do
-      @klass.scope_proxy.should have_received(:add).with(:by_name, :order => :name)
+      @klass.scope_proxy.should have_received(:add_named).
+                                  with(:by_name, :order => :name)
     end
   end
 end

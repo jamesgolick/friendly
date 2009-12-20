@@ -2,16 +2,16 @@ require 'friendly/named_scope'
 
 module Friendly
   class ScopeProxy
-    attr_reader :klass, :named_scope_klass, :scopes
+    attr_reader :klass, :scope_klass, :scopes
 
-    def initialize(klass, named_scope_klass = NamedScope)
-      @klass             = klass
-      @named_scope_klass = named_scope_klass
-      @scopes            = {}
+    def initialize(klass, scope_klass = Scope)
+      @klass       = klass
+      @scope_klass = scope_klass
+      @scopes      = {}
     end
 
-    def add(name, parameters)
-      scopes[name] = named_scope_klass.new(klass, parameters)
+    def add_named(name, parameters)
+      scopes[name] = parameters
       add_scope_method_to_klass(name)
     end
 
@@ -20,7 +20,7 @@ module Friendly
     end
 
     def get_instance(name)
-      get(name).scope
+      scope_klass.new(klass, get(name))
     end
 
     protected

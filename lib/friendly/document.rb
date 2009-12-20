@@ -126,7 +126,7 @@ module Friendly
       # @param [Hash] parameters the query that this named scope will perform.
       #
       def named_scope(name, parameters)
-        scope_proxy.add(name, parameters)
+        scope_proxy.add_named(name, parameters)
       end
 
       protected
