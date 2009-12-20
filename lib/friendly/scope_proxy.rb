@@ -23,6 +23,10 @@ module Friendly
       scope_klass.new(klass, get(name))
     end
 
+    def ad_hoc(parameters)
+      scope_klass.new(klass, parameters)
+    end
+
     protected
       def add_scope_method_to_klass(scope_name)
         klass.class_eval do

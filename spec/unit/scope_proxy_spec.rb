@@ -23,8 +23,14 @@ describe "Friendly::ScopeProxy" do
   end
 
   describe "getting an instance of a scope" do
-    it "delegates to the named_scope" do
+    it "instantiates Scope" do
       @scope_proxy.get_instance(:recent).should == @scope
+    end
+  end
+
+  describe "accessing an ad_hoc scope" do
+    it "instantiates Scope" do
+      @scope_proxy.ad_hoc(@params).should == @scope
     end
   end
 end
