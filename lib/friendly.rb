@@ -1,3 +1,4 @@
+require 'friendly/associations'
 require 'friendly/attribute'
 require 'friendly/boolean'
 require 'friendly/cache'
