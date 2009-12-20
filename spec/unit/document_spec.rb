@@ -320,5 +320,18 @@ describe "Friendly::Document" do
                                   with(:by_name, :order => :name)
     end
   end
+
+  describe "accessing an ad-hoc scope" do
+    before do
+      @scope             = stub
+      @scope_proxy       = stub
+      @scope_proxy.stubs(:ad_hoc).with(:order! => :name).returns(@scope)
+      @klass.scope_proxy = @scope_proxy
+    end
+
+    it "asks the named_scope_set to add it" do
+      @klass.scope(:order! => :name).should == @scope
+    end
+  end
 end
 

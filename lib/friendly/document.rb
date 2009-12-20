@@ -129,6 +129,10 @@ module Friendly
         scope_proxy.add_named(name, parameters)
       end
 
+      def scope(parameters)
+        scope_proxy.ad_hoc(parameters)
+      end
+
       protected
         def query(conditions)
           conditions.is_a?(Query) ? conditions : query_klass.new(conditions)
