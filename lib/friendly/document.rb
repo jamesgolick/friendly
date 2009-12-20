@@ -27,7 +27,7 @@ module Friendly
     module ClassMethods
       attr_writer :storage_proxy, :query_klass, 
                   :table_name,    :collection_klass,
-                  :named_scope_set
+                  :scope_proxy
 
       def create_tables!
         storage_proxy.create_tables!
@@ -97,8 +97,8 @@ module Friendly
         @table_name ||= name.pluralize.underscore
       end
 
-      def named_scope_set
-        @named_scope_set ||= NamedScopeSet.new(self)
+      def scope_proxy
+        @scope_proxy ||= ScopeProxy.new(self)
       end
 
       # Add a named scope to this Document.
@@ -126,7 +126,7 @@ module Friendly
       # @param [Hash] parameters the query that this named scope will perform.
       #
       def named_scope(name, parameters)
-        named_scope_set.add(name, parameters)
+        scope_proxy.add(name, parameters)
       end
 
       protected

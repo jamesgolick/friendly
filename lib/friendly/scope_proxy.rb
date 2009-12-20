@@ -1,7 +1,7 @@
 require 'friendly/named_scope'
 
 module Friendly
-  class NamedScopeSet
+  class ScopeProxy
     attr_reader :klass, :named_scope_klass, :scopes
 
     def initialize(klass, named_scope_klass = NamedScope)
@@ -28,7 +28,7 @@ module Friendly
         klass.class_eval do
           eval <<-__END__
             def self.#{scope_name}
-              named_scope_set.get_instance(:#{scope_name})
+              scope_proxy.get_instance(:#{scope_name})
             end
           __END__
         end
