@@ -12,6 +12,10 @@ describe "Friendly::ScopeProxy" do
     @scope_proxy.add_named(:recent, @params)
   end
 
+  it "returns false for has_named_scope if it doesnt have one by that name" do
+    @scope_proxy.should_not be_has_named_scope(:whatever)
+  end
+
   describe "adding a scope" do
     it "adds a scope by that name to the set" do
       @scope_proxy.get(:recent).should == @params
@@ -19,6 +23,10 @@ describe "Friendly::ScopeProxy" do
 
     it "adds a method to the klass that returns an instance of the scope" do
       @klass.recent.should == @scope
+    end
+
+    it "returns true for #has_named_scope?(name)" do
+      @scope_proxy.should be_has_named_scope(:recent)
     end
   end
 

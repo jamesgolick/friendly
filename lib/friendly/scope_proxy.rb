@@ -27,6 +27,10 @@ module Friendly
       scope_klass.new(klass, parameters)
     end
 
+    def has_named_scope?(name)
+      scopes.has_key?(name)
+    end
+
     protected
       def add_scope_method_to_klass(scope_name)
         klass.class_eval do
