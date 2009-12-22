@@ -44,7 +44,10 @@ class User
   indexes   :name
   indexes   :name, :created_at
 
-  named_scope :named_quagmire, :name => "Quagmire"
+  named_scope :named_joe,      :name   => "Joe"
+  named_scope :named_quagmire, :name   => "Quagmire"
+  named_scope :recent,         :order! => :created_at.desc,
+                               :limit! => 3
 
   has_many    :addresses
   has_many    :addresses_override, :class_name  => "Address",
