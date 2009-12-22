@@ -10,7 +10,7 @@ module Friendly
       end
 
       def add(*args)
-        associations[args.first] = association_klass.new(*args)
+        associations[args.first] = association_klass.new(klass, *args)
       end
 
       def get_scope(name)
