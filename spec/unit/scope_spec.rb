@@ -40,4 +40,21 @@ describe "Friendly::Scope" do
       @scope.first(:name => "Joe").should == @document
     end
   end
+
+  describe "#paginate" do
+    before do
+      @documents = stub
+    end
+
+    it "delegates to klass with the scope parameters" do
+      @klass.stubs(:paginate).with(@scope_parameters).returns(@documents)
+      @scope.paginate.should == @documents
+    end
+
+    it "merges additional parameters" do
+      merged = @scope_parameters.merge(:name => "Joe")
+      @klass.stubs(:paginate).with(merged).returns(@documents)
+      @scope.paginate(:name => "Joe").should == @documents
+    end
+  end
 end

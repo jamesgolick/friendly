@@ -13,4 +13,9 @@ describe "Querying with an ad-hoc scope" do
   it "can return the first object matching the scope" do
     User.scope(:name => "Fred").first.should == User.first(:name => "Fred")
   end
+
+  it "can paginate over the matching objects" do
+    found = User.scope(:name => "Fred").paginate(:per_page! => 5)
+    found.should == User.paginate(:name => "Fred", :per_page! => 5)
+  end
 end

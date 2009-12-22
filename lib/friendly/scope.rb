@@ -8,11 +8,20 @@ module Friendly
     end
 
     def all(extra_parameters = {})
-      klass.all(parameters.merge(extra_parameters))
+      klass.all(params(extra_parameters))
     end
 
     def first(extra_parameters = {})
-      klass.first(parameters.merge(extra_parameters))
+      klass.first(params(extra_parameters))
     end
+
+    def paginate(extra_parameters = {})
+      klass.paginate(params(extra_parameters))
+    end
+
+    protected
+      def params(extra)
+        parameters.merge(extra)
+      end
   end
 end
