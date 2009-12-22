@@ -18,4 +18,14 @@ describe "Querying with an ad-hoc scope" do
     found = User.scope(:name => "Fred").paginate(:per_page! => 5)
     found.should == User.paginate(:name => "Fred", :per_page! => 5)
   end
+
+  it "can build an object at scope" do
+    User.scope(:name => "Fred", :limit! => 5).build.name.should == "Fred"
+  end
+
+
+  it "supports overriding parameters when building" do
+    scope = User.scope(:name => "Fred", :limit! => 5)
+    scope.build(:name => "Joe").name.should == "Joe"
+  end
 end

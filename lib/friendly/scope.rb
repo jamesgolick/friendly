@@ -19,9 +19,17 @@ module Friendly
       klass.paginate(params(extra_parameters))
     end
 
+    def build(extra_parameters = {})
+      klass.new(params_without_modifiers(extra_parameters))
+    end
+
     protected
       def params(extra)
         parameters.merge(extra)
+      end
+
+      def params_without_modifiers(extra)
+        params(extra).reject { |k,v| k.to_s =~ /!$/ }
       end
   end
 end

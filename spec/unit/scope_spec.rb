@@ -57,4 +57,18 @@ describe "Friendly::Scope" do
       @scope.paginate(:name => "Joe").should == @documents
     end
   end
+
+  describe "#build" do
+    it "instantiates klass with the scope parameters (minus modifiers)" do
+      @doc = stub
+      @klass.stubs(:new).with(:name => "Quagmire").returns(@doc)
+      @scope.build.should == @doc
+    end
+
+    it "merges additional parameters" do
+      @doc = stub
+      @klass.stubs(:new).with(:name => "Fred").returns(@doc)
+      @scope.build(:name => "Fred").should == @doc
+    end
+  end
 end
