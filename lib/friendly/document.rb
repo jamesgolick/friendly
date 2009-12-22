@@ -161,7 +161,7 @@ module Friendly
       #     end
       #     
       #     @user = User.create
-      #     @post = Post.create(:user_id => @user.id)
+      #     @post = @user.posts.create
       #     @user.posts.all == [@post] # => true
       #
       # _Note: Make sure that the target model is indexed on the foreign key. If it isn't, querying the association will raise Friendly::MissingIndex._

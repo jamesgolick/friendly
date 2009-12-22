@@ -135,6 +135,11 @@ That scope object supports a variety of methods. Calling any of the methods is t
 
     Post.by_james.all == Post.all(:author => "James")
     Post.by_james.first == Post.first(:author => "James")
+    Post.by_james.paginate # => #<WillPaginate::Collection>
+    Post.by_james.build.name == "James"
+    @post = Post.by_james.create
+    @post.new_record? # => false
+    @post.name # => "James"
 
 Each of the methods also accepts override parameters. The APIs are the same as on Document.
 
@@ -169,7 +174,7 @@ e.g.
     end
     
     @user = User.create
-    @post = Post.create(:user_id => @user.id)
+    @post = @user.posts.create
     @user.posts.all == [@post] # => true
 
 Friendly defaults the foreign key to class_name_id just like ActiveRecord. It also converts the name of the association to the name of the target class just like ActiveRecord does.
