@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.3.5"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-17}
+  s.date = %q{2009-12-22}
   s.description = %q{}
   s.email = %q{jamesgolick@gmail.com}
   s.extra_rdoc_files = [
@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
     ".document",
      ".gitignore",
      "APACHE-LICENSE",
+     "CHANGELOG.md",
+     "CONTRIBUTORS.md",
      "LICENSE",
      "README.md",
      "Rakefile",
@@ -27,6 +29,9 @@ Gem::Specification.new do |s|
      "examples/friendly.yml",
      "friendly.gemspec",
      "lib/friendly.rb",
+     "lib/friendly/associations.rb",
+     "lib/friendly/associations/association.rb",
+     "lib/friendly/associations/set.rb",
      "lib/friendly/attribute.rb",
      "lib/friendly/boolean.rb",
      "lib/friendly/cache.rb",
@@ -37,8 +42,11 @@ Gem::Specification.new do |s|
      "lib/friendly/document_table.rb",
      "lib/friendly/index.rb",
      "lib/friendly/memcached.rb",
+     "lib/friendly/named_scope.rb",
      "lib/friendly/newrelic.rb",
      "lib/friendly/query.rb",
+     "lib/friendly/scope.rb",
+     "lib/friendly/scope_proxy.rb",
      "lib/friendly/sequel_monkey_patches.rb",
      "lib/friendly/storage.rb",
      "lib/friendly/storage_factory.rb",
@@ -49,12 +57,14 @@ Gem::Specification.new do |s|
      "lib/friendly/translator.rb",
      "lib/friendly/uuid.rb",
      "rails/init.rb",
+     "spec/config.yml.example",
      "spec/fakes/data_store_fake.rb",
      "spec/fakes/database_fake.rb",
      "spec/fakes/dataset_fake.rb",
      "spec/fakes/document.rb",
      "spec/fakes/serializer_fake.rb",
      "spec/fakes/time_fake.rb",
+     "spec/integration/ad_hoc_scopes_spec.rb",
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
@@ -62,12 +72,17 @@ Gem::Specification.new do |s|
      "spec/integration/default_value_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
+     "spec/integration/has_many_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/named_scope_spec.rb",
      "spec/integration/pagination_spec.rb",
+     "spec/integration/scope_chaining_spec.rb",
      "spec/integration/table_creator_spec.rb",
      "spec/integration/write_through_cache_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
+     "spec/unit/associations/association_spec.rb",
+     "spec/unit/associations/set_spec.rb",
      "spec/unit/attribute_spec.rb",
      "spec/unit/cache_by_id_spec.rb",
      "spec/unit/cache_spec.rb",
@@ -78,7 +93,10 @@ Gem::Specification.new do |s|
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/memcached_spec.rb",
+     "spec/unit/named_scope_spec.rb",
      "spec/unit/query_spec.rb",
+     "spec/unit/scope_proxy_spec.rb",
+     "spec/unit/scope_spec.rb",
      "spec/unit/storage_factory_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
      "spec/unit/translator_spec.rb",
@@ -139,6 +157,7 @@ Gem::Specification.new do |s|
      "spec/fakes/document.rb",
      "spec/fakes/serializer_fake.rb",
      "spec/fakes/time_fake.rb",
+     "spec/integration/ad_hoc_scopes_spec.rb",
      "spec/integration/basic_object_lifecycle_spec.rb",
      "spec/integration/batch_insertion_spec.rb",
      "spec/integration/convenience_api_spec.rb",
@@ -146,11 +165,16 @@ Gem::Specification.new do |s|
      "spec/integration/default_value_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
+     "spec/integration/has_many_spec.rb",
      "spec/integration/index_spec.rb",
+     "spec/integration/named_scope_spec.rb",
      "spec/integration/pagination_spec.rb",
+     "spec/integration/scope_chaining_spec.rb",
      "spec/integration/table_creator_spec.rb",
      "spec/integration/write_through_cache_spec.rb",
      "spec/spec_helper.rb",
+     "spec/unit/associations/association_spec.rb",
+     "spec/unit/associations/set_spec.rb",
      "spec/unit/attribute_spec.rb",
      "spec/unit/cache_by_id_spec.rb",
      "spec/unit/cache_spec.rb",
@@ -161,7 +185,10 @@ Gem::Specification.new do |s|
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/memcached_spec.rb",
+     "spec/unit/named_scope_spec.rb",
      "spec/unit/query_spec.rb",
+     "spec/unit/scope_proxy_spec.rb",
+     "spec/unit/scope_spec.rb",
      "spec/unit/storage_factory_spec.rb",
      "spec/unit/storage_proxy_spec.rb",
      "spec/unit/translator_spec.rb"
@@ -175,6 +202,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_development_dependency(%q<cucumber>, [">= 0"])
       s.add_development_dependency(%q<jferris-mocha>, [">= 0"])
+      s.add_development_dependency(%q<memcached>, [">= 0"])
       s.add_runtime_dependency(%q<sequel>, [">= 3.7.0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
@@ -183,6 +211,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<cucumber>, [">= 0"])
       s.add_dependency(%q<jferris-mocha>, [">= 0"])
+      s.add_dependency(%q<memcached>, [">= 0"])
       s.add_dependency(%q<sequel>, [">= 3.7.0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
@@ -192,6 +221,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<cucumber>, [">= 0"])
     s.add_dependency(%q<jferris-mocha>, [">= 0"])
+    s.add_dependency(%q<memcached>, [">= 0"])
     s.add_dependency(%q<sequel>, [">= 3.7.0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<activesupport>, [">= 0"])
