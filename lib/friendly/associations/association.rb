@@ -1,20 +1,25 @@
 module Friendly
   module Associations
     class Association
-      attr_reader :owner_klass, :name, :scope_klass
+      attr_reader :owner_klass, :name
 
-      def initialize(owner_klass, name, scope_klass = Scope)
+      def initialize(owner_klass, name, options = {})
         @owner_klass = owner_klass
         @name        = name
-        @scope_klass = scope_klass
+        @class_name  = options[:class_name]
+        @foreign_key = options[:foreign_key]
       end
 
       def klass
-        @klass ||= name.to_s.singularize.camelize.constantize
+        @klass ||= class_name.constantize
       end
 
       def foreign_key
         @foreign_key ||= [owner_klass_name, :id].join("_").to_sym
+      end
+
+      def class_name
+        @class_name ||= name.to_s.classify
       end
 
       def owner_klass_name
