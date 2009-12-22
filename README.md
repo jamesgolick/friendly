@@ -145,6 +145,20 @@ Each of the methods also accepts override parameters. The APIs are the same as o
 
     Post.by_james.all(:author => "Steve") == Post.all(:author => "Steve")
 
+You can also compose arbitrary combinations of scopes with simple chaining.
+    
+    class Post
+      # ... snip ...
+      named_scope :recent, :order! => :created_at.desc, :limit! => 4
+      indexes     :name, :created_at
+    end
+
+    Post.by_james.recent == Post.all(:name   => "James", 
+                                     :order! => :created_at.desc, 
+                                     :limit!  => 4)
+
+If two parameters conflict, the right-most scope takes precedence.
+
 ### Ad-hoc Scopes
 
 You can also create a scope object on the fly:
@@ -179,7 +193,16 @@ e.g.
 
 Friendly defaults the foreign key to class_name_id just like ActiveRecord. It also converts the name of the association to the name of the target class just like ActiveRecord does.
 
-The biggest difference in semantics between Friendly's has\_many and active\_record's is that Friendly's just returns a Friendly::Scope object. If you want all the associated objects, you have to call #all to get them. You can also use any other Friendly::Scope method. See the section above or the Friendly::Scope docs for details.
+The biggest difference in semantics between Friendly's has\_many and active\_record's is that Friendly's just returns a Friendly::Scope object. If you want all the associated objects, you have to call #all to get them. 
+
+You can also use any other Friendly::Scope method like scope chaining.
+
+    # note: the Post.recent scope is defined in the above section
+    @user.posts.recent == Post.all(:user_id => @user.id,
+                                   :order!  => :created_at.desc, 
+                                   :limit!  => 4)
+
+See the section above or the Friendly::Scope docs for more details.
 
 Installation
 ============
