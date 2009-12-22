@@ -10,11 +10,15 @@ module Friendly
       end
 
       def klass
-        @klass ||= name.to_s.camelize.constantize
+        @klass ||= name.to_s.singularize.camelize.constantize
       end
 
       def foreign_key
-        @foreign_key ||= [name.to_s.singularize, :id].join("_").to_sym
+        @foreign_key ||= [owner_klass_name, :id].join("_").to_sym
+      end
+
+      def owner_klass_name
+        owner_klass.name.to_s.underscore.singularize
       end
 
       def scope(document)

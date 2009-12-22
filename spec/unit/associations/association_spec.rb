@@ -2,7 +2,7 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Friendly::Associations::Association" do
   before do
-    @owner_klass = stub
+    @owner_klass = stub(:name => "User")
     @klass       = stub
     # FIXME: ugh.
     String.any_instance.stubs(:constantize).returns(@klass)
@@ -14,13 +14,13 @@ describe "Friendly::Associations::Association" do
     @association.klass.should == @klass
   end
 
-  it "has a foreign_key of name.singularize + '_id'" do
-    @association.foreign_key.should == :address_id
+  it "has a foreign_key of owner_klass.name.singularize + '_id'" do
+    @association.foreign_key.should == :user_id
   end
 
   it "returns a scope on klass of {:foreign_key => document.id}" do
     @scope = stub
-    @klass.stubs(:scope).with(:address_id => 42).returns(@scope)
+    @klass.stubs(:scope).with(:user_id => 42).returns(@scope)
 
     @association.scope(stub(:id => 42)).should == @scope
   end
