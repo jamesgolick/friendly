@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require 'friendly/associations'
 
 module Friendly
   module Document
@@ -27,7 +28,7 @@ module Friendly
     module ClassMethods
       attr_writer :storage_proxy, :query_klass, 
                   :table_name,    :collection_klass,
-                  :scope_proxy
+                  :scope_proxy,   :association_set
 
       def create_tables!
         storage_proxy.create_tables!
@@ -142,7 +143,12 @@ module Friendly
         scope_proxy.ad_hoc(parameters)
       end
 
+      def association_set
+        @association_set ||= Associations::Set.new(self)
+      end
+
       def has_many(*args)
+        association_set.add(*args)
       end
 
       protected

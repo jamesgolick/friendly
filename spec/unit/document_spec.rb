@@ -333,5 +333,17 @@ describe "Friendly::Document" do
       @klass.scope(:order! => :name).should == @scope
     end
   end
+
+  describe "adding an association" do
+    before do
+      @assoc_set             = stub(:add => nil)
+      @klass.association_set = @assoc_set
+      @klass.has_many :addresses
+    end
+
+    it "asks the association set to add it" do
+      @assoc_set.should have_received(:add).with(:addresses)
+    end
+  end
 end
 
