@@ -3,6 +3,7 @@ Changelog
 
 ### 0.4.0 (master)
 
+  * (jamesgolick) Add scope chaining. See the README and the docs for Friendly::Scope.
   * (jamesgolick) Add has_many association.
   * (jamesgolick) Add ad-hoc scopes. See the docs for Document.scope.
   * (jamesgolick) Add named_scope functionality. See the docs for Document.named_scope.
