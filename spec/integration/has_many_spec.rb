@@ -7,6 +7,7 @@ describe "Has many associations" do
   end
 
   it "returns the objects whose foreign keys match the object's id" do
-    @user.addresses.all.should == @addresses
+    found = @user.addresses.all.sort { |a, b| a.id <=> b.id }
+    found.should == @addresses.sort { |a, b| a.id <=> b.id }
   end
 end
