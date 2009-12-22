@@ -56,6 +56,38 @@ module Friendly
       klass.create(params_without_modifiers(extra_parameters))
     end
 
+    # Override #respond_to? so that we can return true when it's another named_scope.
+    #
+    # @override
+    #
+    def respond_to?(method_name, include_private = false)
+      klass.has_named_scope?(method_name) || super
+    end
+
+    # Use method_missing to respond to other named scopes on klass.
+    # 
+    # @override
+    #
+    def method_missing(method_name, *args, &block)
+      respond_to?(method_name) ? chain_with(method_name) : super
+    end
+
+    # Chain with another one of klass's named_scopes.
+    #
+    # @param [Symbol] scope_name The name of the scope to chain with.
+    #
+    def chain_with(scope_name)
+      self + klass.send(scope_name)
+    end
+
+    # Create a new Scope that is the combination of self and other, where other takes priority
+    #
+    # @param [Friendly::Scope] other The scope to merge with.
+    #
+    def +(other_scope)
+      self.class.new(klass, parameters.merge(other_scope.parameters))
+    end
+
     protected
       def params(extra)
         parameters.merge(extra)

@@ -85,4 +85,29 @@ describe "Friendly::Scope" do
       @scope.create(:name => "Fred").should == @doc
     end
   end
+
+  describe "chaining another named scope" do
+    before do
+      @recent_params = {:order! => :created_at.desc}
+      @recent        = Friendly::Scope.new(@klass, @recent_params)
+      @klass.stubs(:has_named_scope?).with(:recent).returns(true)
+      @klass.stubs(:recent).returns(@recent)
+      @scope_params  = {:name => "Joe"}
+      @scope         = Friendly::Scope.new(@klass, @scope_params)
+    end
+
+    it "responds to the other scope method" do
+      @scope.should be_respond_to(:recent)
+    end
+
+    it "creates a new scope that merges the two scopes together" do
+      merged_parameters = @scope_params.merge(@recent_params)
+      @scope.recent.parameters.should == merged_parameters
+    end
+
+    it "gives precedence to scopes on the right" do
+      @quagmire = Friendly::Scope.new(@klass, :name => "Quagmire")
+      (@scope + @quagmire).parameters[:name].should == "Quagmire"
+    end
+  end
 end
