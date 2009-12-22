@@ -71,4 +71,18 @@ describe "Friendly::Scope" do
       @scope.build(:name => "Fred").should == @doc
     end
   end
+
+  describe "#create" do
+    it "delegates to klass#create with the scope parameters (minus modifiers)" do
+      @doc = stub
+      @klass.stubs(:create).with(:name => "Quagmire").returns(@doc)
+      @scope.create.should == @doc
+    end
+
+    it "merges additional parameters" do
+      @doc = stub
+      @klass.stubs(:create).with(:name => "Fred").returns(@doc)
+      @scope.create(:name => "Fred").should == @doc
+    end
+  end
 end

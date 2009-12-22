@@ -23,9 +23,20 @@ describe "Querying with an ad-hoc scope" do
     User.scope(:name => "Fred", :limit! => 5).build.name.should == "Fred"
   end
 
-
   it "supports overriding parameters when building" do
     scope = User.scope(:name => "Fred", :limit! => 5)
     scope.build(:name => "Joe").name.should == "Joe"
+  end
+
+  it "can create an object at scope" do
+    user = User.scope(:name => "Joe").create
+    user.should_not be_new_record
+    user.name.should == "Joe"
+  end
+
+  it "supports overriding parameters when creating" do
+    user = User.scope(:name => "Joe").create(:name => "Fred")
+    user.should_not be_new_record
+    user.name.should == "Fred"
   end
 end

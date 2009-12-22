@@ -23,6 +23,10 @@ module Friendly
       klass.new(params_without_modifiers(extra_parameters))
     end
 
+    def create(extra_parameters = {})
+      klass.create(params_without_modifiers(extra_parameters))
+    end
+
     protected
       def params(extra)
         parameters.merge(extra)
