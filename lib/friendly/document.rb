@@ -121,7 +121,7 @@ module Friendly
       #
       #     Post.recent.all(:author_id => @author.id)
       #
-      # Scopes are presently not chainable, though that is coming soon.
+      # Scopes are also chainable. See the README or Friendly::Scope docs for details.
       #
       # @param [Symbol] name the name of the scope.
       # @param [Hash] parameters the query that this named scope will perform.
