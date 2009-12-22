@@ -47,6 +47,8 @@ class User
   named_scope :named_quagmire, :name => "Quagmire"
 
   has_many    :addresses
+  has_many    :addresses_override, :class_name  => "Address",
+                                   :foreign_key => :user_id
 end
 
 User.create_tables!
