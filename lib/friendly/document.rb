@@ -130,6 +130,14 @@ module Friendly
         scope_proxy.add_named(name, parameters)
       end
 
+      # Returns boolean based on whether the Document has a scope by a particular name.
+      #
+      # @param [Symbol] name The name of the scope in question.
+      #
+      def has_named_scope?(name)
+        scope_proxy.has_named_scope?(name)
+      end
+
       # Create an ad hoc scope on this Document.
       #
       # e.g.

@@ -321,6 +321,15 @@ describe "Friendly::Document" do
     end
   end
 
+  describe "Document.has_named_scope?" do
+    it "delegates to the scope_proxy" do
+      @scope_proxy       = stub
+      @scope_proxy.stubs(:has_named_scope?).with(:whatever)
+      @klass.scope_proxy = @scope_proxy
+      @klass.has_named_scope?(:whatever).should be_true
+    end
+  end
+
   describe "accessing an ad-hoc scope" do
     before do
       @scope             = stub
