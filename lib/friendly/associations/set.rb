@@ -11,6 +11,7 @@ module Friendly
 
       def add(*args)
         associations[args.first] = association_klass.new(klass, *args)
+        add_association_accessor(args.first)
       end
 
       def get_scope(name)
@@ -20,6 +21,17 @@ module Friendly
       def get(name)
         associations[name]
       end
+
+      protected
+        def add_association_accessor(name)
+          klass.class_eval do
+            eval <<-__END__
+            def #{name}
+              self.class.association_set.get_scope(:#{name})
+            end
+            __END__
+          end
+        end
     end
   end
 end

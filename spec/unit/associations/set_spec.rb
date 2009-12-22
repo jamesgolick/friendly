@@ -2,7 +2,7 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Friendly::Associations::Set" do
   before do
-    @klass             = stub
+    @klass             = Class.new
     @association_klass = stub
     @set               = Friendly::Associations::Set.new(@klass, @association_klass)
     @assoc             = stub
@@ -17,6 +17,13 @@ describe "Friendly::Associations::Set" do
 
     it "creates an association and adds it to its hash by name" do
       @set.associations[:my_awesome_association].should == @assoc
+    end
+
+    it "adds an instance method to the klass through which to acces the assoc" do
+      @klass.stubs(:association_set).returns(@set)
+      @scope = stub
+      @assoc.stubs(:scope).returns(@scope)
+      @klass.new.my_awesome_association.should == @scope
     end
   end
 
