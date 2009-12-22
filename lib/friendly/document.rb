@@ -147,8 +147,8 @@ module Friendly
         @association_set ||= Associations::Set.new(self)
       end
 
-      def has_many(*args)
-        association_set.add(*args)
+      def has_many(name, options = {})
+        association_set.add(name, options)
       end
 
       protected

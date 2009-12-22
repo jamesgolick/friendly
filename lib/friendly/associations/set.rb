@@ -9,9 +9,9 @@ module Friendly
         @associations      = {}
       end
 
-      def add(*args)
-        associations[args.first] = association_klass.new(klass, *args)
-        add_association_accessor(args.first)
+      def add(name, options = {})
+        associations[name] = association_klass.new(klass, name, options)
+        add_association_accessor(name)
       end
 
       def get_scope(name, document)

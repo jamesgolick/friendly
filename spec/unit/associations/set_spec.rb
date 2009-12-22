@@ -7,7 +7,7 @@ describe "Friendly::Associations::Set" do
     @set               = Friendly::Associations::Set.new(@klass, @association_klass)
     @assoc             = stub
     @association_klass.stubs(:new).
-      with(@klass, :my_awesome_association).returns(@assoc)
+      with(@klass, :my_awesome_association, {}).returns(@assoc)
   end
 
   describe "adding an association" do

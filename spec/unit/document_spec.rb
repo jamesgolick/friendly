@@ -342,7 +342,7 @@ describe "Friendly::Document" do
     end
 
     it "asks the association set to add it" do
-      @assoc_set.should have_received(:add).with(:addresses)
+      @assoc_set.should have_received(:add).with(:addresses, {})
     end
   end
 end
