@@ -112,6 +112,42 @@ Currently, only caching by id is supported, but caching of arbitrary indexes is 
 
 __We're seeing a 99.8% cache hit rate in production with this code.__
 
+Scopes
+======
+
+### Named Scopes
+
+It's possible to create a scope that you can refer to by name:
+
+    class Post
+      attribute :author, String
+
+      named_scope :by_james, :author => "James"
+    end
+
+Calling the scope will provide you with a Friendly:Scope object:
+
+    Post.by_james #=> #<Friendly::Scope>
+
+That scope object supports a variety of methods. Calling any of the methods is the equivalent of calling those methods directly on Document with the scope's parameters.
+
+  e.g.
+
+    Post.by_james.all == Post.all(:author => "James")
+    Post.by_james.first == Post.first(:author => "James")
+
+Each of the methods also accepts override parameters. The APIs are the same as on Document.
+
+    Post.by_james.all(:author => "Steve") == Post.all(:author => "Steve")
+
+### Ad-hoc Scopes
+
+You can also create a scope object on the fly:
+
+    Post.scope(:author => "Steve")
+    
+The object you get is identical to the one you get from a named_scope. So, see above for the API.
+
 Installation
 ============
 
