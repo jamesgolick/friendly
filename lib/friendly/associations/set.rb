@@ -14,8 +14,8 @@ module Friendly
         add_association_accessor(args.first)
       end
 
-      def get_scope(name)
-        get(name).scope
+      def get_scope(name, document)
+        get(name).scope(document)
       end
 
       def get(name)
@@ -27,7 +27,7 @@ module Friendly
           klass.class_eval do
             eval <<-__END__
             def #{name}
-              self.class.association_set.get_scope(:#{name})
+              self.class.association_set.get_scope(:#{name}, self)
             end
             __END__
           end

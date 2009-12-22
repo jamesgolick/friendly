@@ -20,10 +20,11 @@ describe "Friendly::Associations::Set" do
     end
 
     it "adds an instance method to the klass through which to acces the assoc" do
-      @klass.stubs(:association_set).returns(@set)
+      @doc   = @klass.new
       @scope = stub
-      @assoc.stubs(:scope).returns(@scope)
-      @klass.new.my_awesome_association.should == @scope
+      @klass.stubs(:association_set).returns(@set)
+      @assoc.stubs(:scope).with(@doc).returns(@scope)
+      @doc.my_awesome_association.should == @scope
     end
   end
 
@@ -33,9 +34,10 @@ describe "Friendly::Associations::Set" do
   end
 
   it "provides the scope for an association by name" do
+    @doc   = stub
     @scope = stub
-    @assoc.stubs(:scope).returns(@scope)
+    @assoc.stubs(:scope).with(@doc).returns(@scope)
     @set.add(:my_awesome_association)
-    @set.get_scope(:my_awesome_association).should == @scope
+    @set.get_scope(:my_awesome_association, @doc).should == @scope
   end
 end
