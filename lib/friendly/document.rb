@@ -153,6 +153,7 @@ module Friendly
       #
       #     class Post
       #       attribute :user_id, Friendly::UUID
+      #       indexes   :user_id
       #     end
       #      
       #     class User
@@ -162,6 +163,8 @@ module Friendly
       #     @user = User.create
       #     @post = Post.create(:user_id => @user.id)
       #     @user.posts.all == [@post] # => true
+      #
+      # _Note: Make sure that the target model is indexed on the foreign key. If it isn't, querying the association will raise Friendly::MissingIndex._
       #
       # Friendly defaults the foreign key to class_name_id just like ActiveRecord.
       # It also converts the name of the association to the name of the target class just like ActiveRecord does.
