@@ -131,7 +131,7 @@ module Friendly
     end
 
     def sql_literal(dataset)
-      dataset.literal(to_s)
+      dataset.literal(to_s.to_sequel_blob)
     end
 
     private
