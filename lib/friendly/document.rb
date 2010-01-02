@@ -29,12 +29,7 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :query_klass,      :table_name,
-                  :collection_klass, :association_set
-
-      def query_klass
-        @query_klass ||= Query
-      end
+      attr_writer :table_name, :collection_klass, :association_set
 
       def collection_klass
         @collection_klass ||= WillPaginate::Collection

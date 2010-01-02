@@ -6,7 +6,7 @@ module Friendly
       extend Mixin
 
       module ClassMethods
-        attr_writer :storage_proxy
+        attr_writer :storage_proxy, :query_klass
         
         def create_tables!
           storage_proxy.create_tables!
@@ -35,6 +35,10 @@ module Friendly
 
         def count(conditions)
           storage_proxy.count(query(conditions))
+        end
+
+        def query_klass
+          @query_klass ||= Query
         end
 
         protected
