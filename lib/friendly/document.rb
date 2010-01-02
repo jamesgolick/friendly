@@ -1,5 +1,6 @@
 require 'active_support/inflector'
 require 'friendly/associations'
+require 'friendly/document/attributes'
 
 module Friendly
   module Document
@@ -34,10 +35,6 @@ module Friendly
         storage_proxy.create_tables!
       end
 
-      def attribute(name, type = nil, options = {})
-        attributes[name] = Attribute.new(self, name, type, options)
-      end
-
       def storage_proxy
         @storage_proxy ||= StorageProxy.new(self)
       end
@@ -57,10 +54,6 @@ module Friendly
       def caches_by(*fields)
         options = fields.last.is_a?(Hash) ? fields.pop : {}
         storage_proxy.cache(fields, options)
-      end
-
-      def attributes
-        @attributes ||= {}
       end
 
       def first(query)
@@ -193,14 +186,8 @@ module Friendly
         end
     end
 
-    def initialize(opts = {})
-      self.attributes = opts
-    end
+    include Attributes
 
-    def attributes=(attrs)
-      assert_no_duplicate_keys(attrs)
-      attrs.each { |name, value| send("#{name}=", value) }
-    end
 
     def save
       new_record? ? storage_proxy.create(self) : storage_proxy.update(self)
@@ -213,10 +200,6 @@ module Friendly
 
     def destroy
       storage_proxy.destroy(self)
-    end
-
-    def to_hash
-      Hash[*self.class.attributes.keys.map { |n| [n, send(n)] }.flatten]
     end
 
     def table_name
