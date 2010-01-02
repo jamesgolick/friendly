@@ -1,6 +1,7 @@
 require 'active_support/inflector'
 require 'friendly/associations'
 require 'friendly/document/attributes'
+require 'friendly/document/storage'
 
 module Friendly
   module Document
@@ -27,17 +28,9 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :storage_proxy, :query_klass, 
-                  :table_name,    :collection_klass,
-                  :scope_proxy,   :association_set
-
-      def create_tables!
-        storage_proxy.create_tables!
-      end
-
-      def storage_proxy
-        @storage_proxy ||= StorageProxy.new(self)
-      end
+      attr_writer :query_klass,      :table_name,
+                  :collection_klass, :scope_proxy,
+                  :association_set
 
       def query_klass
         @query_klass ||= Query
@@ -47,31 +40,10 @@ module Friendly
         @collection_klass ||= WillPaginate::Collection
       end
 
-      def indexes(*args)
-        storage_proxy.add(args)
-      end
-
-      def caches_by(*fields)
-        options = fields.last.is_a?(Hash) ? fields.pop : {}
-        storage_proxy.cache(fields, options)
-      end
-
-      def first(query)
-        storage_proxy.first(query(query))
-      end
-
-      def all(query)
-        storage_proxy.all(query(query))
-      end
-
       def find(id)
         doc = first(:id => id)
         raise RecordNotFound, "Couldn't find #{name}/#{id}" if doc.nil?
         doc
-      end
-
-      def count(conditions)
-        storage_proxy.count(query(conditions))
       end
 
       def paginate(conditions)
@@ -187,19 +159,11 @@ module Friendly
     end
 
     include Attributes
-
-
-    def save
-      new_record? ? storage_proxy.create(self) : storage_proxy.update(self)
-    end
+    include Storage
 
     def update_attributes(attributes)
       self.attributes = attributes
       save
-    end
-
-    def destroy
-      storage_proxy.destroy(self)
     end
 
     def table_name
@@ -217,10 +181,6 @@ module Friendly
 
     def new_record=(value)
       @new_record = value
-    end
-
-    def storage_proxy
-      self.class.storage_proxy
     end
 
     def ==(comparison_object)
