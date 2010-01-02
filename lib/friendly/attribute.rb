@@ -59,6 +59,10 @@ module Friendly
         nil
       end
     end
+
+    def assign_default_value(document)
+      document.send(:"#{name}=", default)
+    end
       
     protected
       def build_accessors

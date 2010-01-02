@@ -7,7 +7,7 @@ describe "Friendly::Attribute" do
     @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
     @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
     @default = Friendly::Attribute.new(@klass, :default, String, :default => "asdf")
-    @false   = Friendly::Attribute.new(@klass, :default, String, :default => false)
+    @false   = Friendly::Attribute.new(@klass, :false,   String, :default => false)
     @klass.stubs(:attributes).returns({:name    => @name, 
                                        :id      => @id, 
                                        :default => @default,
@@ -60,6 +60,12 @@ describe "Friendly::Attribute" do
 
   it "has a default value even if it's false" do
     @false.default.should be_false
+  end
+
+  it "knows how to assign its own default" do
+    @object = stub(:false= => nil)
+    @false.assign_default_value(@object)
+    @object.should have_received(:false=).with(false)
   end
 
   describe "registering a type" do
