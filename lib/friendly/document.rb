@@ -1,6 +1,7 @@
 require 'active_support/inflector'
 require 'friendly/associations'
 require 'friendly/document/attributes'
+require 'friendly/document/scoping'
 require 'friendly/document/storage'
 
 module Friendly
@@ -29,8 +30,7 @@ module Friendly
 
     module ClassMethods
       attr_writer :query_klass,      :table_name,
-                  :collection_klass, :scope_proxy,
-                  :association_set
+                  :collection_klass, :association_set
 
       def query_klass
         @query_klass ||= Query
@@ -63,58 +63,6 @@ module Friendly
         @table_name ||= name.pluralize.underscore
       end
 
-      def scope_proxy
-        @scope_proxy ||= ScopeProxy.new(self)
-      end
-
-      # Add a named scope to this Document.
-      #
-      # e.g.
-      #     
-      #     class Post
-      #       indexes     :created_at
-      #       named_scope :recent, :order! => :created_at.desc
-      #     end
-      #
-      # Then, you can access the recent posts with:
-      #
-      #     Post.recent.all
-      # ...or...
-      #     Post.recent.first
-      #
-      # Both #all and #first also take additional parameters:
-      #
-      #     Post.recent.all(:author_id => @author.id)
-      #
-      # Scopes are also chainable. See the README or Friendly::Scope docs for details.
-      #
-      # @param [Symbol] name the name of the scope.
-      # @param [Hash] parameters the query that this named scope will perform.
-      #
-      def named_scope(name, parameters)
-        scope_proxy.add_named(name, parameters)
-      end
-
-      # Returns boolean based on whether the Document has a scope by a particular name.
-      #
-      # @param [Symbol] name The name of the scope in question.
-      #
-      def has_named_scope?(name)
-        scope_proxy.has_named_scope?(name)
-      end
-
-      # Create an ad hoc scope on this Document.
-      #
-      # e.g.
-      #     
-      #     scope = Post.scope(:order! => :created_at)
-      #     scope.all # => [#<Post>, #<Post>]
-      #
-      # @param [Hash] parameters the query parameters to create the scope with.
-      #
-      def scope(parameters)
-        scope_proxy.ad_hoc(parameters)
-      end
 
       def association_set
         @association_set ||= Associations::Set.new(self)
@@ -151,14 +99,10 @@ module Friendly
       def has_many(name, options = {})
         association_set.add(name, options)
       end
-
-      protected
-        def query(conditions)
-          conditions.is_a?(Query) ? conditions : query_klass.new(conditions)
-        end
     end
 
     include Attributes
+    include Scoping
     include Storage
 
     def update_attributes(attributes)
