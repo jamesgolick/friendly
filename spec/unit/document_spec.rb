@@ -60,46 +60,6 @@ describe "Friendly::Document" do
     end
   end
 
-  describe "converting a document to a hash" do
-    before do
-      @object = @klass.new(:name => "Stewie")
-    end
-
-    it "creates a hash that contains its attributes" do
-      @object.to_hash.should == {:name       => "Stewie", 
-                                 :id         => @object.id, 
-                                 :created_at => @object.created_at,
-                                 :updated_at => @object.updated_at}
-    end
-  end
-
-  describe "setting the attributes all at once" do
-    before do
-      @object = @klass.new
-      @object.attributes = {:name => "Bond"}
-    end
-
-    it "sets the attributes using the setters" do
-      @object.name.should == "Bond"
-    end
-
-    it "raises ArgumentError when there are duplicate keys of differing type" do
-      lambda { 
-        @object.attributes = {:name => "Bond", "name" => "Bond"}
-      }.should raise_error(ArgumentError)
-    end
-  end
-
-  describe "initializing a document" do
-    before do
-      @doc = @klass.new :name => "Bond"
-    end
-
-    it "sets the attributes using the setters" do
-      @doc.name.should == "Bond"
-    end
-  end
-
   describe "table name" do
     it "by default: is the class name, converted with pluralize.underscore" do
       User.table_name.should == "users"
