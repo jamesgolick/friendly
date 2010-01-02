@@ -1,6 +1,7 @@
 require 'active_support/inflector'
 require 'friendly/associations'
 require 'friendly/document/attributes'
+require 'friendly/document/convenience'
 require 'friendly/document/scoping'
 require 'friendly/document/storage'
 
@@ -29,35 +30,11 @@ module Friendly
     end
 
     module ClassMethods
-      attr_writer :table_name, :collection_klass, :association_set
-
-      def collection_klass
-        @collection_klass ||= WillPaginate::Collection
-      end
-
-      def find(id)
-        doc = first(:id => id)
-        raise RecordNotFound, "Couldn't find #{name}/#{id}" if doc.nil?
-        doc
-      end
-
-      def paginate(conditions)
-        query      = query(conditions)
-        count      = count(query)
-        collection = collection_klass.new(query.page, query.per_page, count)
-        collection.replace(all(query))
-      end
-
-      def create(attributes = {})
-        doc = new(attributes)
-        doc.save
-        doc
-      end
+      attr_writer :table_name, :association_set
 
       def table_name
         @table_name ||= name.pluralize.underscore
       end
-
 
       def association_set
         @association_set ||= Associations::Set.new(self)
@@ -97,13 +74,9 @@ module Friendly
     end
 
     include Attributes
+    include Convenience
     include Scoping
     include Storage
-
-    def update_attributes(attributes)
-      self.attributes = attributes
-      save
-    end
 
     def table_name
       self.class.table_name
