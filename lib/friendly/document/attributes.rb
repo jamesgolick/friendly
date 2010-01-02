@@ -27,6 +27,13 @@ module Friendly
       def to_hash
         Hash[*self.class.attributes.keys.map { |n| [n, send(n)] }.flatten]
       end
+
+      protected
+        def assert_no_duplicate_keys(hash)
+          if hash.keys.map { |k| k.to_s }.uniq.length < hash.keys.length
+            raise ArgumentError, "Duplicate keys: #{hash.inspect}"
+          end
+        end
     end
   end
 end

@@ -66,12 +66,5 @@ module Friendly
           !comparison_object.new_record? && 
             comparison_object.id == id)
     end
-
-    protected
-      def assert_no_duplicate_keys(hash)
-        if hash.keys.map { |k| k.to_s }.uniq.length < hash.keys.length
-          raise ArgumentError, "Duplicate keys: #{hash.inspect}"
-        end
-      end
   end
 end
