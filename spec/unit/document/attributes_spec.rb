@@ -63,5 +63,18 @@ describe "Friendly::Document::Attributes" do
     it "assigns the value to the attribute" do
       @object.name.should == "James Bond"
     end
+
+    it "typecasts the value using the Attribute object" do
+      uuid = Friendly::UUID.new
+
+      @attribute = stub(:assign_default_value => nil)
+      @attribute.stubs(:typecast).with(uuid.to_guid).returns(uuid)
+      @klass.attributes[:id] = @attribute
+      @klass.send(:attr_accessor, :id)
+      
+      @object = @klass.new
+      @object.assign(:id, uuid.to_guid)
+      @object.id.should == uuid
+    end
   end
 end

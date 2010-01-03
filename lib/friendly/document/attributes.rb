@@ -22,7 +22,7 @@ module Friendly
 
       def attributes=(attrs)
         assert_no_duplicate_keys(attrs)
-        attrs.each { |name, value| send("#{name}=", value) }
+        attrs.each { |name, value| assign(name, value) }
       end
 
       def to_hash
@@ -34,7 +34,7 @@ module Friendly
       end
 
       def assign(name, value)
-        send(:"#{name}=", value)
+        send(:"#{name}=", self.class.attributes[name.to_sym].typecast(value))
       end
 
       protected
