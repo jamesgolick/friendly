@@ -76,5 +76,12 @@ describe "Friendly::Document::Attributes" do
       @object.assign(:id, uuid.to_guid)
       @object.id.should == uuid
     end
+
+    it "doesn't try to typecast if there's no Attribute object" do
+      @klass.send(:attr_accessor, :height)
+      @object        = @klass.new
+      @object.assign(:height, "5'11")
+      @object.height.should == "5'11"
+    end
   end
 end
