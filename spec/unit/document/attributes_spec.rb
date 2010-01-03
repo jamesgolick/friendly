@@ -53,4 +53,15 @@ describe "Friendly::Document::Attributes" do
       @object.to_hash.should == {:name => "Stewie"}
     end
   end
+
+  describe "#assign" do
+    before do
+      @object = @klass.new
+      @object.assign(:name, "James Bond")
+    end
+
+    it "assigns the value to the attribute" do
+      @object.name.should == "James Bond"
+    end
+  end
 end

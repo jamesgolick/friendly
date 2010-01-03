@@ -33,6 +33,10 @@ module Friendly
         self.class.attributes.values.each { |a| a.assign_default_value(self) }
       end
 
+      def assign(name, value)
+        send(:"#{name}=", value)
+      end
+
       protected
         def assert_no_duplicate_keys(hash)
           if hash.keys.map { |k| k.to_s }.uniq.length < hash.keys.length
