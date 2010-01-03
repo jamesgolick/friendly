@@ -14,6 +14,12 @@ module Friendly
         def attributes
           @attributes ||= {}
         end
+
+        def new_without_change_tracking(attributes)
+          doc = new(attributes)
+          doc.reset_changes
+          doc
+        end
       end
 
       def initialize(opts = {})

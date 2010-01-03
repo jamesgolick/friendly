@@ -106,4 +106,25 @@ describe "Friendly::Document::Attributes" do
       @object.should_not be_attribute_changed(:some_variable)
     end
   end
+
+  describe "#new_without_change_tracking" do
+    before do
+      @klass = Class.new do
+        attr_reader :name
+
+        def name=(name)
+          will_change(:name)
+          @name = name
+        end
+
+        include Friendly::Document::Attributes
+      end
+      @doc = @klass.new_without_change_tracking(:name => "James")
+    end
+
+    it "initializes and then calls reset_changes" do
+      @doc.name.should == "James"
+      @doc.should_not be_changed
+    end
+  end
 end
