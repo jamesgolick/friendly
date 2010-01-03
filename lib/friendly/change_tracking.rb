@@ -50,7 +50,7 @@ module Friendly
               @#{n}_was = @#{n}       #   @name_was = @name
             end                       # end
 
-            def #{n}_changed?         # def named_changedd?
+            def #{n}_changed?         # def named_changed?
               changed.include?(:#{n}) #   changed.include?(:name)
             end                       # end
 
