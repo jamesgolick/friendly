@@ -16,20 +16,15 @@ describe "Friendly::Translator" do
                 :created_at => @time,
                 :updated_at => @time,
                 :attributes => "THE JSON"}
-      @klass = FakeDocument
-      @doc   = @translator.to_object(@klass, @row)
+      @doc   = stub
+      @klass = stub
+      @klass.stubs(:new_without_change_tracking).
+              with(:updated_at => @time,    :new_record => false, 
+                   :name       => "Stewie", :created_at => @time).returns(@doc)
     end
 
-    it "creates a klass with the attributes from the json" do
-      @doc.name.should == "Stewie"
-    end
-
-    it "sets updated_at" do
-      @doc.updated_at.should == @time
-    end
-
-    it "sets new_record to false" do
-      @doc.new_record.should be_false
+    it "creates a new object without change tracking" do
+      @translator.to_object(@klass, @row).should == @doc
     end
   end
 
