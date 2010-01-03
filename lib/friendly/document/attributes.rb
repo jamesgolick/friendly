@@ -16,6 +16,7 @@ module Friendly
       end
 
       def initialize(opts = {})
+        assign_default_values
         self.attributes = opts
       end
 
@@ -26,6 +27,10 @@ module Friendly
 
       def to_hash
         Hash[*self.class.attributes.keys.map { |n| [n, send(n)] }.flatten]
+      end
+
+      def assign_default_values
+        self.class.attributes.values.each { |a| a.assign_default_value(self) }
       end
 
       protected
