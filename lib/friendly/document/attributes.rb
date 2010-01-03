@@ -78,7 +78,7 @@ module Friendly
       # Reset all the changes to this object.
       #
       def reset_changes
-        changed.each { |c| not_changed(c) }
+        changed.each { |c| not_changed(c) }.clear
       end
 
       # Reset the changed-ness of one attribute.
@@ -86,6 +86,15 @@ module Friendly
       def not_changed(attribute)
         instance_variable_set(:"@#{attribute}_was", nil)
         changed.delete(attribute)
+      end
+
+      # Override #save to reset changes afterwards
+      #
+      # @override
+      #
+      def save
+        super
+        reset_changes
       end
 
       protected

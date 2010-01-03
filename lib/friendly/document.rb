@@ -38,10 +38,10 @@ module Friendly
     end
 
     include Associations
-    include Attributes
     include Convenience
     include Scoping
     include Storage
+    include Attributes
 
     def table_name
       self.class.table_name
