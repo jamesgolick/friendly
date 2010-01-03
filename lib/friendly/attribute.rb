@@ -75,6 +75,10 @@ module Friendly
               will_change(:#{n})
               @#{n} = self.class.attributes[:#{n}].typecast(value)
             end
+
+            def #{n}_changed?
+              attribute_changed?(:#{n})
+            end
           __END__
         end
       end

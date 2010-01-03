@@ -31,6 +31,11 @@ describe "Friendly::Attribute" do
     @object.name_was.should == "Joe the Plumber"
   end
 
+  it "creates an attr_changed? query method" do
+    @object.stubs(:attribute_changed?).with(:name).returns(true)
+    @object.should be_name_changed
+  end
+
   it "typecasts values using the converter function" do
     uuid = Friendly::UUID.new
     @id.typecast(uuid.to_s).should == uuid
