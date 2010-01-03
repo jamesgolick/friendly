@@ -18,7 +18,8 @@ describe "Friendly::Document::Attributes" do
     it "assigns the default values" do
       @klass.attribute :id, Friendly::UUID
       @klass.attributes[:id]   = stub(:assign_default_value => nil)
-      @klass.attributes[:name] = stub(:assign_default_value => nil)
+      @klass.attributes[:name] = stub(:assign_default_value => nil,
+                                      :typecast             => "Bond")
       @doc = @klass.new :name => "Bond"
       @klass.attributes[:id].should have_received(:assign_default_value).with(@doc)
       @klass.attributes[:name].should have_received(:assign_default_value).with(@doc)
