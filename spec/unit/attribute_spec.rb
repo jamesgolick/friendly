@@ -37,10 +37,6 @@ describe "Friendly::Attribute" do
     }.should raise_error(Friendly::NoConverterExists)
   end
 
-  it "creates a getter with a default value" do
-    @object.id.should be_instance_of(Friendly::UUID)
-  end
-
   it "has a default value of type.new" do
     @id.default.should be_instance_of(Friendly::UUID)
   end
@@ -55,7 +51,9 @@ describe "Friendly::Attribute" do
 
   it "can have a default value" do
     @default.default.should == "asdf"
-    @klass.new.default.should == "asdf"
+    @obj = @klass.new
+    @default.assign_default_value(@obj)
+    @obj.default.should == "asdf"
   end
 
   it "has a default value even if it's false" do
