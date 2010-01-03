@@ -34,7 +34,7 @@ module Friendly
       end
 
       def assign(name, value)
-        send(:"#{name}=", typecast(name, value))
+        send(:"#{name}=", value)
       end
 
       protected
@@ -42,11 +42,6 @@ module Friendly
           if hash.keys.map { |k| k.to_s }.uniq.length < hash.keys.length
             raise ArgumentError, "Duplicate keys: #{hash.inspect}"
           end
-        end
-
-        def typecast(name, value)
-          attribute = self.class.attributes[name.to_sym]
-          attribute ? attribute.typecast(value) : value
         end
     end
   end
