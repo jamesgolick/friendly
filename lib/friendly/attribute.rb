@@ -66,11 +66,13 @@ module Friendly
       
     protected
       def build_accessors
-        klass.send(:attr_reader, name)
         n = name
         klass.class_eval do
+          attr_reader n, :"#{n}_was"
+
           eval <<-__END__
             def #{n}=(value)
+              will_change(:#{n})
               @#{n} = self.class.attributes[:#{n}].typecast(value)
             end
           __END__

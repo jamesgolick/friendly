@@ -2,7 +2,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Attribute" do
   before do
-    @klass   = Class.new
+    @klass   = Class.new { def will_change(a); end }
     @name    = Friendly::Attribute.new(@klass, :name, String)
     @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
     @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
@@ -15,9 +15,20 @@ describe "Friendly::Attribute" do
     @object = @klass.new
   end
 
-  it "creates a setter and a getter on klass" do
+  it "creates a getting on klass that notifies it of a change" do
+    @object.stubs(:will_change)
+    @object.name = "Something"
+    @object.should have_received(:will_change).with(:name)
+  end
+
+  it "creates a getter on klass" do
     @object.name = "Something"
     @object.name.should == "Something"
+  end
+
+  it "creates an 'attr_was' getter" do
+    @object.instance_variable_set(:@name_was, "Joe the Plumber")
+    @object.name_was.should == "Joe the Plumber"
   end
 
   it "typecasts values using the converter function" do
