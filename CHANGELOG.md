@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### master (0.5.0)
+
+  * (jamesgolick) Add change tracking. This is mostly to facilitate arbitrary caches.
+
 ### 0.4.2
 
   * (nullstyle) convert UUID to SQL::Blob so that Sequel can properly escape it in databases that don't treat binary strings like regular strings.
