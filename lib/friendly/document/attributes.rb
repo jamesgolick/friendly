@@ -55,6 +55,14 @@ module Friendly
         instance_variable_get(:"@#{attribute}_was")
       end
 
+      # Has this attribute changed?
+      #
+      # @param [Symbol] attribute The name of the attribute.
+      #
+      def attribute_changed?(attribute)
+        changed.include?(attribute)
+      end
+
       # Have any of the attributes that are being tracked changed since last reset?
       #
       def changed?

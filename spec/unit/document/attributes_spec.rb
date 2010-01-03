@@ -79,6 +79,10 @@ describe "Friendly::Document::Attributes" do
     it "returns the value of the variable for #attribute_was" do
       @object.attribute_was(:some_variable).should == "Some value"
     end
+
+    it "returns true for attribute_changed?(:some_variable)" do
+      @object.should be_attribute_changed(:some_variable)
+    end
   end
 
   describe "#reset_changes" do
@@ -96,6 +100,10 @@ describe "Friendly::Document::Attributes" do
 
     it "returns nil for attribute_was(:some_variable)" do
       @object.attribute_was(:some_variable).should be_nil
+    end
+
+    it "returns false for attribute_changed?(:some_variable)" do
+      @object.should_not be_attribute_changed(:some_variable)
     end
   end
 end
