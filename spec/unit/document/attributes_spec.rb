@@ -62,4 +62,39 @@ describe "Friendly::Document::Attributes" do
       @object.name.should == "James Bond"
     end
   end
+
+  describe "#will_change" do
+    before do
+      @klass.send(:attr_accessor, :some_variable)
+      @object = @klass.new
+      @object.some_variable = "Some value"
+      @object.will_change(:some_variable)
+    end
+
+    it "makes the object #changed?" do
+      @object.should be_changed
+    end
+
+    it "returns the value of the variable for #attribute_was" do
+      @object.attribute_was(:some_variable).should == "Some value"
+    end
+  end
+
+  describe "#reset_changes" do
+    before do
+      @klass.send(:attr_accessor, :some_variable)
+      @object = @klass.new
+      @object.some_variable = "Some value"
+      @object.will_change(:some_variable)
+      @object.reset_changes
+    end
+
+    it "resets the changed status of the object" do
+      @object.should_not be_changed
+    end
+
+    it "returns nil for attribute_was(:some_variable)" do
+      @object.attribute_was(:some_variable).should be_nil
+    end
+  end
 end
