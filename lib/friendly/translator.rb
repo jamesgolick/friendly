@@ -12,7 +12,8 @@ module Friendly
     def to_object(klass, record)
       record.delete(:added_id)
       attributes = serializer.parse(record.delete(:attributes))
-      klass.new attributes.merge(record).merge(:new_record => false)
+      attributes.merge!(record).merge!(:new_record => false)
+      klass.new_without_change_tracking attributes
     end
 
     def to_record(document)

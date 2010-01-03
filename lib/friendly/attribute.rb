@@ -59,18 +59,25 @@ module Friendly
         nil
       end
     end
+
+    def assign_default_value(document)
+      document.send(:"#{name}=", default)
+    end
       
     protected
       def build_accessors
         n = name
         klass.class_eval do
+          attr_reader n, :"#{n}_was"
+
           eval <<-__END__
             def #{n}=(value)
+              will_change(:#{n})
               @#{n} = self.class.attributes[:#{n}].typecast(value)
             end
 
-            def #{n}
-              @#{n} ||= self.class.attributes[:#{n}].default
+            def #{n}_changed?
+              attribute_changed?(:#{n})
             end
           __END__
         end

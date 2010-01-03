@@ -2,12 +2,12 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe "Friendly::Attribute" do
   before do
-    @klass   = Class.new
+    @klass   = Class.new { def will_change(a); end }
     @name    = Friendly::Attribute.new(@klass, :name, String)
     @id      = Friendly::Attribute.new(@klass, :id, Friendly::UUID)
     @no_type = Friendly::Attribute.new(@klass, :no_type, nil)
     @default = Friendly::Attribute.new(@klass, :default, String, :default => "asdf")
-    @false   = Friendly::Attribute.new(@klass, :default, String, :default => false)
+    @false   = Friendly::Attribute.new(@klass, :false,   String, :default => false)
     @klass.stubs(:attributes).returns({:name    => @name, 
                                        :id      => @id, 
                                        :default => @default,
@@ -15,9 +15,25 @@ describe "Friendly::Attribute" do
     @object = @klass.new
   end
 
-  it "creates a setter and a getter on klass" do
+  it "creates a getting on klass that notifies it of a change" do
+    @object.stubs(:will_change)
+    @object.name = "Something"
+    @object.should have_received(:will_change).with(:name)
+  end
+
+  it "creates a getter on klass" do
     @object.name = "Something"
     @object.name.should == "Something"
+  end
+
+  it "creates an 'attr_was' getter" do
+    @object.instance_variable_set(:@name_was, "Joe the Plumber")
+    @object.name_was.should == "Joe the Plumber"
+  end
+
+  it "creates an attr_changed? query method" do
+    @object.stubs(:attribute_changed?).with(:name).returns(true)
+    @object.should be_name_changed
   end
 
   it "typecasts values using the converter function" do
@@ -37,10 +53,6 @@ describe "Friendly::Attribute" do
     }.should raise_error(Friendly::NoConverterExists)
   end
 
-  it "creates a getter with a default value" do
-    @object.id.should be_instance_of(Friendly::UUID)
-  end
-
   it "has a default value of type.new" do
     @id.default.should be_instance_of(Friendly::UUID)
   end
@@ -55,11 +67,19 @@ describe "Friendly::Attribute" do
 
   it "can have a default value" do
     @default.default.should == "asdf"
-    @klass.new.default.should == "asdf"
+    @obj = @klass.new
+    @default.assign_default_value(@obj)
+    @obj.default.should == "asdf"
   end
 
   it "has a default value even if it's false" do
     @false.default.should be_false
+  end
+
+  it "knows how to assign its own default" do
+    @object = stub(:false= => nil)
+    @false.assign_default_value(@object)
+    @object.should have_received(:false=).with(false)
   end
 
   describe "registering a type" do
