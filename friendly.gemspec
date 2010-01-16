@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2009-12-24}
+  s.date = %q{2010-01-16}
   s.description = %q{}
   s.email = %q{jamesgolick@gmail.com}
   s.extra_rdoc_files = [
@@ -37,13 +37,17 @@ Gem::Specification.new do |s|
      "lib/friendly/boolean.rb",
      "lib/friendly/cache.rb",
      "lib/friendly/cache/by_id.rb",
-     "lib/friendly/config.rb",
      "lib/friendly/data_store.rb",
      "lib/friendly/document.rb",
+     "lib/friendly/document/associations.rb",
+     "lib/friendly/document/attributes.rb",
+     "lib/friendly/document/convenience.rb",
+     "lib/friendly/document/mixin.rb",
+     "lib/friendly/document/scoping.rb",
+     "lib/friendly/document/storage.rb",
      "lib/friendly/document_table.rb",
      "lib/friendly/index.rb",
      "lib/friendly/memcached.rb",
-     "lib/friendly/named_scope.rb",
      "lib/friendly/newrelic.rb",
      "lib/friendly/query.rb",
      "lib/friendly/scope.rb",
@@ -71,6 +75,7 @@ Gem::Specification.new do |s|
      "spec/integration/convenience_api_spec.rb",
      "spec/integration/count_spec.rb",
      "spec/integration/default_value_spec.rb",
+     "spec/integration/dirty_tracking_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/has_many_spec.rb",
@@ -87,14 +92,13 @@ Gem::Specification.new do |s|
      "spec/unit/attribute_spec.rb",
      "spec/unit/cache_by_id_spec.rb",
      "spec/unit/cache_spec.rb",
-     "spec/unit/config_spec.rb",
      "spec/unit/data_store_spec.rb",
+     "spec/unit/document/attributes_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/memcached_spec.rb",
-     "spec/unit/named_scope_spec.rb",
      "spec/unit/query_spec.rb",
      "spec/unit/scope_proxy_spec.rb",
      "spec/unit/scope_spec.rb",
@@ -164,6 +168,7 @@ Gem::Specification.new do |s|
      "spec/integration/convenience_api_spec.rb",
      "spec/integration/count_spec.rb",
      "spec/integration/default_value_spec.rb",
+     "spec/integration/dirty_tracking_spec.rb",
      "spec/integration/find_via_cache_spec.rb",
      "spec/integration/finder_spec.rb",
      "spec/integration/has_many_spec.rb",
@@ -179,14 +184,13 @@ Gem::Specification.new do |s|
      "spec/unit/attribute_spec.rb",
      "spec/unit/cache_by_id_spec.rb",
      "spec/unit/cache_spec.rb",
-     "spec/unit/config_spec.rb",
      "spec/unit/data_store_spec.rb",
+     "spec/unit/document/attributes_spec.rb",
      "spec/unit/document_spec.rb",
      "spec/unit/document_table_spec.rb",
      "spec/unit/friendly_spec.rb",
      "spec/unit/index_spec.rb",
      "spec/unit/memcached_spec.rb",
-     "spec/unit/named_scope_spec.rb",
      "spec/unit/query_spec.rb",
      "spec/unit/scope_proxy_spec.rb",
      "spec/unit/scope_spec.rb",
