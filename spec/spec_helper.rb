@@ -64,6 +64,8 @@ class Address
 
   indexes   :user_id
   indexes   :street
+  indexes   :created_at
+
   caches_by :id
 end
 

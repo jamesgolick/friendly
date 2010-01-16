@@ -62,3 +62,11 @@ describe "limiting a query with offset" do
              :order!  => :created_at.desc).should == @objects.reverse.slice(2, 2)
   end
 end
+
+describe "all with only order" do
+  it "queries the index" do
+    lambda {
+      Address.all(:order! => :created_at.desc)
+    }.should_not raise_error
+  end
+end
