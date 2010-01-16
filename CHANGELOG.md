@@ -1,8 +1,9 @@
 Changelog
 =========
 
-### master (0.5.0)
+### (0.4.3)
 
+  * (jamesgolick) Make it possible to query with order, but no conditions.
   * (jamesgolick) Add change tracking. This is mostly to facilitate arbitrary caches.
 
 ### 0.4.2
