@@ -1,5 +1,3 @@
-require 'friendly/named_scope'
-
 module Friendly
   class ScopeProxy
     attr_reader :klass, :scope_klass, :scopes
