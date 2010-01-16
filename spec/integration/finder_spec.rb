@@ -65,8 +65,7 @@ end
 
 describe "all with only order" do
   it "queries the index" do
-    lambda {
-      Address.all(:order! => :created_at.desc)
-    }.should_not raise_error
+    Address.create
+      Address.all(:order! => :created_at.desc, :limit! => 5)
   end
 end

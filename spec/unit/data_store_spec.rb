@@ -76,6 +76,19 @@ describe "Friendly::DataStore" do
     end
   end
 
+  describe "all without conditions" do
+    before do
+      @all         = stub(:map => [])
+      @users.stubs(:order).with(:created_at).returns(@all)
+      @query       = query(:order! => :created_at)
+      @return      = @datastore.all(@klass, @query)
+    end
+
+    it "orders the filtered dataset and returns the results" do
+      @return.should == []
+    end
+  end
+
   describe "retrieving first with conditions" do
     before do
       @users.first = {{:id => 1} => {:id => 1}}
