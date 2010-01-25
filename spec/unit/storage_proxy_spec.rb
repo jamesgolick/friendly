@@ -215,4 +215,35 @@ describe "Friendly::StorageProxy" do
       @storage.count(:x => 1).should == 10
     end
   end
+
+  describe "getting the index that matches a set of fields" do
+    before do
+      @storage_factory = stub(:document_table => @document_table)
+
+      [[:name, :created_at], [:name]].each do |fields|
+        @storage_factory.stubs(:index).
+          with(@klass, *fields).returns(stub(:fields => fields))
+      end
+
+      @storage = Friendly::StorageProxy.new(@klass, @storage_factory)
+      @storage.add(:name, :created_at)
+      @storage.add(:name)
+    end
+
+    it "matches if and only if all the fields are present and in order" do
+      @storage.index_for_fields([:name, :created_at]).fields.should == 
+        [:name, :created_at]
+    end
+
+    it "matches if the fields are strings" do
+      @storage.index_for_fields(["name", "created_at"]).fields.should ==
+        [:name, :created_at]
+    end
+
+    it "raises missing index if there's no matching index" do
+      lambda {
+        @storage.index_for_fields([:created_at, :name])
+      }.should raise_error(Friendly::MissingIndex)
+    end
+  end
 end

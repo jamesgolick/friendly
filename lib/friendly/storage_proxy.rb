@@ -67,6 +67,15 @@ module Friendly
       index
     end
 
+    def index_for_fields(fields)
+      tables.detect do |t|
+        t.respond_to?(:fields) && 
+          t.fields.map { |f| f.to_s } == fields.map { |f| f.to_s }
+      end.tap do |i|
+        raise MissingIndex, "No index found matching #{fields.join(", ")}." if i.nil?
+      end
+    end
+
     protected
       def each_store
         stores.each { |s| yield(s) }
