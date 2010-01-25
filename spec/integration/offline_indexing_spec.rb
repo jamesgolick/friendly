@@ -5,7 +5,7 @@ describe "Building an index offline" do
     $db.drop_table :awesome_things if $db.table_exists?(:awesome_things)
 
     if $db.table_exists?(:index_awesome_things_on_name)
-      $db.drop_table :awesome_things_on_name
+      $db.drop_table :index_awesome_things_on_name
     end
 
     @klass = Class.new do
@@ -27,5 +27,11 @@ describe "Building an index offline" do
 
   it "builds the missing index rows for all the rows in the doc table" do
     @klass.all(:name => "James").should == @jameses
+  end
+
+  it "ignores records that are already in the index" do
+    lambda {
+      Friendly::Indexer.populate(@klass, :name)
+    }.should_not raise_error
   end
 end
