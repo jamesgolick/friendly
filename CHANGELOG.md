@@ -1,7 +1,11 @@
 Changelog
 =========
 
-### (0.4.4)
+### 0.5
+  
+  * (jamesgolick) Add offline index building.
+
+### 0.4.4
 
   * (jamesgolick) Make it possible to query with order, but no conditions.
   * (jamesgolick) Add change tracking. This is mostly to facilitate arbitrary caches.

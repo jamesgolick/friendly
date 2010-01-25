@@ -204,6 +204,29 @@ You can also use any other Friendly::Scope method like scope chaining.
 
 See the section above or the Friendly::Scope docs for more details.
 
+Offline Indexing
+================
+
+Friendly includes support for building an index in the background, without taking your app offline.
+
+All you have to do is declare the index in your model. If we wanted to add an index on :name, :created_at in a User model, we'd do it like this:
+
+    class User
+      # ...snip...
+
+      indexes :name, :created_at
+    end
+
+Then, make sure to run Friendly.create_tables! to create the table in the database. This won't overwrite any of your existing tables, so don't worry.
+
+    >> Friendly.create_tables!
+
+Now that the the new table has been created, you need to copy the .rake file included with Friendly (lib/tasks/friendly.rake) to somewhere that will get picked up by your main Rakefile (lib/tasks if it's a rails project). Then, run:
+
+    $ KLASS=User FIELDS=name,created_at rake friendly:build_index
+
+If you're running this in production, you'll probably want to fire up GNU screen so that it'll keep running even if you lose your SSH connection. When this task completes, the index is populated and ready to go!
+
 Installation
 ============
 
