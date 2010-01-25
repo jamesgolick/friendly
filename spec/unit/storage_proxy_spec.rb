@@ -235,11 +235,6 @@ describe "Friendly::StorageProxy" do
         [:name, :created_at]
     end
 
-    it "matches if the fields are strings" do
-      @storage.index_for_fields(["name", "created_at"]).fields.should ==
-        [:name, :created_at]
-    end
-
     it "raises missing index if there's no matching index" do
       lambda {
         @storage.index_for_fields([:created_at, :name])
