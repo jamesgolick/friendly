@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly}
-  s.version = "0.4.5"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick"]
-  s.date = %q{2010-01-16}
+  s.date = %q{2010-01-25}
   s.description = %q{}
   s.email = %q{jamesgolick@gmail.com}
   s.extra_rdoc_files = [
@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
      "lib/friendly/document/storage.rb",
      "lib/friendly/document_table.rb",
      "lib/friendly/index.rb",
+     "lib/friendly/indexer.rb",
      "lib/friendly/memcached.rb",
      "lib/friendly/newrelic.rb",
      "lib/friendly/query.rb",
@@ -61,6 +62,7 @@ Gem::Specification.new do |s|
      "lib/friendly/time.rb",
      "lib/friendly/translator.rb",
      "lib/friendly/uuid.rb",
+     "lib/tasks/friendly.rake",
      "rails/init.rb",
      "spec/config.yml.example",
      "spec/fakes/data_store_fake.rb",
@@ -81,6 +83,7 @@ Gem::Specification.new do |s|
      "spec/integration/has_many_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/named_scope_spec.rb",
+     "spec/integration/offline_indexing_spec.rb",
      "spec/integration/pagination_spec.rb",
      "spec/integration/scope_chaining_spec.rb",
      "spec/integration/table_creator_spec.rb",
@@ -174,6 +177,7 @@ Gem::Specification.new do |s|
      "spec/integration/has_many_spec.rb",
      "spec/integration/index_spec.rb",
      "spec/integration/named_scope_spec.rb",
+     "spec/integration/offline_indexing_spec.rb",
      "spec/integration/pagination_spec.rb",
      "spec/integration/scope_chaining_spec.rb",
      "spec/integration/table_creator_spec.rb",
