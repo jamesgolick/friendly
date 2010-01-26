@@ -22,8 +22,8 @@ module Friendly
     end
 
     def populate(klass, index)
+      count  = 0
       loop do
-        count   = 0
         rows = datastore.all(klass, Query.new(:offset! => count, 
                                               :limit!  => objects_per_iteration, 
                                               :order!  => :added_id.asc))

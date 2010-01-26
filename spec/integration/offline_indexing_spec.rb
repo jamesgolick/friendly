@@ -22,16 +22,32 @@ describe "Building an index offline" do
 
     @klass.indexes :name
     @klass.create_tables!
-    Friendly::Indexer.populate(@klass, :name)
   end
 
-  it "builds the missing index rows for all the rows in the doc table" do
-    @klass.all(:name => "James").should == @jameses
-  end
-
-  it "ignores records that are already in the index" do
-    lambda {
+  describe "" do
+    before do
       Friendly::Indexer.populate(@klass, :name)
-    }.should_not raise_error
+    end
+
+    it "builds the missing index rows for all the rows in the doc table" do
+      @klass.all(:name => "James").should == @jameses
+    end
+
+    it "ignores records that are already in the index" do
+      lambda {
+        Friendly::Indexer.populate(@klass, :name)
+      }.should_not raise_error
+    end
+  end
+
+  describe "with more than `Indexer.objects_per_iteration` objects" do
+    before do
+      Friendly::Indexer.objects_per_iteration = 1
+      Friendly::Indexer.populate(@klass, :name)
+    end
+
+    it "builds the missing index rows for all the rows in the doc table" do
+      @klass.all(:name => "James").should == @jameses
+    end
   end
 end
