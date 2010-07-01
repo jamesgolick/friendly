@@ -1,5 +1,6 @@
 require 'friendly/time'
 require 'friendly/attribute'
+require 'rufus-json'
 
 # This class was extracted from the cassandra gem by Evan Weaver
 # As such, it is distributed under the terms of the apache license.
@@ -85,7 +86,7 @@ module Friendly
     end
 
     def to_json(*args)
-      to_guid.to_json(*args)
+      Rufus::Json.encode(to_guid)
     end
 
     def seconds
