@@ -18,7 +18,6 @@ require 'friendly/storage_proxy'
 require 'friendly/translator'
 require 'friendly/uuid'
 
-require 'json/pure'
 require 'will_paginate/collection'
 
 module Friendly
