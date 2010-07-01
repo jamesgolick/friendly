@@ -10,7 +10,7 @@ describe "Friendly::Translator" do
 
   describe "translating a row to an object" do
     before do
-      @serializer.stubs(:parse).with("THE JSON").returns(:name => "Stewie")
+      @serializer.stubs(:decode).with("THE JSON").returns(:name => "Stewie")
       @time  = Time.new
       @row   = {:added_id   => 12345,
                 :created_at => @time,
@@ -33,7 +33,7 @@ describe "Friendly::Translator" do
       before do
         @hash = {:name => "Stewie"}
         @time.stubs(:new).returns(Time.new)
-        @serializer.stubs(:generate).with(@hash).returns("SOME JSON")
+        @serializer.stubs(:encode).with(@hash).returns("SOME JSON")
         @document = stub(:to_hash     => @hash, 
                          :new_record? => true, 
                          :created_at  => nil,
@@ -62,7 +62,7 @@ describe "Friendly::Translator" do
                  :created_at => @created_at,
                  :updated_at => Time.new}
         @time.stubs(:new).returns(Time.new + 5000)
-        @serializer.stubs(:generate).returns("SOME JSON")
+        @serializer.stubs(:encode).returns("SOME JSON")
         @document = stub(:to_hash     => @hash, 
                          :created_at  => @created_at,
                          :new_record? => false,
@@ -71,7 +71,7 @@ describe "Friendly::Translator" do
       end
 
       it "serializes the attributes" do
-        @serializer.should have_received(:generate).with(:name => "Stewie")
+        @serializer.should have_received(:encode).with(:name => "Stewie")
         @record[:attributes].should == "SOME JSON"
       end
 

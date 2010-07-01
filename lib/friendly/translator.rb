@@ -1,17 +1,19 @@
+require "rufus-json"
+
 module Friendly
   class Translator
     RESERVED_ATTRS = [:id, :created_at, :updated_at].freeze
 
     attr_reader :serializer, :time
 
-    def initialize(serializer = JSON, time = Time)
+    def initialize(serializer = Rufus::Json, time = Time)
       @serializer = serializer
       @time       = time
     end
 
     def to_object(klass, record)
       record.delete(:added_id)
-      attributes = serializer.parse(record.delete(:attributes))
+      attributes = serializer.decode(record.delete(:attributes))
       attributes.merge!(record).merge!(:new_record => false)
       klass.new_without_change_tracking attributes
     end
@@ -26,7 +28,7 @@ module Friendly
     protected
       def serialize(document)
         attrs = document.to_hash.reject { |k,v| RESERVED_ATTRS.include?(k) }
-        serializer.generate(attrs)
+        serializer.encode(attrs)
       end
   end
 end
