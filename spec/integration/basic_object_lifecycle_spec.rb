@@ -1,4 +1,5 @@
 require File.expand_path("../../spec_helper", __FILE__)
+require 'rufus-json'
 
 describe "Creating and retrieving an object" do
   before do
@@ -39,7 +40,7 @@ describe "Creating and retrieving an object" do
 
   it "doesn't serialize id, created_at, or updated_at in the attributes column" do
     result = $db.from("users").first(:id => @user.id)
-    attrs  = JSON.parse(result[:attributes])
+    attrs  = Rufus::Json.decode(result[:attributes])
     attrs.keys.should_not include("id")
     attrs.keys.should_not include("created_at")
     attrs.keys.should_not include("updated_at")
